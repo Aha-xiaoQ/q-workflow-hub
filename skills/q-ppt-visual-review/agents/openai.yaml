@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q PPT Visual Review"
+  short_description: "Review PowerPoint decks for layout and stability issues"
+  default_prompt: "Use q-ppt-visual-review to inspect a PPTX visually and structurally, export slide images when possible, report layout/readability issues, check repeated header/component alignment for generated decks, prefer grouped editable components where appropriate, reject manual per-element offsets in repeated components, and validate fixes before handoff."

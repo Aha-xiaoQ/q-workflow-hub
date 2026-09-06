@@ -1,0 +1,34 @@
+# Role Modes
+
+Created: {{DATE}}
+
+Use this file to define lightweight working modes. Modes should guide tone,
+depth, and validation expectations; they do not replace explicit user
+instructions.
+
+## Available Modes
+
+### Planner
+
+- Goal: clarify scope, risks, options, and next actions before implementation.
+- Use when: the task is ambiguous, high-impact, or needs sequencing.
+
+### Builder
+
+- Goal: implement, validate, and checkpoint concrete changes.
+- Use when: the user has approved execution or directly asks for a change.
+
+### Reviewer
+
+- Goal: find bugs, risks, drift, missing tests, and release blockers.
+- Use when: reviewing code, workflow rules, generated artifacts, or handoff
+  candidates.
+
+### Researcher
+
+- Goal: compare sources, tools, prior art, or alternative designs with evidence.
+- Use when: current information, public examples, or external practices matter.
+
+## Custom Modes
+
+Add user-specific modes here as they become stable.

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "q-ppt-intake/v1",
+  "createdAt": "2026-06-23T00:00:00Z",
+  "profile": {
+    "name": "Example Presenter",
+    "identityLine": "Engineering Workflow",
+    "language": "en-US"
+  },
+  "deck": {
+    "title": "Reusable PPT Intake Flow",
+    "subtitle": "From request JSON to reviewed PPTX",
+    "audience": "engineering teammates",
+    "purpose": "show how a portable intake request drives a deck workflow",
+    "deliveryFormat": "review-meeting",
+    "language": "en-US",
+    "density": "short",
+    "targetSlideCount": 6,
+    "notesMode": "speaker-notes"
+  },
+  "content": {
+    "mode": "agent-generated",
+    "sourceMaterials": [
+      {
+        "type": "note",
+        "value": "Demonstrate HTML intake -> JSON -> story brief -> slide map -> PPTX -> visual review -> open final PPTX."
+      }
+    ],
+    "storyBriefHints": {
+      "desiredAction": "Adopt the same request JSON across browser, CLI, and agent handoff paths.",
+      "promise": "One portable request reduces repeated clarification and keeps validation expectations explicit.",
+      "proofPoints": [
+        "Schema separates generic public fields from private extension fields.",
+        "Density and exact slide-count rules are validated before and after generation."
+      ],
+      "openGaps": [
+        "A project-specific renderer still decides the final slide geometry."
+      ]
+    }
+  },
+  "structure": {
+    "mode": "auto",
+    "targetSectionCount": 3,
+    "sections": []
+  },
+  "style": {
+    "base": "simple-theme",
+    "visualMotif": "quiet engineering workflow with clear process lanes",
+    "chartTableStyle": "compact tables and simple process strips",
+    "mustUse": [
+      "editable PPTX text and shapes"
+    ],
+    "mustAvoid": [
+      "decorative hero slides",
+      "visible production notes"
+    ]
+  },
+  "validation": {
+    "sampleFirst": true,
+    "runStructuralReadback": true,
+    "runVisualReview": true,
+    "openFinalPpt": true
+  },
+  "output": {
+    "path": ""
+  },
+  "handoff": {
+    "mode": "agent-queue",
+    "requestFile": "",
+    "agentInstruction": "Create the story brief, slide map/source freeze, editable PPTX, structural readback, visual review evidence, and final local open step from this intake request."
+  },
+  "extensions": {}
+}

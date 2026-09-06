@@ -1,0 +1,151 @@
+{
+  "version": 3,
+  "surface_schema_version": 1,
+  "authority": {
+    "profile": "%USERPROFILE%/.codex/q-profile.json",
+    "hub_fields": ["hub", "repositories.q-personal-hub.path"],
+    "hub_resolution": {
+      "authoritative_field": "hub",
+      "fallback_fields": [
+        "repositories.q-personal-hub.path",
+        "repositories.q-personal-hub.local_path",
+        "repositories.q-personal-hub.registry_path"
+      ],
+      "policy": "An existing explicit hub is authoritative. Fallback fields are used only when hub is absent and must resolve unambiguously. A configured but missing explicit hub fails closed."
+    },
+    "state_root": "<hub>/personal-state",
+    "runtime_mirror": "%CODEX_HOME%/q-personal-state",
+    "runtime_policy": "read-only-rebuildable-mirror"
+  },
+  "surfaces": {
+    "todo-two-line": {
+      "required_fields": ["surface.chat_text", "open_count", "items", "display_items", "authority", "mirror"],
+      "required_shape": ["slash-header", "open-count", "three-lines-per-item", "chinese-name-and-summary", "compact-localized-detail"],
+      "compatibility_note": "chinese-name-and-summary is a retained identifier: names preserve user text, including English and short Chinese; summary/detail use a Chinese explanatory framework, not automatic translation.",
+      "forbidden_phrases": ["回复编号", "1~", "1～", "Recommended Next"],
+      "side_effect": "none"
+    },
+    "todo-add-preview-or-commit": {
+      "required_fields": ["write_status", "content"],
+      "side_effect": "commit-only"
+    },
+    "selected-todo-item": {
+      "required_fields": ["selected", "selected_display", "context_token", "surface.chat_text"],
+      "required_shape": ["slash-header", "full-localized-description", "labeled-multiline-detail"],
+      "forbidden_phrases": ["原始记录：", "回复编号", "1~", "1～", "Recommended Next"],
+      "side_effect": "none"
+    },
+    "token-dashboard-summary": {
+      "required_fields": ["surface.chat_text", "dashboard", "open_status", "summary"],
+      "required_shape": ["slash-header", "latest-turn", "context-pressure", "cache-health", "cumulative", "dashboard-receipt"],
+      "max_chat_lines": 5,
+      "side_effect": "open-dashboard-when-requested"
+    },
+    "help-html-first": {
+      "required_fields": ["surface.chat_text", "guide", "guide_kind", "open_status"],
+      "required_shape": ["slash-header", "html-receipt", "purpose", "one-minute-trial", "commands", "project-entry", "capabilities", "permission-boundary", "blocked-recovery"],
+      "forbidden_phrases": ["1~", "1～", "回复编号"],
+      "side_effect": "open-help-html-when-requested"
+    },
+    "bounded-status": {
+      "required_fields": ["current_focus", "recovery_pointer"],
+      "side_effect": "none"
+    },
+    "checkpoint-action-required": {
+      "required_fields": ["checkpoint_status", "write_status", "next_action"],
+      "side_effect": "none"
+    },
+    "quick-resume-fixed-panel": {
+      "required_fields": ["surface.chat_text", "phase", "recency_checked", "pointer_confidence", "recovery_pointer"],
+      "required_shape": ["exact-first-line", "evidence", "status", "pointer", "recent", "next-action", "phase-boundary"],
+      "side_effect": "none"
+    }
+  },
+  "commands": [
+    {
+      "id": "todo-list",
+      "aliases": ["TODO", "todo", "Todo"],
+      "match": "exact",
+      "handler": "todo_list",
+      "required_skill": "q-assistant-profile",
+      "state_source": "personal-state/TODO.md",
+      "output_contract": "todo-two-line"
+    },
+    {
+      "id": "todo-add",
+      "aliases": ["TODO:", "TODO：", "todo:", "todo："],
+      "match": "prefix",
+      "handler": "todo_add",
+      "required_skill": "q-assistant-profile",
+      "state_source": "personal-state/TODO.md",
+      "output_contract": "todo-add-preview-or-commit"
+    },
+    {
+      "id": "todo-select",
+      "aliases": ["<positive-integer>"],
+      "match": "contextual",
+      "required_context": "todo-list",
+      "handler": "todo_select",
+      "required_skill": "q-assistant-profile",
+      "state_source": "personal-state/TODO.md",
+      "output_contract": "selected-todo-item"
+    },
+    {
+      "id": "token-dashboard",
+      "aliases": ["TOKEN", "token", "tokens", "token usage"],
+      "match": "exact-case-insensitive",
+      "handler": "token_dashboard",
+      "required_skill": "q-workflow",
+      "state_source": "local-session-logs",
+      "output_contract": "token-dashboard-summary"
+    },
+    {
+      "id": "help",
+      "aliases": ["help", "Help", "HELP", "帮助", "-help", "-Help"],
+      "match": "exact",
+      "handler": "help",
+      "required_skill": "q-assistant-profile",
+      "state_source": "profile-help-surfaces",
+      "output_contract": "help-html-first"
+    },
+    {
+      "id": "status",
+      "aliases": ["status", "状态"],
+      "match": "exact",
+      "handler": "status",
+      "required_skill": "q-assistant-profile",
+      "state_source": "personal-state/ACTIVE_WORK.md",
+      "output_contract": "bounded-status"
+    },
+    {
+      "id": "checkpoint",
+      "aliases": ["checkpoint", "保存状态", "打点"],
+      "match": "exact",
+      "handler": "checkpoint",
+      "required_skill": "q-workflow",
+      "state_source": "personal-state/ACTIVE_WORK.md",
+      "output_contract": "checkpoint-action-required"
+    },
+    {
+      "id": "quick-resume",
+      "aliases": ["小Q", "小Ｑ", "Xiao Q", "xiaoQ", "继续小Q", "resume", "continue"],
+      "match": "exact",
+      "handler": "quick_resume",
+      "required_skill": "q-assistant-profile",
+      "state_source": "personal-state/ACTIVE_WORK.md",
+      "output_contract": "quick-resume-fixed-panel"
+    }
+  ],
+  "required_skill_routes": [
+    {
+      "id": "skill-maintenance",
+      "intents": ["create skill", "make a skill", "update skill", "review skill", "rename skill", "创建skill", "做一个skill", "更新skill", "审查skill", "重命名skill", "沉淀成skill"],
+      "required_skill": "q-skill-creation"
+    },
+    {
+      "id": "expert-review",
+      "intents": ["专家审查", "子agent", "reviewer", "specialist"],
+      "required_skill": "q-agent-roster"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "format_version": 1,
+  "title": "Q workflow material-task lifecycle contract",
+  "scope": "Material work only; exact commands and tiny deterministic edits stay on the micro path.",
+  "axes": {
+    "work": ["briefing", "active", "paused", "blocked", "validating", "closed"],
+    "integrity": ["unknown", "clean", "local-validated", "offline-validated", "stale", "drift", "conflicted", "repairing"],
+    "release": ["local-only", "candidate", "ready", "released"]
+  },
+  "authority": {
+    "canonical_source": "A registered repository source is the only normal edit authority.",
+    "bootstrap": "A validated installation input; never a merge or push source.",
+    "runtime": "A rebuildable execution output; runtime-newer is blocked until backfilled to source.",
+    "remote": "A fetched remote ref is evidence only after an explicit successful fetch. Offline or cached tracking state is remote-unproven."
+  },
+  "task_state": {
+    "record_schema": "q-workflow-task-v1",
+    "record_location": "personal-state/tasks/<task_id>.json",
+    "event_log": "personal-state/TASK_EVENTS.jsonl",
+    "focus_view": "personal-state/ACTIVE_WORK.md",
+    "focus_rule": "ACTIVE_WORK selects one task; every registered task remains inspectable by task_id or trace_id.",
+    "transaction_rule": "Plan first, then apply with compare-and-swap hashes, exclusive lock, atomic replacement, readback validation, rollback, and a receipt."
+  },
+  "required_execution_context": ["task_id", "trace_id", "execution_epoch", "state_revision", "authority_event", "work_state", "integrity_state", "release_state", "role_plan_id", "primary_owner", "primary_status", "reviewer_owner", "reviewer_status", "validator_owner", "validator_status", "remote_status", "remote_proven", "next_action", "updated_at"],
+  "transitions": [
+    {"event":"start","from":["briefing"],"to":"active","guards":["role_plan_present","primary_status=planned|running"],"writes":["authority_event","state_revision"]},
+    {"event":"pause","from":["active","validating"],"to":"paused","guards":["event_matches_trace"],"writes":["authority_event","state_revision"]},
+    {"event":"block","from":["active","validating"],"to":"blocked","guards":["blocked_on","error_code","next_action"],"writes":["authority_event","state_revision","blocked_on","error_code"]},
+    {"event":"resume","from":["paused","blocked"],"to":"briefing","guards":["revision_match","execution_epoch_incremented"],"writes":["authority_event","state_revision","execution_epoch"]},
+    {"event":"validate","from":["active"],"to":"validating","guards":["primary_status=completed|deferred"],"writes":["authority_event","state_revision"]},
+    {"event":"close","from":["validating"],"to":"closed","guards":["reviewer_and_validator_resolved"],"writes":["authority_event","state_revision"]}
+  ],
+  "transition_rules": [
+    "A material task starts at briefing/local-validated/local-only and has a durable task_id and authority_event.",
+    "Every promote, pause, block, resume, validation completion, and close writes an event before a completion claim.",
+    "A context compaction or cold resume increments execution_epoch while preserving trace_id; a mismatched state_revision blocks resume. Direct closed-to-active is prohibited.",
+    "integrity_state=stale, drift, or conflicted blocks sync, push, release, and stable claims.",
+    "release_state=ready or released requires remote_status=proven, remote_proven=true, a release_receipt, strict readiness and explicit signoff evidence; local validation alone cannot set either state."
+  ],
+  "expert_gate": "For non-simple work, a deterministic role plan must name a primary owner before active; mapped reviewer and validator gates must be completed or explicitly deferred before close.",
+  "receipt": "A reconciliation receipt is written only after all selected source/bootstrap/runtime checks pass. For ready/released it is JSON under the authoritative hub reports root with format_version=1, remote, branch, timezone-qualified fetched_at, matching hexadecimal remote_head and target_oid, strict_readiness_status=pass and signoff_id. The pointer binds release_remote, release_branch, release_fetched_at, release_target_oid, signoff_id and release_receipt_sha256 to the same receipt; remote_proven=true is allowed only after this verified fetch evidence.",
+  "compatibility": "Unknown human Markdown is preserved. Machine records use format_version; future major versions fail closed, while extension fields are preserved where documented. RECOVERY_POINTER v1 remains a flattened focus view; sync_state is a derived legacy alias and domain-specific states belong under task-record detail."
+}

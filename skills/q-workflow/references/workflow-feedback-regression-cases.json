@@ -1,0 +1,520 @@
+{
+    "version":  1,
+    "updated":  "2026-07-14",
+    "purpose":  "Regression cases for workflow feedback improvements. These cases check whether short user-facing prompts still route to the intended q-workflow reference after feedback-driven patches.",
+    "cases":  [
+                  {
+                      "id": "VIG-01-scale-is-not-optimization",
+                      "prompt": "A 64x64 pixel avatar was scaled to 256x256 and called an optimized reconstruction.",
+                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
+                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
+                      "must_have_terms": ["reference-inspection", "optimization-inspection", "coordinate-diff", "A proportional or nearest-neighbour scale-up"],
+                      "must_not_route": ["activate live asset", "call it optimized without changes"],
+                      "reason": "Scaling alone cannot satisfy a request for a higher-resolution optimized reconstruction."
+                  },
+                  {
+                      "id": "VIG-02-inspection-layer-missing",
+                      "prompt": "A changed visual candidate has no coordinate origin, major ticks, or legend showing reference and changed cells.",
+                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
+                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
+                      "must_have_terms": ["grid", "origin", "major ticks", "legend", "inspection manifest"],
+                      "must_not_route": ["clean candidate review", "skip inspection"],
+                      "reason": "Expert and Xiao Q need a first grid inspection edition to identify the actual edits."
+                  },
+                  {
+                      "id": "VIG-03-live-before-review",
+                      "prompt": "A visual candidate was wired into an asset manifest before expert review and Xiao Q decision.",
+                      "expected_route": "visual-candidate-review-before-live-activation",
+                      "expected_reference": "references/q-standard-contract.md",
+                      "must_have_terms": ["restore the known live baseline", "candidate path and hash", "pre-review", "Xiao Q's explicit decision", "activation diff"],
+                      "must_not_route": ["keep live candidate", "ready handoff"],
+                      "reason": "Candidate-to-live activation is blocked until ordered evidence exists."
+                  },
+                  {
+                      "id": "VIG-04-review-after-integration",
+                      "prompt": "An expert reviewed a candidate only after it was already integrated into the live page.",
+                      "expected_route": "visual-candidate-review-before-live-activation",
+                      "expected_reference": "references/q-standard-contract.md",
+                      "must_have_terms": ["does not count as pre-review", "restore the known live baseline", "collect fresh evidence and pre-review", "one explicit activation diff"],
+                      "must_not_route": ["accept retrospective review as approval"],
+                      "reason": "Post-activation review cannot validate the required ordering."
+                  },
+                  {
+                      "id": "VIG-05-clean-before-inspection-approval",
+                      "prompt": "A clean visual was shown before the grid inspection edition had expert and Xiao Q approval.",
+                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
+                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
+                      "must_have_terms": ["return the candidate to inspection state", "Visual Arbiter", "Xiao Q review record", "clean candidate derived"],
+                      "must_not_route": ["present clean output as final"],
+                      "reason": "A clean derivative is allowed only after the reviewable grid state is approved."
+                  },
+                  {
+                      "id":  "identity-pure-distinctiveness",
+                      "prompt":  "小Q工作流特色",
+                      "expected_route":  "workflow-identity",
+                      "expected_reference":  "references/workflow-identity.md",
+                      "must_have_terms":  [
+                                              "workflow-identity",
+                                              "skill-fit",
+                                              "recovery, routing, authority",
+                                              "validation, and sedimentation"
+                                          ],
+                      "must_not_route":  [
+                                             "workflow-hygiene"
+                                         ],
+                      "reason":  "Pure identity or distinctiveness prompts should explain the workflow identity and skill-fit model, not trigger cleanup scoring.",
+                      "prompt_variants":  [
+                                              "小Q工作流特色",
+                                              "Xiao Q workflow distinctiveness"
+                                          ]
+                  },
+                  {
+                      "id":  "identity-skill-fit",
+                      "prompt":  "skill匹配",
+                      "expected_route":  "workflow-identity",
+                      "expected_reference":  "references/workflow-identity.md",
+                      "must_have_terms":  [
+                                              "skill-fit",
+                                              "workflow amplifier",
+                                              "Recovery",
+                                              "Routing",
+                                              "Authority",
+                                              "Validation",
+                                              "Sedimentation"
+                                          ],
+                      "must_not_route":  [
+                                             "workflow-hygiene"
+                                         ],
+                      "reason":  "Skill-fit prompts should explain how q-workflow makes skills better, not only list installed skills.",
+                      "prompt_variants":  [
+                                              "skill匹配",
+                                              "skill fit with Xiao Q workflow"
+                                          ]
+                  },
+                  {
+                      "id":  "hygiene-cleanup-context",
+                      "prompt":  "工作流有点臃肿，帮我清理一下",
+                      "expected_route":  "workflow-hygiene",
+                      "expected_reference":  "references/workflow-hygiene.md",
+                      "must_have_terms":  [
+                                              "workflow-hygiene",
+                                              "Clean",
+                                              "Watch",
+                                              "Cleanup Needed",
+                                              "Blocked",
+                                              "Ask Xiao Q first"
+                                          ],
+                      "must_not_route":  [
+                                             "workflow-identity"
+                                         ],
+                      "reason":  "Bloat and cleanup prompts should score hygiene and distinguish automatic from ask-before actions.",
+                      "prompt_variants":  [
+                                              "工作流有点臃肿，帮我清理一下",
+                                              "Workflow feels bloated; help clean it up."
+                                          ]
+                  },
+                  {
+                      "id":  "resume-recorded-point-lock",
+                      "prompt":  "继续小Q",
+                      "expected_route":  "quick-resume-recorded-point-lock",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "Recorded Point Lock",
+                                              "locked checkpoint",
+                                              "next action",
+                                              "no project execution before authorization"
+                                          ],
+                      "must_not_route":  [
+                                             "project execution",
+                                             "code edit",
+                                             "build",
+                                             "flash",
+                                             "hardware run"
+                                         ],
+                      "reason":  "After an explicit user-approved checkpoint, Quick Resume must first prove the recorded point is authoritative and stop before project execution.",
+                      "prompt_variants":  [
+                                              "继续小Q",
+                                              "continue Xiao Q after an explicitly recorded checkpoint"
+                                          ]
+                  },
+                  {
+                      "id":  "resume-briefing-before-execution",
+                      "prompt":  "继续小Q",
+                      "expected_route":  "quick-resume-recorded-point-lock",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "Resume Briefing",
+                                              "previous progress",
+                                              "unvalidated boundary",
+                                              "known pollution",
+                                              "proposed first action"
+                                          ],
+                      "must_not_route":  [
+                                             "silent execution",
+                                             "terse pointer only"
+                                         ],
+                      "reason":  "A returning user needs a concise progress briefing before authorizing execution.",
+                      "prompt_variants":  [
+                                              "继续小Q",
+                                              "continue Xiao Q after a time gap and brief me before executing"
+                                          ]
+                  },
+                  {
+                      "id":  "text-format-hygiene-route",
+                      "prompt":  "之前乱码和代码插入格式问题别分散记录，格式问题解决过不应复发",
+                      "expected_route":  "text-format-hygiene",
+                      "expected_reference":  "",
+                      "must_have_terms":  [
+                                              "text-format-hygiene",
+                                              "Text format hygiene",
+                                              "Markdown/list/code insertion",
+                                              "encoding-safety"
+                                          ],
+                      "must_not_route":  [
+                                             "encoding-safety-only",
+                                             "workflow-hygiene-only"
+                                         ],
+                      "reason":  "Recurring text-format defects should route to the standalone text hygiene skill, while pure encoding remains a subgate.",
+                      "prompt_variants":  [
+                                              "之前乱码和代码插入格式问题别分散记录，格式问题解决过不应复发",
+                                              "Previously solved mojibake and code insertion formatting defects should be centralized and must not recur."
+                                          ]
+                  },
+                  {
+                      "id":  "interruption-stack-return-node",
+                      "prompt":  "User interrupts an in-progress task several times and expects the assistant to return to the suspended branch without rediscovery.",
+                      "expected_route":  "recovery-routing",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "Interruption Stack",
+                                              "lightweight interruption node",
+                                              "suspended task",
+                                              "return condition",
+                                              "LIFO stack",
+                                              "durable interruption stack",
+                                              "ACTIVE_WORK.md",
+                                              "PAUSED_WORK.md"
+                                          ],
+                      "must_not_route":  [
+                                             "forget previous branch",
+                                             "replace old task silently"
+                                         ],
+                      "reason":  "Mid-task interruptions should push a lightweight node; repeated/nested or state-changing interruptions must persist a durable interruption stack so recovery does not rely on chat memory."
+                  },
+                  {
+                      "id":  "todo-exact-list-no-menu",
+                      "prompt":  "todo",
+                      "expected_route":  "todo-micro-path",
+                      "expected_reference":  "personal-state/TODO.md",
+                      "must_have_terms":  [
+                                              "personal-state\\TODO.md",
+                                              "Open entries",
+                                              "two-line item shape",
+                                              "no menu"
+                                          ],
+                      "must_not_route":  [
+                                             "help menu",
+                                             "default menu",
+                                             "invented options",
+                                             "project scan"
+                                         ],
+                      "reason":  "Exact todo must read the routed TODO.md and list real Open entries; it must not answer with a generated menu or placeholder choices.",
+                      "prompt_variants":  [
+                                              "todo",
+                                              "TODO",
+                                              "Todo"
+                                          ]
+                  },
+                  {
+                      "id":  "project-local-state-supersedes-global-pointer",
+                      "prompt":  "Pointer says old firmware work, but Xiao Q says current project is <project-root>\\rt-thread-project and project state says user manual/PPT.",
+                      "expected_route":  "recovery-routing",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "latest direct user correction",
+                                              "bounded stale-pointer audit",
+                                              "ACTIVE_WORK.md",
+                                              "RECOVERY_EVENTS.md",
+                                              "PROJECT_STATE.md",
+                                              "TASKS.md",
+                                              "runtime mirror"
+                                          ],
+                      "must_not_route":  [
+                                             "trust old RECOVERY_POINTER",
+                                             "resume stale firmware work",
+                                             "ignore project path"
+                                         ],
+                      "reason":  "A newer project-local state plus explicit user correction must supersede an older global recovery pointer and trigger pointer repair before resume."
+                  },
+                  {
+                      "id":  "manual-ppt-task-start-promotes-pointer",
+                      "prompt":  "Old global pointer is firmware work. Xiao Q starts the rt-thread-project user manual/PPT task.",
+                      "expected_route":  "task-start-pointer-promotion",
+                      "expected_reference":  "references/personal-state-routing.md",
+                      "must_have_terms":  [
+                                              "New concrete task",
+                                              "task-start promotion",
+                                              "ACTIVE_WORK.md",
+                                              "RECOVERY_POINTER",
+                                              "Current Focus",
+                                              "RECOVERY_EVENTS.md",
+                                              "runtime mirror"
+                                          ],
+                      "must_not_route":  [
+                                             "wait until closure",
+                                             "trust old RECOVERY_POINTER",
+                                             "resume stale firmware work"
+                                         ],
+                      "reason":  "A durable manual/PPT task that becomes the default resume target must promote the global pointer at task start, before artifact work or closure."
+                  },
+                  {
+                      "id":  "short-side-task-does-not-steal-default-pointer",
+                      "prompt":  "Current default project remains active, but Xiao Q asks a tiny unrelated review or side question.",
+                      "expected_route":  "recovery-routing",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "short inserted branch",
+                                              "non-default side quest",
+                                              "Active Execution Thread",
+                                              "PAUSED_WORK.md",
+                                              "do not promote default pointer"
+                                          ],
+                      "must_not_route":  [
+                                             "overwrite RECOVERY_POINTER",
+                                             "steal default resume target",
+                                             "promote side quest"
+                                         ],
+                      "reason":  "Task-start promotion applies only when the new task should become the default resume target; tiny side quests should not steal the main pointer."
+                  },
+                  {
+                      "id":  "named-manual-resume-status-first",
+                      "prompt":  "继续用户手册，你知道刚才到哪了吗",
+                      "expected_route":  "resume-briefing-status-first-fixed-template",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "RESUME BRIEFING",
+                                              "继续前状态汇报",
+                                              "已锁定分支",
+                                              "用户手册 polish",
+                                              "目标文件",
+                                              "Dirty/risk state",
+                                              "Execution boundary",
+                                              "explicit approval"
+                                          ],
+                      "must_not_route":  [
+                                             "edit manual",
+                                             "apply patch",
+                                             "open artifact body",
+                                             "build",
+                                             "validation before approval",
+                                             "resume adjacent PPT or diagram"
+                                         ],
+                      "reason":  "A named manual resume/status prompt asks where work stopped; it must brief and stop, not begin editing.",
+                      "prompt_variants":  [
+                                              "继续用户手册，你知道刚才到哪了吗",
+                                              "继续03实验手册，先告诉我到哪了",
+                                              "Where were we on the user manual?"
+                                          ]
+                  },
+                  {
+                      "id":  "named-ppt-resume-status-first",
+                      "prompt":  "继续PPT，先说下刚才到哪了",
+                      "expected_route":  "resume-briefing-status-first-fixed-template",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "RESUME BRIEFING",
+                                              "继续前状态汇报",
+                                              "PPT/deck",
+                                              "Current status",
+                                              "Dirty/risk state",
+                                              "Recommended first action",
+                                              "Execution boundary"
+                                          ],
+                      "must_not_route":  [
+                                             "create slides",
+                                             "edit deck",
+                                             "export PPT",
+                                             "visual validation before approval",
+                                             "build"
+                                         ],
+                      "reason":  "A named PPT resume prompt is a status briefing request unless Xiao Q explicitly approves deck execution after the briefing.",
+                      "prompt_variants":  [
+                                              "继续PPT，先说下刚才到哪了",
+                                              "继续deck，你知道上次到哪了吗",
+                                              "Where were we on the PPT?"
+                                          ]
+                  },
+                  {
+                      "id":  "where-were-we-is-status-not-execution",
+                      "prompt":  "你知道刚才到哪了吗",
+                      "expected_route":  "resume-briefing-status-first-fixed-template",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "Last user intent",
+                                              "Authoritative anchor",
+                                              "Current status",
+                                              "Allowed Phase-A reads used",
+                                              "Approval prompt"
+                                          ],
+                      "must_not_route":  [
+                                             "silent execution",
+                                             "repo content inspection",
+                                             "edit files",
+                                             "run validation",
+                                             "commit",
+                                             "push",
+                                             "broad scan"
+                                         ],
+                      "reason":  "Where-were-we wording requests a recovery briefing and must not be treated as permission to continue implementation.",
+                      "prompt_variants":  [
+                                              "你知道刚才到哪了吗",
+                                              "刚才进行到哪一步了",
+                                              "where were we?"
+                                          ]
+                  },
+                  {
+                      "id":  "post-brief-approval-allows-execution",
+                      "prompt":  "After a fixed Resume Briefing, Xiao Q replies: 开始编辑手册 polish",
+                      "expected_route":  "project execution after explicit approval",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "explicit post-briefing approval",
+                                              "Phase B",
+                                              "named scope",
+                                              "edit approved artifact only",
+                                              "validation boundary"
+                                          ],
+                      "must_not_route":  [
+                                             "treat old approval as current",
+                                             "edit adjacent PPT",
+                                             "build/flash without request",
+                                             "push"
+                                         ],
+                      "reason":  "After the status card, a concrete approval can enter Phase B, but only for the named scope and still within high-impact gates.",
+                      "prompt_variants":  [
+                                              "开始编辑手册 polish",
+                                              "可以开始检查手册",
+                                              "执行你刚才建议的只读检查"
+                                          ]
+                  },
+                  {
+                      "id":  "bare-wake-file-backed-after-compaction",
+                      "prompt":  "After context compaction, Xiao Q sends bare 小Q while a summary contains an older project pointer.",
+                      "expected_route":  "quick-resume-record-first",
+                      "expected_reference":  "references/recovery-routing.md",
+                      "must_have_terms":  [
+                                              "q-profile.json",
+                                              "ACTIVE_WORK.md",
+                                              "recent chat tail",
+                                              "【小Q工作流 | 快速恢复 】"
+                                          ],
+                      "must_not_route":  [
+                                             "answer from compacted summary",
+                                             "trust active context alone",
+                                             "project execution",
+                                             "flash"
+                                         ],
+                      "reason":  "Bare wake words must re-enter the file-backed recovery gate after compaction instead of trusting summarized context."
+                  },
+                  {
+                      "id":  "fixed-micro-marker-not-quick-resume-card",
+                      "prompt":  "Xiao Q sends exact status, checkpoint, TODO, or help.",
+                      "expected_route":  "fixed-command-pre-dispatch",
+                      "expected_reference":  "references/command-fast-paths.md",
+                      "must_have_terms":  [
+                                              "小Q工作流 / q-assistant-profile / <command>",
+                                              "micro command",
+                                              "exact alias"
+                                          ],
+                      "must_not_route":  [
+                                             "【小Q工作流 | 快速恢复 】",
+                                             "project status without qualifier",
+                                             "commit checkpoint"
+                                         ],
+                      "reason":  "Exact micro commands and wake/resume replies need mutually exclusive first-line markers so status cannot match both contracts."
+                  },
+                  {
+                      "id":  "phase-b-visible-update-requires-marker",
+                      "prompt":  "During an active skill/rule update, the assistant sends a later progress, validation, blocker, or handoff update.",
+                      "expected_route":  "phase-b-status-line-every-update",
+                      "expected_reference":  "references/q-standard-contract.md",
+                      "must_have_terms":  [
+                                              "小Q工作流 / <route-or-skill-id> / <current-action>",
+                                              "every user-visible Phase B update",
+                                              "progress",
+                                              "validation",
+                                              "blocker",
+                                              "handoff"
+                                          ],
+                      "must_not_route":  [
+                                             "plain prose first line",
+                                             "marker only on the first update",
+                                             "treat workflow commentary as casual chat"
+                                         ],
+                      "reason":  "A loaded workflow skill must mark every user-visible Phase B update, not only the initial route or final handoff."
+                  },
+                  {
+                      "id": "base-todo-user-visible-detail",
+                      "prompt": "TODO",
+                      "expected_route": "base-command-surface-v2",
+                      "expected_reference": "references/base-command-contract.json",
+                      "must_have_terms": ["surface.chat_text", "three-lines-per-item", "compact-localized-detail", "no menu"],
+                      "must_not_route": ["bare titles", "回复编号", "1～7", "Recommended Next"],
+                      "reason": "A successful TODO route is insufficient unless every Open id and full Chinese actionable detail reaches the user-visible surface without raw-language fallback."
+                  },
+                  {
+                      "id": "base-todo-localized-selection-and-freshness",
+                      "prompt": "TODO 后输入编号",
+                      "expected_route": "base-command-surface-replay",
+                      "expected_reference": "scripts/base_command_surface_replay.py",
+                      "must_have_terms": ["selected_display", "full-localized-description", "source_fingerprint", "context_token"],
+                      "must_not_route": ["raw English description", "Next action:", "Completion gate:", "stale display metadata accepted"],
+                      "reason": "The executable replay must prove that an English source can render as a complete Chinese list and selection surface, while any changed source invalidates stale localized display metadata."
+                  },
+                  {
+                      "id": "base-help-html-and-complete-chat",
+                      "prompt": "帮助",
+                      "expected_route": "base-command-surface-v2",
+                      "expected_reference": "references/base-command-contract.json",
+                      "must_have_terms": ["help-html-first", "FIRST_RUN_GUIDE.zh-CN.html", "surface.chat_text", "open_status"],
+                      "must_not_route": ["zero-tool shortcut", "alias-only help", "TODO number menu"],
+                      "reason": "Help must open the current profile HTML and return the complete Chinese chat summary in the same command result."
+                  },
+                  {
+                      "id": "base-token-dashboard-and-summary",
+                      "prompt": "TOKEN",
+                      "expected_route": "base-command-surface-v2",
+                      "expected_reference": "references/base-command-contract.json",
+                      "must_have_terms": ["token-dashboard-summary", "latest-turn", "context-pressure", "cache-health", "dashboard-receipt"],
+                      "must_not_route": ["dashboard only", "raw JSON only"],
+                      "reason": "TOKEN must generate/open the dashboard and show a concise five-line summary together."
+                  },
+                  {
+                      "id": "base-quick-resume-fixed-panel",
+                      "prompt": "小Q",
+                      "expected_route": "base-command-surface-v2",
+                      "expected_reference": "references/base-command-contract.json",
+                      "must_have_terms": ["【小Q工作流 | 快速恢复 】", "evidence", "status", "pointer", "recent", "Phase A"],
+                      "must_not_route": ["free-form greeting", "confident recovery without chat recency"],
+                      "reason": "Bare Xiao Q must preserve the fixed panel and remain partial until the latest chat tail is checked."
+                  },
+                  {
+                      "id": "proven-path-replay-before-fallback",
+                      "prompt": "上次已经成功下载过登录后字幕；这次不要匿名重试或让我重新导出，先复刻成功路径。",
+                      "expected_route": "proven-path-replay-gate",
+                      "expected_reference": "references/q-standard-contract.md",
+                      "must_have_terms": ["selection key", "validated route", "replay", "classified failure", "smallest recovery action"],
+                      "must_not_route": ["anonymous probe first", "alternate browser blind retry", "manual workaround before replay"],
+                      "reason": "A real successful path must be recorded and selected before fallback; an unavailable route needs one explicit, classified recovery action rather than speculative branching."
+                  },
+                  {
+                      "id": "wake-then-instruction-reclassifies-phase",
+                      "prompt": "Turn 1: Xiao Q sends bare 小Q. Turn 2: Xiao Q says 不需要推送，那边正在推.",
+                      "expected_route": "phase-b-status-line-every-update",
+                      "expected_reference": "references/q-standard-contract.md",
+                      "must_have_terms": ["per-message Phase A/B decision", "current user message", "小Q工作流 / <route-or-skill-id> / <current-action>", "output-marker mutual exclusion"],
+                      "must_not_route": ["【小Q工作流 | 快速恢复 】 on turn 2", "inherit the previous turn phase", "phase inertia", "continue push"],
+                      "reason": "A correct Phase-A wake reply does not persist across turns. Before every workflow reply, classify the current message independently and switch to the Phase-B slash marker for an execution-context instruction."
+                  }
+              ]
+}

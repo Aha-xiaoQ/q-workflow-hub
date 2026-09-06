@@ -1,0 +1,1097 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{WORKFLOW_LABEL}} First-Run Guide</title>
+  <style>
+    :root {
+      --bg: #f7f4ff;
+      --ink: #171321;
+      --muted: #6d647a;
+      --panel: rgba(255, 255, 255, 0.86);
+      --panel-solid: #ffffff;
+      --line: rgba(42, 31, 75, 0.14);
+      --line-strong: rgba(42, 31, 75, 0.24);
+      --purple: #6d4aff;
+      --cyan: #12b8c8;
+      --mint: #14b8a6;
+      --amber: #f59e0b;
+      --pink: #ef476f;
+      --blue: #009fe8;
+      --ok: #12a66a;
+      --warn: #c76b00;
+      --danger: #cf274c;
+      --shadow: 0 22px 70px rgba(44, 31, 84, 0.16);
+      --shadow-soft: 0 12px 30px rgba(44, 31, 84, 0.09);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      min-width: 320px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(109, 74, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 92% 0%, rgba(18, 184, 200, 0.18), transparent 26%),
+        linear-gradient(135deg, #fffdf7 0%, #f2ecff 48%, #eefbff 100%);
+      font-family: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible {
+      outline: 3px solid rgba(109, 74, 255, 0.26);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    p,
+    li {
+      color: var(--muted);
+      line-height: 1.68;
+    }
+
+    strong {
+      color: var(--ink);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.76);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner,
+    main {
+      width: min(1280px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      min-height: 78px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--blue);
+      box-shadow: 0 14px 28px rgba(0, 159, 232, 0.28);
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    h1 {
+      font-size: 19px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .brand p {
+      margin-top: 3px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .marker {
+      flex: 0 0 auto;
+      max-width: 360px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+      box-shadow: 0 10px 26px rgba(44, 31, 84, 0.08);
+    }
+
+    main {
+      padding: 18px 0 34px;
+    }
+
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .top-links a {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 780;
+      box-shadow: 0 8px 20px rgba(44, 31, 84, 0.06);
+    }
+
+    .top-links a:hover {
+      color: var(--ink);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .hero {
+      min-height: 430px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(130deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58)),
+        linear-gradient(135deg, rgba(109, 74, 255, 0.10), rgba(20, 184, 166, 0.08));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 0;
+      height: 5px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--amber), var(--pink));
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .hero h2 {
+      max-width: 760px;
+      margin-top: 28px;
+      font-size: 48px;
+      line-height: 1.04;
+      overflow-wrap: anywhere;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin-top: 14px;
+      font-size: 16px;
+    }
+
+    .value-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .value-item,
+    .feature-card,
+    .check-card,
+    .prompt-card,
+    .timeline-step,
+    .panel {
+      min-width: 0;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .value-item {
+      padding: 13px;
+    }
+
+    .value-item strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .value-item p {
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    .run-panel {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+      background: rgba(18, 17, 31, 0.9);
+      color: #f8fbff;
+      box-shadow: 0 24px 42px rgba(0, 0, 0, 0.16);
+    }
+
+    .run-panel h3,
+    .run-panel strong {
+      color: #ffffff;
+    }
+
+    .run-panel p,
+    .run-panel .note {
+      color: #c9d2e5;
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .step:nth-child(2) {
+      align-items: center;
+    }
+
+    .step:nth-child(2) > div {
+      display: grid;
+      grid-template-columns: max-content max-content;
+      align-items: center;
+      justify-content: start;
+      column-gap: 14px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      color: #fff;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .code-block {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      margin-top: 8px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.10);
+      color: #ffffff;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-weight: 850;
+    }
+
+    .step:nth-child(2) .code-block {
+      margin-top: 0;
+      margin-left: 4px;
+    }
+
+    .note {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border: 1px solid rgba(109, 74, 255, 0.16);
+      border-radius: var(--radius);
+      background: rgba(109, 74, 255, 0.08);
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .progress-rail {
+      position: sticky;
+      top: 96px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .progress-title {
+      color: var(--ink);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .progress-list {
+      --progress-index: 0;
+      position: relative;
+      display: grid;
+      gap: 7px;
+    }
+
+    .progress-list::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 17px;
+      bottom: 17px;
+      width: 2px;
+      border-radius: 2px;
+      background: rgba(23, 19, 33, 0.10);
+    }
+
+    .progress-link {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 9px;
+      padding: 8px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+
+    .progress-link:hover,
+    .progress-link.is-active {
+      background: rgba(255, 255, 255, 0.86);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    .progress-dot {
+      width: 14px;
+      height: 14px;
+      margin: 5px auto 0;
+      border-radius: 50%;
+      border: 2px solid rgba(23, 19, 33, 0.22);
+      background: #fff;
+    }
+
+    .progress-link.is-active .progress-dot {
+      border-color: var(--purple);
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(109, 74, 255, 0.12);
+    }
+
+    .progress-link.is-done .progress-dot {
+      border-color: var(--mint);
+      background: var(--mint);
+    }
+
+    .progress-text strong,
+    .progress-text span {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .progress-text span {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .content {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .content > section {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .content > section > h2 {
+      font-size: 25px;
+      line-height: 1.18;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .feature-grid,
+    .check-grid,
+    .prompt-grid,
+    .split {
+      display: grid;
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .check-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 124px;
+      align-items: stretch;
+    }
+
+    .prompt-grid,
+    .split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature-card,
+    .check-card,
+    .prompt-card,
+    .timeline-step,
+    .panel {
+      padding: 14px;
+    }
+
+    .feature-card p,
+    .prompt-card p,
+    .timeline-step p,
+    .panel p {
+      margin-top: auto;
+    }
+
+    .check-card p,
+    .layer p {
+      margin-top: 0;
+    }
+
+    .feature-card { min-height: 154px; }
+    .check-card {
+      height: 100%;
+      min-height: 0;
+      padding: 10px 12px;
+      overflow: hidden;
+    }
+    .prompt-card,
+    .timeline-step,
+    .panel,
+    .layer { min-height: 142px; }
+
+    .feature-card h3,
+    .prompt-card h3,
+    .timeline-step h3,
+    .panel h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .check-card h3 {
+      flex: 0 0 38px;
+      min-height: 38px;
+      display: flex;
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.28;
+      margin-bottom: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .check-card p {
+      flex: 0 0 40px;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.42;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .check-card .code-block {
+      flex: 0 0 auto;
+      max-width: 100%;
+      min-height: 28px;
+      max-height: 34px;
+      margin-top: 7px;
+      padding: 5px 7px;
+      font-size: 12px;
+      line-height: 1.18;
+      overflow: hidden;
+    }
+
+    .layer h3 {
+      font-size: 16px;
+      margin-bottom: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .feature-card {
+      border-top: 4px solid var(--purple);
+    }
+
+    .feature-card:nth-child(2) {
+      border-top-color: var(--cyan);
+    }
+
+    .feature-card:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .feature-card:nth-child(4) {
+      border-top-color: var(--mint);
+    }
+
+    .feature-card:nth-child(5) {
+      border-top-color: var(--pink);
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 9px;
+      border-radius: 8px;
+      background: #171321;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .layer-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .layer {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .layer.public {
+      border-top: 4px solid var(--purple);
+    }
+
+    .layer.private {
+      border-top: 4px solid var(--cyan);
+    }
+
+    .layer.project {
+      border-top: 4px solid var(--amber);
+    }
+
+    .tag {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      margin-top: 10px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: rgba(23, 19, 33, 0.08);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .layer .tag {
+      margin-top: -3px;
+      margin-bottom: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .timeline-step {
+      border-left: 4px solid var(--cyan);
+    }
+
+    .prompt-card {
+      border-left: 4px solid var(--purple);
+    }
+
+    .check-card {
+      border-left: 4px solid var(--mint);
+    }
+
+    .check-card:nth-child(2n) {
+      border-left-color: var(--cyan);
+    }
+
+    .check-card:nth-child(3n) {
+      border-left-color: var(--amber);
+    }
+
+    .check-card:nth-child(5n) {
+      border-left-color: var(--pink);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    @media (max-width: 1040px) {
+      .hero-grid,
+      .layout,
+      .layer-map,
+      .timeline,
+      .check-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .check-grid {
+        grid-auto-rows: auto;
+      }
+
+      .check-card {
+        height: auto;
+        min-height: auto;
+      }
+
+      .check-card h3 {
+        flex-basis: auto;
+        min-height: auto;
+      }
+
+      .check-card p {
+        flex-basis: auto;
+        display: block;
+        overflow: visible;
+      }
+
+      .step:nth-child(2) > div {
+        grid-template-columns: 1fr;
+        row-gap: 7px;
+      }
+
+      .step:nth-child(2) .code-block {
+        margin-left: 0;
+      }
+
+      .progress-rail {
+        position: static;
+      }
+
+      .progress-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .progress-list::before {
+        display: none;
+      }
+
+      .hero h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar-inner,
+      main {
+        width: min(100% - 20px, 1280px);
+      }
+
+      .topbar-inner,
+      .brand {
+        align-items: flex-start;
+      }
+
+      .topbar-inner {
+        display: grid;
+      }
+
+      .marker {
+        width: 100%;
+        max-width: none;
+      }
+
+      .hero,
+      .content > section {
+        padding: 14px;
+      }
+
+      .hero h2 {
+        font-size: 31px;
+      }
+
+      .value-strip,
+      .feature-grid,
+      .prompt-grid,
+      .split,
+      .progress-list {
+        grid-template-columns: 1fr;
+      }
+
+      .top-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .top-links a {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .top-links {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+      }
+
+      h1 {
+        font-size: 17px;
+      }
+
+      .hero h2 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">Q</div>
+        <div>
+          <h1>{{WORKFLOW_LABEL}} First-Run Guide</h1>
+          <p>Turn one chat into a recoverable, verifiable, handoff-ready project workflow.</p>
+        </div>
+      </div>
+      <div class="marker">【{{WORKFLOW_LABEL}} | {{RESUME_MARKER_SUFFIX}}】</div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="top-links" aria-label="Page shortcuts">
+      <a href="#start">One-minute test</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#map">Boundaries</a>
+      <a href="#first">First loop</a>
+      <a href="#daily">Daily use</a>
+      <a href="#privacy">Privacy</a>
+    </nav>
+
+    <section id="start" class="hero" data-step="start">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Confirm first, then expand</div>
+          <h2>{{WORKFLOW_LABEL}} is not a longer chat context. It is a steadier AI project workflow.</h2>
+          <p class="lead">It writes key state into files, Git, and reusable skills so a new agent session can recover from evidence: project location, current state, next step, and privacy boundary.</p>
+          <div class="value-strip">
+            <div class="value-item"><strong>Recoverable</strong><p>New sessions do not start from zero.</p></div>
+            <div class="value-item"><strong>Measurable</strong><p>Evidence, risks, and readiness can be scored across dimensions.</p></div>
+            <div class="value-item"><strong>Reusable</strong><p>Repeated work can become skills, scripts, or subagent workflows.</p></div>
+          </div>
+        </div>
+        <div class="run-panel">
+          <h3>Try it in one minute</h3>
+          <div class="steps">
+            <div class="step"><span class="step-num">1</span><div><strong>Open a new agent session</strong><p>The current chat usually will not reload newly installed skills.</p></div></div>
+            <div class="step"><span class="step-num">2</span><div><strong>Type only your display name</strong><span class="code-block">{{USER_NAME}}</span></div></div>
+            <div class="step"><span class="step-num">3</span><div><strong>Look for the marker</strong><p>The reply should start with <strong>【{{WORKFLOW_LABEL}} | {{RESUME_MARKER_SUFFIX}}】</strong>. If a project is registered, it should also name the project, state, and next step.</p></div></div>
+          </div>
+          <div class="note">If the marker is missing, open a fresh agent session, type the display name again, then ask the agent to check the installation location for `skills\q-assistant-profile` and `skills\q-workflow`. You do not need to find the folder yourself.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="progress-rail" aria-label="Guide progress">
+        <div class="progress-title">Onboarding path</div>
+        <div class="progress-list">
+          <a class="progress-link is-active" href="#start" data-target="start" aria-current="true"><span class="progress-dot"></span><span class="progress-text"><strong>Test setup</strong><span>Confirm the workflow is loaded</span></span></a>
+          <a class="progress-link" href="#capabilities" data-target="capabilities"><span class="progress-dot"></span><span class="progress-text"><strong>Understand value</strong><span>Recover, verify, hand off, reuse</span></span></a>
+          <a class="progress-link" href="#map" data-target="map"><span class="progress-dot"></span><span class="progress-text"><strong>See boundaries</strong><span>Rules, state, facts, Git</span></span></a>
+          <a class="progress-link" href="#first" data-target="first"><span class="progress-dot"></span><span class="progress-text"><strong>Run first loop</strong><span>Register or create a project</span></span></a>
+          <a class="progress-link" href="#daily" data-target="daily"><span class="progress-dot"></span><span class="progress-text"><strong>Use daily</strong><span>Stable prompts and recovery checks</span></span></a>
+          <a class="progress-link" href="#privacy" data-target="privacy"><span class="progress-dot"></span><span class="progress-text"><strong>Publish safely</strong><span>Writes, permissions, privacy</span></span></a>
+        </div>
+      </aside>
+
+      <div class="content">
+        <section id="capabilities" data-step="capabilities">
+          <h2>Core capabilities: recovery is the entry point, not the whole value</h2>
+          <p>{{WORKFLOW_LABEL}} helps agent work become continuable, inspectable, handoff-ready, reusable, and easier to delegate to specialist subagents when needed.</p>
+          <div class="feature-grid">
+            <div class="feature-card"><span class="icon">R</span><h3>Recover projects</h3><p>Use the workflow hub and project state files to find focus, tasks, and next steps.</p></div>
+            <div class="feature-card"><span class="icon">V</span><h3>Score and validate</h3><p>Review quality, usability, risk, evidence, and release readiness instead of relying on a single pass/fail.</p></div>
+            <div class="feature-card"><span class="icon">G</span><h3>Handoff with Git</h3><p>Use commits, diffs, and reports to explain what changed and what risk remains.</p></div>
+            <div class="feature-card"><span class="icon">S</span><h3>Sediment skills</h3><p>Repeated work can become skills, scripts, hooks, or automation.</p></div>
+            <div class="feature-card"><span class="icon">A</span><h3>Coordinate experts</h3><p>Layout, docs, testing, review, and code work can be split into stable subagent roles.</p></div>
+          </div>
+        </section>
+
+        <section id="map" data-step="map">
+          <h2>Boundaries: rules in skills, state in hub, facts in project, proof in Git</h2>
+          <p>This separation keeps the starter public-safe and helps new agent sessions read the right evidence.</p>
+          <div class="layer-map" role="img" aria-label="q-workflow boundary map">
+            <div class="layer public">
+              <span class="tag">Public starter / skills</span>
+              <h3>Reusable rules</h3>
+              <ul>
+                <li>Setup scripts, templates, generic workflows</li>
+                <li>Safe to share with colleagues or teams</li>
+                <li>No personal project facts</li>
+              </ul>
+            </div>
+            <div class="layer private">
+              <span class="tag">Private workflow hub</span>
+              <h3>Cross-project state</h3>
+              <ul>
+                <li>Profile, PROJECT_REGISTRY, ACTIVE_WORK</li>
+                <li>Project routing and current focus</li>
+                <li>Usually local or private repo only</li>
+              </ul>
+            </div>
+            <div class="layer project">
+              <span class="tag">Project repo / Git</span>
+              <h3>Facts and proof</h3>
+              <ul>
+                <li>Code, tasks, decisions, environment notes</li>
+                <li>Reports, screenshots, validation records</li>
+                <li>Push policy depends on each project</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="first" data-step="first">
+          <h2>First loop: register or create a project, then recover it</h2>
+          <p>Do not start by memorizing folders. Let the agent complete one small project loop.</p>
+          <div class="timeline">
+            <div class="timeline-step"><h3>1. Give the task</h3><p>Register an existing project or create a new recoverable project.</p></div>
+            <div class="timeline-step"><h3>2. Confirm writes first</h3><p>Ask which paths will be updated. After writing, ask for changed files and a summary.</p></div>
+            <div class="timeline-step"><h3>3. Recover in a new session</h3><p>Type {{USER_NAME}}. Expect marker, project, current state, and next files.</p></div>
+          </div>
+          <div class="prompt-grid">
+            <div class="prompt-card"><h3>Register an existing project</h3><p>Use this for a local folder or Git repo.</p><span class="code-block">Register this project in {{WORKFLOW_LABEL}} so it can be resumed later: &lt;project path or Git URL&gt;</span></div>
+            <div class="prompt-card"><h3>Create a new project</h3><p>Use this when starting from a new idea.</p><span class="code-block">Create a new q-workflow project named &lt;project name&gt; and initialize durable state files.</span></div>
+          </div>
+        </section>
+
+        <section id="daily" data-step="daily">
+          <h2>Daily use: quick commands after the workflow wakes up</h2>
+          <p>Use the longer resume prompt only for a fresh session or when the workflow marker does not appear. After the marker is visible, short commands are enough.</p>
+          <div class="check-grid">
+            <div class="check-card"><h3>Help</h3><p>Show available workflow commands and ask which path fits the current work.</p><span class="code-block">help</span></div>
+            <div class="check-card"><h3>Continue project</h3><p>Resume the recent or named project; this is less ambiguous than a bare continue.</p><span class="code-block">continue my project<br>continue &lt;project name&gt; project</span></div>
+            <div class="check-card"><h3>Status</h3><p>Get current focus, recent changes, blockers, and next actions.</p><span class="code-block">status</span></div>
+            <div class="check-card"><h3>Checkpoint</h3><p>Save the current state so a future session can recover cleanly.</p><span class="code-block">checkpoint</span></div>
+            <div class="check-card"><h3>TODO</h3><p>List lightweight reminders or add a small future item without starting a full project workflow.</p><span class="code-block">TODO<br>TODO: &lt;item&gt;</span></div>
+            <div class="check-card"><h3>Token dashboard</h3><p>Open local token usage, context pressure, cache health, and project/session totals when local logs are available.</p><span class="code-block">TOKEN</span></div>
+            <div class="check-card"><h3>Loop run</h3><p>Set a goal and stop conditions; the agent defaults to unattended execution with a permission preflight, low-risk pre-approval attempts, and branch switching when new approval is needed.</p><span class="code-block">loop run: goal &lt;goal&gt;; stop when done, at &lt;time&gt;, token pressure is high, or the configured no-progress threshold is reached.</span></div>
+            <div class="check-card"><h3>Expert review</h3><p>Use before handoff when layout, docs, code, install, or release risk matters.</p><span class="code-block">Please ask the relevant expert to review this.</span></div>
+            <div class="check-card"><h3>Scorecard</h3><p>Use when a delivery needs a multi-dimensional readiness judgment.</p><span class="code-block">Score this across quality, usability, risk, evidence, and readiness.</span></div>
+            <div class="check-card"><h3>Consolidate</h3><p>After a meaningful loop, summarize lessons and update reusable rules or state files.</p><span class="code-block">consolidate</span></div>
+            <div class="check-card"><h3>Workflow audit</h3><p>Run a deeper scan when workflow rules feel bloated, conflicting, or hard to recover from.</p><span class="code-block">workflow-audit</span></div>
+          </div>
+        </section>
+
+        <section id="privacy" data-step="privacy">
+          <h2>Privacy and permissions: know where writes go</h2>
+          <p>This local HTML file does not upload itself. The real safety points are file writes, network/install actions, credentials, and public pushes.</p>
+          <div class="split">
+            <div class="panel">
+              <h3>Before writes or runs, ask</h3>
+              <ul>
+                <li>Will this update the private hub, project state files, or public starter?</li>
+                <li>Does it need network access, installs, workspace escape, or credentials?</li>
+                <li>Can the agent list changed files, validation, and remaining risks?</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>Before publishing, check</h3>
+              <ul>
+                <li>Secrets, API keys, customer names, internal paths</li>
+                <li>Active work state, personal preferences, project registry</li>
+                <li>Screenshots, logs, and temp paths in generated reports</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note">If unsure, ask the agent to stop and explain where it will write, why, and how to review or undo the change.</div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script>
+    const links = Array.from(document.querySelectorAll(".progress-link"));
+    const progressList = document.querySelector(".progress-list");
+    const sections = links
+      .map((link) => document.getElementById(link.dataset.target))
+      .filter(Boolean);
+
+    function setActive(id) {
+      let seenActive = false;
+      const activeIndex = links.findIndex((link) => link.dataset.target === id);
+      if (progressList && activeIndex >= 0) {
+        progressList.style.setProperty("--progress-index", String(activeIndex));
+      }
+      links.forEach((link) => {
+        const isActive = link.dataset.target === id;
+        link.classList.toggle("is-active", isActive);
+        link.classList.toggle("is-done", !seenActive && !isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+        if (isActive) {
+          seenActive = true;
+        }
+      });
+    }
+
+    let ticking = false;
+    let scrollLockUntil = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function getScrollOffset() {
+      return window.matchMedia("(max-width: 900px)").matches ? 16 : 92;
+    }
+
+    function navigateTo(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      setActive(id);
+      scrollLockUntil = Date.now() + 850;
+      const top = window.scrollY + target.getBoundingClientRect().top - getScrollOffset();
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: reduceMotion.matches ? "auto" : "smooth"
+      });
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, "", `#${id}`);
+      }
+    }
+
+    function syncProgressFromScroll() {
+      if (Date.now() < scrollLockUntil) {
+        ticking = false;
+        return;
+      }
+      let activeId = sections[0] ? sections[0].id : "";
+      sections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= 140) {
+          activeId = section.id;
+        }
+      });
+      if (activeId) {
+        setActive(activeId);
+      }
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(syncProgressFromScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+    links.forEach((link) => link.addEventListener("click", (event) => {
+      event.preventDefault();
+      navigateTo(link.dataset.target);
+    }));
+    window.addEventListener("hashchange", () => {
+      const id = window.location.hash.replace("#", "");
+      if (sections.some((section) => section.id === id)) {
+        setActive(id);
+      }
+    });
+    if (window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      if (sections.some((section) => section.id === id)) {
+        setActive(id);
+      }
+    } else {
+      syncProgressFromScroll();
+    }
+  </script>
+</body>
+</html>

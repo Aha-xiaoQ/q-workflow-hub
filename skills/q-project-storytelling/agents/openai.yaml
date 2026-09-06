@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Project Storytelling"
+  short_description: "Structure project and product narratives"
+  default_prompt: "Use $q-project-storytelling to turn this project into a clear audience-aware story, outline, and speaker notes plan."

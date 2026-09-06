@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Project Overview"
+  short_description: "Create readable project overview pages."
+  default_prompt: "Use q-project-overview to create or refresh PROJECT_OVERVIEW.md and PROJECT_OVERVIEW.html for a project."

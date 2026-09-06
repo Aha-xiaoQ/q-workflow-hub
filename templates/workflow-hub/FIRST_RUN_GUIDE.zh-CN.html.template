@@ -1,0 +1,1128 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{WORKFLOW_DISPLAY_NAME}}入门帮助</title>
+  <style>
+    :root {
+      --bg: #f7f4ff;
+      --ink: #171321;
+      --muted: #6d647a;
+      --panel: rgba(255, 255, 255, 0.86);
+      --panel-solid: #ffffff;
+      --line: rgba(42, 31, 75, 0.14);
+      --line-strong: rgba(42, 31, 75, 0.24);
+      --purple: #6d4aff;
+      --cyan: #12b8c8;
+      --mint: #14b8a6;
+      --amber: #f59e0b;
+      --pink: #ef476f;
+      --blue: #009fe8;
+      --ok: #12a66a;
+      --warn: #c76b00;
+      --danger: #cf274c;
+      --shadow: 0 22px 70px rgba(44, 31, 84, 0.16);
+      --shadow-soft: 0 12px 30px rgba(44, 31, 84, 0.09);
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      min-width: 320px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 8%, rgba(109, 74, 255, 0.22), transparent 28%),
+        radial-gradient(circle at 92% 0%, rgba(18, 184, 200, 0.18), transparent 26%),
+        linear-gradient(135deg, #fffdf7 0%, #f2ecff 48%, #eefbff 100%);
+      font-family: "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+      letter-spacing: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    a:focus-visible {
+      outline: 3px solid rgba(109, 74, 255, 0.26);
+      outline-offset: 2px;
+      border-radius: 6px;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    p,
+    li {
+      color: var(--muted);
+      line-height: 1.68;
+    }
+
+    strong {
+      color: var(--ink);
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.72);
+      background: rgba(255, 255, 255, 0.76);
+      backdrop-filter: blur(18px);
+    }
+
+    .topbar-inner,
+    main {
+      width: min(1280px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      min-height: 78px;
+      padding: 12px 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--blue);
+      box-shadow: 0 14px 28px rgba(0, 159, 232, 0.28);
+    }
+
+    .brand-logo {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    h1 {
+      font-size: 19px;
+      line-height: 1.2;
+      overflow-wrap: anywhere;
+    }
+
+    .brand p {
+      margin-top: 3px;
+      font-size: 13px;
+      overflow-wrap: anywhere;
+    }
+
+    .marker {
+      flex: 0 0 auto;
+      max-width: 360px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      overflow-wrap: anywhere;
+      box-shadow: 0 10px 26px rgba(44, 31, 84, 0.08);
+    }
+
+    main {
+      padding: 18px 0 34px;
+    }
+
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .top-links a {
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.64);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 780;
+      box-shadow: 0 8px 20px rgba(44, 31, 84, 0.06);
+    }
+
+    .top-links a:hover {
+      color: var(--ink);
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    .hero {
+      min-height: 430px;
+      padding: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(130deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.58)),
+        linear-gradient(135deg, rgba(109, 74, 255, 0.10), rgba(20, 184, 166, 0.08));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 0;
+      height: 5px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--amber), var(--pink));
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      min-height: 32px;
+      align-items: center;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--purple);
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .hero h2 {
+      max-width: 760px;
+      margin-top: 28px;
+      font-size: 48px;
+      line-height: 1.04;
+      overflow-wrap: anywhere;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin-top: 14px;
+      font-size: 16px;
+    }
+
+    .value-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .value-item,
+    .feature-card,
+    .check-card,
+    .prompt-card,
+    .timeline-step,
+    .panel {
+      min-width: 0;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .value-item {
+      padding: 13px;
+    }
+
+    .value-item strong {
+      display: block;
+      font-size: 16px;
+    }
+
+    .value-item p {
+      margin-top: 6px;
+      font-size: 13px;
+    }
+
+    .run-panel {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: var(--radius);
+      background: rgba(18, 17, 31, 0.9);
+      color: #f8fbff;
+      box-shadow: 0 24px 42px rgba(0, 0, 0, 0.16);
+    }
+
+    .run-panel h3,
+    .run-panel strong {
+      color: #ffffff;
+    }
+
+    .run-panel p,
+    .run-panel .note {
+      color: #c9d2e5;
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      padding: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .step:nth-child(2) {
+      align-items: center;
+    }
+
+    .step:nth-child(2) > div {
+      display: grid;
+      grid-template-columns: max-content max-content;
+      align-items: center;
+      justify-content: start;
+      column-gap: 14px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--purple), var(--cyan));
+      color: #fff;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .code-block {
+      display: inline-flex;
+      min-height: 34px;
+      align-items: center;
+      margin-top: 8px;
+      padding: 7px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.10);
+      color: #ffffff;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-weight: 850;
+    }
+
+    .step:nth-child(2) .code-block {
+      margin-top: 0;
+      margin-left: 4px;
+    }
+
+    .note {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border: 1px solid rgba(109, 74, 255, 0.16);
+      border-radius: var(--radius);
+      background: rgba(109, 74, 255, 0.08);
+      color: var(--muted);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 16px;
+      margin-top: 16px;
+      align-items: start;
+    }
+
+    .progress-rail {
+      position: sticky;
+      top: 96px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .progress-title {
+      color: var(--ink);
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .progress-list {
+      --progress-index: 0;
+      position: relative;
+      display: grid;
+      gap: 7px;
+    }
+
+    .progress-list::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 17px;
+      bottom: 17px;
+      width: 2px;
+      border-radius: 2px;
+      background: rgba(23, 19, 33, 0.10);
+    }
+
+    .progress-link {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 28px minmax(0, 1fr);
+      gap: 9px;
+      padding: 8px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      color: var(--muted);
+    }
+
+    .progress-link:hover,
+    .progress-link.is-active {
+      background: rgba(255, 255, 255, 0.86);
+      border-color: var(--line);
+      color: var(--ink);
+    }
+
+    .progress-dot {
+      width: 14px;
+      height: 14px;
+      margin: 5px auto 0;
+      border-radius: 50%;
+      border: 2px solid rgba(23, 19, 33, 0.22);
+      background: #fff;
+    }
+
+    .progress-link.is-active .progress-dot {
+      border-color: var(--purple);
+      background: var(--purple);
+      box-shadow: 0 0 0 5px rgba(109, 74, 255, 0.12);
+    }
+
+    .progress-link.is-done .progress-dot {
+      border-color: var(--mint);
+      background: var(--mint);
+    }
+
+    .progress-text strong,
+    .progress-text span {
+      display: block;
+      overflow-wrap: anywhere;
+    }
+
+    .progress-text span {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .content {
+      display: grid;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .content > section {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: var(--radius);
+      background: rgba(255, 255, 255, 0.74);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .content > section > h2 {
+      font-size: 25px;
+      line-height: 1.18;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .feature-grid,
+    .check-grid,
+    .prompt-grid,
+    .split {
+      display: grid;
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .feature-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .check-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 124px;
+      align-items: stretch;
+    }
+
+    .prompt-grid,
+    .split {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature-card,
+    .check-card,
+    .prompt-card,
+    .timeline-step,
+    .panel {
+      padding: 14px;
+    }
+
+    .feature-card p,
+    .prompt-card p,
+    .timeline-step p,
+    .panel p {
+      margin-top: auto;
+    }
+
+    .check-card p,
+    .layer p {
+      margin-top: 0;
+    }
+
+    .feature-card { min-height: 154px; }
+    .check-card {
+      height: 100%;
+      min-height: 0;
+      padding: 10px 12px;
+      overflow: hidden;
+    }
+    .prompt-card,
+    .timeline-step,
+    .panel,
+    .layer { min-height: 142px; }
+
+    .feature-card h3,
+    .prompt-card h3,
+    .timeline-step h3,
+    .panel h3 {
+      font-size: 16px;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .check-card h3 {
+      flex: 0 0 38px;
+      min-height: 38px;
+      display: flex;
+      align-items: flex-start;
+      font-size: 15px;
+      line-height: 1.28;
+      margin-bottom: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .check-card p {
+      flex: 0 0 40px;
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.42;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .check-card .code-block {
+      flex: 0 0 auto;
+      max-width: 100%;
+      min-height: 28px;
+      max-height: 34px;
+      margin-top: 7px;
+      padding: 5px 7px;
+      font-size: 12px;
+      line-height: 1.18;
+      overflow: hidden;
+    }
+
+    .layer h3 {
+      font-size: 16px;
+      margin-bottom: 14px;
+      overflow-wrap: anywhere;
+    }
+
+    .feature-card {
+      border-top: 4px solid var(--purple);
+    }
+
+    .feature-card:nth-child(2) {
+      border-top-color: var(--cyan);
+    }
+
+    .feature-card:nth-child(3) {
+      border-top-color: var(--amber);
+    }
+
+    .feature-card:nth-child(4) {
+      border-top-color: var(--mint);
+    }
+
+    .feature-card:nth-child(5) {
+      border-top-color: var(--pink);
+    }
+
+    .icon {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 9px;
+      border-radius: 8px;
+      background: #171321;
+      color: #ffffff;
+      font-weight: 900;
+    }
+
+    .layer-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .layer {
+      min-width: 0;
+      padding: 15px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .layer.public {
+      border-top: 4px solid var(--purple);
+    }
+
+    .layer.private {
+      border-top: 4px solid var(--cyan);
+    }
+
+    .layer.project {
+      border-top: 4px solid var(--amber);
+    }
+
+    .tag {
+      display: inline-flex;
+      min-height: 28px;
+      align-items: center;
+      margin-top: 10px;
+      padding: 5px 8px;
+      border-radius: 8px;
+      background: rgba(23, 19, 33, 0.08);
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .layer .tag {
+      margin-top: -3px;
+      margin-bottom: 14px;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
+      align-items: stretch;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .timeline-step {
+      border-left: 4px solid var(--cyan);
+    }
+
+    .prompt-card {
+      border-left: 4px solid var(--purple);
+    }
+
+    .check-card {
+      border-left: 4px solid var(--mint);
+    }
+
+    .check-card:nth-child(2n) {
+      border-left-color: var(--cyan);
+    }
+
+    .check-card:nth-child(3n) {
+      border-left-color: var(--amber);
+    }
+
+    .check-card:nth-child(5n) {
+      border-left-color: var(--pink);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    @media (max-width: 1040px) {
+      .hero-grid,
+      .layout,
+      .layer-map,
+      .timeline,
+      .check-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .check-grid {
+        grid-auto-rows: auto;
+      }
+
+      .check-card {
+        height: auto;
+        min-height: auto;
+      }
+
+      .check-card h3 {
+        flex-basis: auto;
+        min-height: auto;
+      }
+
+      .check-card p {
+        flex-basis: auto;
+        display: block;
+        overflow: visible;
+      }
+
+      .step:nth-child(2) > div {
+        grid-template-columns: 1fr;
+        row-gap: 7px;
+      }
+
+      .step:nth-child(2) .code-block {
+        margin-left: 0;
+      }
+
+      .progress-rail {
+        position: static;
+      }
+
+      .progress-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .progress-list::before {
+        display: none;
+      }
+
+      .hero h2 {
+        font-size: 40px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .topbar-inner,
+      main {
+        width: min(100% - 20px, 1280px);
+      }
+
+      .topbar-inner,
+      .brand {
+        align-items: flex-start;
+      }
+
+      .topbar-inner {
+        display: grid;
+      }
+
+      .marker {
+        width: 100%;
+        max-width: none;
+      }
+
+      .hero,
+      .content > section {
+        padding: 14px;
+      }
+
+      .hero h2 {
+        font-size: 31px;
+      }
+
+      .value-strip,
+      .feature-grid,
+      .prompt-grid,
+      .split,
+      .progress-list {
+        grid-template-columns: 1fr;
+      }
+
+      .top-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .top-links a {
+        justify-content: center;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .top-links {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-mark {
+        width: 46px;
+        height: 46px;
+      }
+
+      h1 {
+        font-size: 17px;
+      }
+
+      .hero h2 {
+        font-size: 27px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg class="brand-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img">
+            <rect width="256" height="256" rx="42" fill="#009FE8"/>
+            <g transform="translate(12 0)">
+              <path d="M190 116 C190 92 166 67 128 60 C88 52 52 72 41 113 C29 158 60 191 107 198 C139 203 166 188 176 165 C183 169 191 180 197 195" fill="none" stroke="#FFD84F" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+            </g>
+          </svg>
+        </div>
+        <div>
+          <h1>{{WORKFLOW_DISPLAY_NAME}}入门帮助</h1>
+          <p>把一次聊天变成可恢复、可验证、可交付的项目协作系统。</p>
+        </div>
+      </div>
+      <div class="marker">【{{WORKFLOW_DISPLAY_NAME}} | {{RESUME_MARKER_SUFFIX}}】</div>
+    </div>
+  </header>
+
+  <main>
+    <nav class="top-links" aria-label="页面入口">
+      <a href="#start">1 分钟试跑</a>
+      <a href="#capabilities">主要特性</a>
+      <a href="#map">结构边界</a>
+      <a href="#first">第一次闭环</a>
+      <a href="#daily">日常使用</a>
+      <a href="#privacy">隐私与发布</a>
+    </nav>
+
+    <section id="start" class="hero" data-step="start">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">先确认接入，再展开使用</div>
+          <h2>{{WORKFLOW_DISPLAY_NAME}}不是更长的聊天上下文，而是更稳定的 AI 项目工作系统</h2>
+          <p class="lead">它把关键状态写进文件、Git 和可复用技能，让新会话也能从证据恢复：知道项目在哪里、当前做什么、下一步该看什么，以及哪些内容不能公开。</p>
+          <div class="value-strip">
+            <div class="value-item"><strong>可恢复</strong><p>新会话不从零开始。</p></div>
+            <div class="value-item"><strong>可评分</strong><p>证据、风险和交付准备度可以多维度判断。</p></div>
+            <div class="value-item"><strong>可沉淀</strong><p>重复工作进入技能、脚本或专家子助手流程。</p></div>
+          </div>
+        </div>
+        <div class="run-panel">
+          <h3>现在用 1 分钟试跑</h3>
+          <div class="steps">
+            <div class="step"><span class="step-num">1</span><div><strong>打开新的 AI 助手会话</strong><p>当前会话通常不会重新加载刚安装的技能。</p></div></div>
+            <div class="step"><span class="step-num">2</span><div><strong>只输入显示名称</strong><span class="code-block">小Q</span></div></div>
+            <div class="step"><span class="step-num">3</span><div><strong>看到恢复标识</strong><p>回复开头应出现 <strong>【{{WORKFLOW_DISPLAY_NAME}} | {{RESUME_MARKER_SUFFIX}}】</strong>。如果已登记项目，还应说明项目、状态和下一步。</p></div></div>
+          </div>
+          <div class="note">如果没有看到恢复标识，请打开一个全新的 AI 助手会话，再输入一次显示名称，然后让 AI 助手检查工作流技能是否安装完整。你不需要自己找目录。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <aside class="progress-rail" aria-label="入门进度">
+        <div class="progress-title">入门路径</div>
+        <div class="progress-list">
+          <a class="progress-link is-active" href="#start" data-target="start" aria-current="true"><span class="progress-dot"></span><span class="progress-text"><strong>试跑接入</strong><span>确认工作流已加载</span></span></a>
+          <a class="progress-link" href="#capabilities" data-target="capabilities"><span class="progress-dot"></span><span class="progress-text"><strong>理解特性</strong><span>恢复、验证、交付、沉淀</span></span></a>
+          <a class="progress-link" href="#map" data-target="map"><span class="progress-dot"></span><span class="progress-text"><strong>看清边界</strong><span>规则、状态、事实放哪里</span></span></a>
+          <a class="progress-link" href="#first" data-target="first"><span class="progress-dot"></span><span class="progress-text"><strong>完成闭环</strong><span>登记或创建项目</span></span></a>
+          <a class="progress-link" href="#daily" data-target="daily"><span class="progress-dot"></span><span class="progress-text"><strong>日常使用</strong><span>常用入口和卡住处理</span></span></a>
+          <a class="progress-link" href="#privacy" data-target="privacy"><span class="progress-dot"></span><span class="progress-text"><strong>安全发布</strong><span>写入、权限、公开检查</span></span></a>
+        </div>
+      </aside>
+
+      <div class="content">
+        <section id="capabilities" data-step="capabilities">
+          <h2>主要特性：恢复只是入口，项目协作才是目标</h2>
+          <p>{{WORKFLOW_DISPLAY_NAME}}的价值不只是“叫回上下文”。它让 AI 助手的工作可以被继续、检查、交付、复用，并在需要时交给更合适的专家子助手。</p>
+          <div class="feature-grid">
+            <div class="feature-card"><span class="icon">R</span><h3>恢复项目</h3><p>从个人中枢和项目状态文件定位当前焦点、任务和下一步。</p></div>
+            <div class="feature-card"><span class="icon">V</span><h3>评分与验证</h3><p>从质量、可用性、风险、证据和发布准备度看结果，而不是只看单一通过/失败。</p></div>
+            <div class="feature-card"><span class="icon">G</span><h3>Git 交付</h3><p>用提交、差异和报告说明改了什么、为什么改、还剩什么风险。</p></div>
+            <div class="feature-card"><span class="icon">S</span><h3>能力沉淀</h3><p>反复出现的好流程可以变成技能、脚本、自动检查或自动化。</p></div>
+            <div class="feature-card"><span class="icon">A</span><h3>专家协同</h3><p>布局、文档、测试、代码审阅等任务可以拆给稳定角色的专家子助手。</p></div>
+          </div>
+        </section>
+
+        <section id="map" data-step="map">
+          <h2>结构边界：规则进技能，状态进中枢，事实进项目，交付进 Git</h2>
+          <p>这个边界能避免把私人状态放进公开启动包，也能让新的 AI 助手只读该读的文件。</p>
+          <div class="layer-map" role="img" aria-label="小Q工作流结构边界">
+            <div class="layer public">
+              <span class="tag">公开启动包 / 技能</span>
+              <h3>放通用规则</h3>
+              <ul>
+                <li>安装脚本、模板、通用工作流</li>
+                <li>适合分享给同事或团队</li>
+                <li>不放个人项目事实</li>
+              </ul>
+            </div>
+            <div class="layer private">
+              <span class="tag">私有个人中枢</span>
+              <h3>放跨项目状态</h3>
+              <ul>
+                <li>profile、PROJECT_REGISTRY、ACTIVE_WORK</li>
+                <li>记录项目路由和当前焦点</li>
+                <li>默认只留本机或私有仓库</li>
+              </ul>
+            </div>
+            <div class="layer project">
+              <span class="tag">项目仓库 / Git</span>
+              <h3>放项目事实和交付证据</h3>
+              <ul>
+                <li>代码、任务、决策、环境说明</li>
+                <li>验证报告、截图、变更记录</li>
+                <li>按项目策略决定是否推送</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="first" data-step="first">
+          <h2>第一次闭环：登记或创建一个项目，然后马上恢复</h2>
+          <p>不要从记目录开始。先让 AI 助手带你完成一个最小项目闭环。</p>
+          <div class="timeline">
+            <div class="timeline-step">
+              <h3>1. 交代任务</h3>
+              <p>登记已有项目，或创建一个新的可恢复项目。</p>
+            </div>
+            <div class="timeline-step">
+              <h3>2. 写入前确认</h3>
+              <p>让 AI 助手说明会写哪些路径。写完后列出变更文件和摘要。</p>
+            </div>
+            <div class="timeline-step">
+              <h3>3. 新会话恢复</h3>
+              <p>输入“小Q”。预期看到恢复标识、项目名、当前状态、下一步文件。</p>
+            </div>
+          </div>
+          <div class="prompt-grid">
+            <div class="prompt-card">
+              <h3>登记已有项目</h3>
+              <p>适合已有代码目录或 Git 仓库。</p>
+              <span class="code-block">请把这个项目登记到{{WORKFLOW_DISPLAY_NAME}}，以后可以恢复：&lt;项目路径或 Git 地址&gt;</span>
+            </div>
+            <div class="prompt-card">
+              <h3>创建新项目</h3>
+              <p>适合从一个新想法开始。</p>
+              <span class="code-block">创建一个新的{{WORKFLOW_DISPLAY_NAME}}项目，名称是 &lt;项目名&gt;，并初始化可恢复的状态文件。</span>
+            </div>
+          </div>
+        </section>
+
+        <section id="daily" data-step="daily">
+          <h2>日常使用：工作流唤醒后，用快速指令就够了</h2>
+          <p>新会话或不确定是否唤醒时，可以说“继续我的项目，使用{{WORKFLOW_DISPLAY_NAME}}。”看到恢复标识后，日常就不需要每次补“使用{{WORKFLOW_DISPLAY_NAME}}”。</p>
+          <div class="check-grid">
+            <div class="check-card"><h3>帮助</h3><p>查看可用工作流指令，并让 AI 助手判断当前适合走哪条路径。</p><span class="code-block">帮助</span></div>
+            <div class="check-card"><h3>继续项目</h3><p>恢复最近项目或指定项目，比单独说“继续”更容易让 AI 助手选对上下文。</p><span class="code-block">继续小Q<br>继续 &lt;项目名&gt; 项目</span></div>
+            <div class="check-card"><h3>状态</h3><p>查看当前焦点、最近改动、阻塞点和下一步。</p><span class="code-block">状态</span></div>
+            <div class="check-card"><h3>保存状态</h3><p>把当前进展写入状态文件，方便下一次会话恢复。</p><span class="code-block">保存状态</span></div>
+            <div class="check-card"><h3>TODO</h3><p>查看轻量待办，或记录一个以后再处理的小想法，不启动完整项目流程。</p><span class="code-block">TODO<br>TODO：&lt;内容&gt;</span></div>
+            <div class="check-card"><h3>TOKEN</h3><p>打开本地 token 仪表盘，查看当前轮次、项目累计、上下文压力和缓存健康。</p><span class="code-block">TOKEN</span></div>
+            <div class="check-card"><h3>循环执行</h3><p>给定目标和终止条件后，AI 助手默认按无人值守方式运行：先做权限预检，低风险操作尽量预授权，遇到新权限时切换到可推进分支。</p><span class="code-block">循环执行：目标是 &lt;目标&gt;；终止条件是完成、到 &lt;时间&gt;、token 压力过高或达到预设无进展阈值。</span></div>
+            <div class="check-card"><h3>专家审阅</h3><p>交付前需要检查版面、文档、代码、安装或发布风险时使用。</p><span class="code-block">请相关专家审阅。</span></div>
+            <div class="check-card"><h3>多维评分</h3><p>需要判断交付物是否成熟时，从质量、可用性、风险、证据和准备度一起看。</p><span class="code-block">从质量、可用性、风险、证据和准备度给这个交付物评分。</span></div>
+            <div class="check-card"><h3>总结/沉淀</h3><p>完成一轮有价值的工作后，总结经验并更新对应的规则、技能或状态文件。</p><span class="code-block">总结/沉淀</span></div>
+            <div class="check-card"><h3>工作流体检</h3><p>当规则变多、流程不清爽或恢复不稳时，做一次更深的工作流扫描。</p><span class="code-block">体检</span></div>
+          </div>
+        </section>
+
+        <section id="privacy" data-step="privacy">
+          <h2>隐私与权限：知道写到哪里，再决定是否继续</h2>
+          <p>本地 HTML 不会自动上传。真正需要谨慎的是：AI 助手写入哪些文件、是否联网或安装、是否推送到公开位置。</p>
+          <div class="split">
+            <div class="panel">
+              <h3>写入或运行前确认</h3>
+              <ul>
+                <li>会更新私有个人中枢、项目状态文件，还是公开启动包？</li>
+                <li>是否需要联网、安装依赖、写出工作区或使用凭据？</li>
+                <li>写完后能否列出变更文件、验证结果和剩余风险？</li>
+              </ul>
+            </div>
+            <div class="panel">
+              <h3>发布前检查</h3>
+              <ul>
+                <li>密钥、API key、客户名、内部路径</li>
+                <li>当前工作状态、个人偏好、项目索引</li>
+                <li>生成报告里的截图、日志和临时路径</li>
+              </ul>
+            </div>
+          </div>
+          <div class="note">不确定时，先让 AI 助手停下来说明“会写到哪里、为什么写、如何撤销或查看差异”。</div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script>
+    const links = Array.from(document.querySelectorAll(".progress-link"));
+    const progressList = document.querySelector(".progress-list");
+    const sections = links
+      .map((link) => document.getElementById(link.dataset.target))
+      .filter(Boolean);
+
+    function setActive(id) {
+      let seenActive = false;
+      const activeIndex = links.findIndex((link) => link.dataset.target === id);
+      if (progressList && activeIndex >= 0) {
+        progressList.style.setProperty("--progress-index", String(activeIndex));
+      }
+      links.forEach((link) => {
+        const isActive = link.dataset.target === id;
+        link.classList.toggle("is-active", isActive);
+        link.classList.toggle("is-done", !seenActive && !isActive);
+        if (isActive) {
+          link.setAttribute("aria-current", "true");
+        } else {
+          link.removeAttribute("aria-current");
+        }
+        if (isActive) {
+          seenActive = true;
+        }
+      });
+    }
+
+    let ticking = false;
+    let scrollLockUntil = 0;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function getScrollOffset() {
+      return window.matchMedia("(max-width: 900px)").matches ? 16 : 92;
+    }
+
+    function navigateTo(id) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      setActive(id);
+      scrollLockUntil = Date.now() + 850;
+      const top = window.scrollY + target.getBoundingClientRect().top - getScrollOffset();
+      window.scrollTo({
+        top: Math.max(0, top),
+        behavior: reduceMotion.matches ? "auto" : "smooth"
+      });
+      if (window.history && window.history.pushState) {
+        window.history.pushState(null, "", `#${id}`);
+      }
+    }
+
+    function syncProgressFromScroll() {
+      if (Date.now() < scrollLockUntil) {
+        ticking = false;
+        return;
+      }
+      let activeId = sections[0] ? sections[0].id : "";
+      const page = document.documentElement;
+      const nearBottom = window.innerHeight + window.scrollY >= page.scrollHeight - 8;
+      if (nearBottom && sections.length) {
+        activeId = sections[sections.length - 1].id;
+      } else {
+        const activationLine = Math.min(window.innerHeight * 0.42, 220);
+        sections.forEach((section) => {
+          if (section.getBoundingClientRect().top <= activationLine) {
+            activeId = section.id;
+          }
+        });
+      }
+      if (activeId) {
+        setActive(activeId);
+      }
+      ticking = false;
+    }
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        window.requestAnimationFrame(syncProgressFromScroll);
+        ticking = true;
+      }
+    }, { passive: true });
+    links.forEach((link) => link.addEventListener("click", (event) => {
+      event.preventDefault();
+      navigateTo(link.dataset.target);
+    }));
+    window.addEventListener("hashchange", () => {
+      const id = window.location.hash.replace("#", "");
+      if (sections.some((section) => section.id === id)) {
+        setActive(id);
+      }
+    });
+    if (window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      if (sections.some((section) => section.id === id)) {
+        setActive(id);
+      }
+    } else {
+      syncProgressFromScroll();
+    }
+  </script>
+</body>
+</html>

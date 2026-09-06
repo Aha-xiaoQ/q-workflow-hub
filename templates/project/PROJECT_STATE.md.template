@@ -1,0 +1,21 @@
+# Project State
+
+Updated: {{DATE}}
+
+## Objective
+
+{{PROJECT_OBJECTIVE}}
+
+## Current Status
+
+- New project initialized.
+
+## Validation Status
+
+- Pending.
+
+## Next Steps
+
+1. Define the first concrete task.
+2. Add environment notes.
+3. Commit the initial project scaffold.

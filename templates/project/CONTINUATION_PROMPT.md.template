@@ -1,0 +1,23 @@
+# Continuation Prompt
+
+Continue `{{PROJECT_NAME}}`. Use `q-workflow`.
+
+Project path:
+
+```text
+{{PROJECT_PATH}}
+```
+
+Current objective:
+
+```text
+{{PROJECT_OBJECTIVE}}
+```
+
+Start by reading:
+
+1. `README.md`
+2. `PROJECT_STATE.md`
+3. `TASKS.md`
+4. `DECISIONS.md`
+5. `ENVIRONMENT.md`

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Diagram Workflow"
+  short_description: "Create reliable technical diagrams"
+  default_prompt: "Use $q-diagram-workflow to create or repair a technical diagram with a validated source and rendered output."

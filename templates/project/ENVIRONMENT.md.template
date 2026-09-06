@@ -1,0 +1,17 @@
+# Environment
+
+## Local Path
+
+```text
+{{PROJECT_PATH}}
+```
+
+## Requirements
+
+- TBD.
+
+## Standard Commands
+
+```powershell
+git status --short --branch
+```

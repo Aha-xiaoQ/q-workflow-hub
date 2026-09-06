@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "experts": [
+    {"id": "visual-arbiter", "english": "Visual Arbiter", "chinese": "版衡"},
+    {"id": "source-scout", "english": "Source Scout", "chinese": "寻源"},
+    {"id": "pagewright", "english": "Pagewright", "chinese": "页匠"},
+    {"id": "doc-architect", "english": "Doc Architect", "chinese": "文构"},
+    {"id": "code-auditor", "english": "Code Auditor", "chinese": "码鉴"},
+    {"id": "workflow-distiller", "english": "Workflow Distiller", "chinese": "沉炼"},
+    {"id": "usability-validator", "english": "Usability Validator", "chinese": "验用"}
+  ]
+}

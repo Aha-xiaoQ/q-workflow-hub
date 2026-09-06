@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Skill Creation"
+  short_description: "Create, review, and release q-workflow skills"
+  default_prompt: "Use $q-skill-creation to create, rename, review, or maintain a reliable q-workflow skill."

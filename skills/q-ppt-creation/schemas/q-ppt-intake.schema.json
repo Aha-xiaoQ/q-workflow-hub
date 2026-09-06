@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:q-workflow:q-ppt-intake:v1",
+  "title": "Q PPT Intake Request",
+  "type": "object",
+  "required": ["schemaVersion", "createdAt", "deck", "content", "validation"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": {
+      "const": "q-ppt-intake/v1"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {"type": "string"},
+        "identityLine": {"type": "string"},
+        "language": {"type": "string"}
+      }
+    },
+    "deck": {
+      "type": "object",
+      "required": ["title", "audience", "purpose", "deliveryFormat", "language", "density"],
+      "additionalProperties": false,
+      "properties": {
+        "title": {"type": "string", "minLength": 1},
+        "subtitle": {"type": "string"},
+        "audience": {"type": "string", "minLength": 1},
+        "purpose": {"type": "string", "minLength": 1},
+        "deliveryFormat": {
+          "type": "string",
+          "enum": ["live-talk", "workshop", "email-readout", "review-meeting", "self-service", "other"]
+        },
+        "language": {"type": "string", "minLength": 1},
+        "density": {
+          "type": "string",
+          "enum": ["short", "standard", "sharing"]
+        },
+        "targetSlideCount": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 120
+        },
+        "notesMode": {
+          "type": "string",
+          "enum": ["none", "brief", "speaker-notes", "full"]
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": ["mode", "sourceMaterials"],
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["agent-generated", "source-migration", "polish-existing", "outline-to-deck"]
+        },
+        "sourceMaterials": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/sourceMaterial"}
+        },
+        "storyBriefHints": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "desiredAction": {"type": "string"},
+            "promise": {"type": "string"},
+            "recognizedPains": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "mechanism": {"type": "string"},
+            "proofPoints": {
+              "type": "array",
+              "items": {"type": "string"}
+            },
+            "adoptionPath": {"type": "string"},
+            "openGaps": {
+              "type": "array",
+              "items": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "structure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["auto", "manual"]
+        },
+        "targetSectionCount": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "maximum": 20
+        },
+        "sections": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "style": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "base": {
+          "type": "string",
+          "enum": ["existing-template", "sample-deck", "simple-theme", "custom-grammar", "approved-style-id"]
+        },
+        "reusableStyleId": {"type": "string"},
+        "visualMotif": {"type": "string"},
+        "chartTableStyle": {"type": "string"},
+        "mustUse": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "mustAvoid": {
+          "type": "array",
+          "items": {"type": "string"}
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "required": ["runStructuralReadback", "runVisualReview", "openFinalPpt"],
+      "additionalProperties": false,
+      "properties": {
+        "sampleFirst": {"type": "boolean"},
+        "runStructuralReadback": {"type": "boolean"},
+        "runVisualReview": {"type": "boolean"},
+        "openFinalPpt": {"type": "boolean"}
+      }
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {"type": "string"}
+      }
+    },
+    "handoff": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["agent-queue", "cli-runner", "local-runner", "manual"]
+        },
+        "requestFile": {"type": "string"},
+        "agentInstruction": {"type": "string"}
+      }
+    },
+    "extensions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      }
+    }
+  },
+  "$defs": {
+    "sourceMaterial": {
+      "type": "object",
+      "required": ["type", "value"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["file", "folder", "url", "note", "existing-deck", "image", "data"]
+        },
+        "label": {"type": "string"},
+        "value": {"type": "string", "minLength": 1},
+        "notes": {"type": "string"}
+      }
+    }
+  }
+}

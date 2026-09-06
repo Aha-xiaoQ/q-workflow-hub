@@ -1,0 +1,1516 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Q PPT Intake Runner</title>
+  <style>
+    :root {
+      --green: #69ca00;
+      --blue: #0eafe0;
+      --orange: #f9b500;
+      --teal: #00a08b;
+      --ink: #252a2d;
+      --muted: #64737a;
+      --line: #d9e0e4;
+      --soft: #f5f8f8;
+      --panel: #ffffff;
+      --danger: #c74343;
+      --shadow: 0 14px 40px rgba(20, 34, 40, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.45;
+      letter-spacing: 0;
+      background: #f8faf9;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+      letter-spacing: 0;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 296px minmax(0, 1fr);
+    }
+
+    .sidebar {
+      min-width: 0;
+      padding: 24px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 48px;
+      height: 48px;
+      display: block;
+      object-fit: contain;
+      border-radius: 8px;
+      flex: 0 0 auto;
+    }
+    .brand-text {
+      font-size: 17px;
+      line-height: 1.05;
+      font-weight: 800;
+    }
+
+    .brand-text span,
+    .brand-text small {
+      display: block;
+    }
+
+    .brand-text span {
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .brand-text small {
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .steps {
+      width: 100%;
+      min-width: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .step {
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      text-align: left;
+      color: var(--muted);
+      background: transparent;
+      cursor: pointer;
+      transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+    }
+
+    .step[aria-current="true"] {
+      color: var(--ink);
+      border-color: var(--line);
+      background: var(--soft);
+    }
+
+    .step:hover {
+      color: var(--ink);
+      border-color: rgba(14, 175, 224, 0.35);
+      background: #fbfdfd;
+    }
+
+    .step:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    .choice:focus-within {
+      outline: 2px solid rgba(14, 175, 224, 0.45);
+      outline-offset: 2px;
+    }
+
+    .step-index {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      color: #ffffff;
+      font-weight: 900;
+      background: var(--blue);
+    }
+
+    .step:nth-child(1) .step-index { background: var(--green); }
+    .step:nth-child(3) .step-index { background: var(--orange); }
+    .step:nth-child(4) .step-index { background: var(--teal); }
+    .step:nth-child(5) .step-index { background: var(--ink); }
+
+    .step-title {
+      display: block;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+
+    .step > span:last-child {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .step-subtitle {
+      display: block;
+      margin-top: 5px;
+      font-size: 11px;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .step-short {
+      display: none;
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #ffffff;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .main {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.2;
+    }
+
+    .topbar p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .runner-badge {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border: 1px solid rgba(249, 181, 0, 0.45);
+      border-radius: 8px;
+      color: #7a5600;
+      background: rgba(249, 181, 0, 0.10);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .content {
+      width: min(1180px, 100%);
+      padding: 30px 32px 38px;
+    }
+
+    .panel {
+      display: none;
+      min-height: 520px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .panel.active {
+      display: grid;
+      gap: 22px;
+      align-content: start;
+    }
+
+    .panel-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 16px;
+      align-items: start;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-intro h2 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.25;
+    }
+
+    .panel-intro p {
+      margin: 6px 0 0;
+      color: var(--muted);
+    }
+
+    .decision-chip {
+      min-height: 30px;
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 10px;
+      border-radius: 8px;
+      color: #346700;
+      background: rgba(105, 202, 0, 0.12);
+      border: 1px solid rgba(105, 202, 0, 0.35);
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .decision-chip[data-state="blocked"] {
+      color: #8a4c00;
+      background: rgba(255, 184, 0, 0.14);
+      border-color: rgba(255, 184, 0, 0.45);
+    }
+
+    .decision-chip[data-state="ready"] {
+      color: #346700;
+      background: rgba(105, 202, 0, 0.12);
+      border-color: rgba(105, 202, 0, 0.35);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field {
+      min-width: 0;
+      display: grid;
+      gap: 7px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .required-mark {
+      margin-left: 6px;
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #8a4c00;
+      background: rgba(255, 184, 0, 0.14);
+      font-size: 10px;
+      font-weight: 900;
+      vertical-align: 1px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid #cfd9dd;
+      border-radius: 8px;
+      color: var(--ink);
+      background: #ffffff;
+      padding: 10px 12px;
+    }
+
+    input:hover,
+    select:hover,
+    textarea:hover {
+      border-color: var(--blue);
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical;
+      overflow-wrap: anywhere;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .choice {
+      position: relative;
+      min-width: 0;
+      min-height: 172px;
+      display: grid;
+      grid-template-rows: auto auto minmax(0, 1fr);
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+    }
+
+    .choice input {
+      position: absolute;
+      inset: 12px 12px auto auto;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+    }
+
+    .choice:has(input:checked) {
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+    }
+
+    .choice:hover {
+      border-color: rgba(105, 202, 0, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .choice-title {
+      padding-right: 24px;
+      font-size: 15px;
+      font-weight: 900;
+    }
+
+    .choice-copy {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .mini-preview {
+      height: 82px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .preview-flow::before {
+      content: "";
+      position: absolute;
+      inset: 16px;
+      border-radius: 6px;
+      border-left: 6px solid var(--green);
+      background:
+        linear-gradient(var(--ink), var(--ink)) 22px 14px / 52% 6px no-repeat,
+        linear-gradient(var(--line), var(--line)) 22px 30px / 74% 5px no-repeat,
+        linear-gradient(var(--blue), var(--blue)) 22px 48px / 42% 7px no-repeat;
+    }
+
+    .preview-migrate::before,
+    .preview-style::before {
+      content: "";
+      position: absolute;
+      inset: 14px;
+      border-radius: 6px;
+      background:
+        linear-gradient(90deg, var(--orange) 0 18%, transparent 18% 100%),
+        linear-gradient(var(--ink), var(--ink)) 30px 14px / 58% 6px no-repeat,
+        linear-gradient(var(--line), var(--line)) 30px 31px / 78% 5px no-repeat,
+        linear-gradient(var(--teal), var(--teal)) 30px 50px / 48% 7px no-repeat,
+        #ffffff;
+      box-shadow: 0 0 0 1px var(--line) inset;
+    }
+
+    .preview-style::before {
+      background:
+        radial-gradient(circle at 22px 22px, var(--green) 0 8px, transparent 9px),
+        linear-gradient(var(--blue), var(--blue)) 48px 17px / 42% 7px no-repeat,
+        linear-gradient(var(--orange), var(--orange)) 48px 36px / 65% 7px no-repeat,
+        linear-gradient(var(--teal), var(--teal)) 48px 55px / 50% 7px no-repeat,
+        #ffffff;
+    }
+
+    .mode-panel,
+    .notice {
+      display: grid;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .notice {
+      border-left: 3px solid var(--blue);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .material-list,
+    .section-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .row-editor {
+      display: grid;
+      grid-template-columns: 150px minmax(0, 1fr) 42px;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .row-editor button {
+      min-height: 42px;
+      padding: 0;
+    }
+
+    .actions {
+      margin-top: 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .review-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: flex-start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+    }
+
+    button {
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #ffffff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    button.primary {
+      border-color: var(--green);
+      background: var(--green);
+      color: #ffffff;
+    }
+
+    button.secondary {
+      border-color: rgba(14, 175, 224, 0.45);
+      color: #066d8c;
+      background: rgba(14, 175, 224, 0.10);
+    }
+
+    button.ghost {
+      color: var(--muted);
+      background: #ffffff;
+    }
+
+    button[data-draft="true"] {
+      border-color: rgba(255, 184, 0, 0.45);
+      color: #8a4c00;
+      background: rgba(255, 184, 0, 0.12);
+    }
+
+    button.danger {
+      color: var(--danger);
+    }
+
+    button.link-danger {
+      min-height: 32px;
+      padding: 4px 8px;
+      color: var(--muted);
+      border-color: transparent;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status {
+      min-width: 0;
+      color: var(--muted);
+      font-size: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .handoff-note,
+    .pipeline {
+      display: grid;
+    }
+
+    .handoff-note {
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid rgba(14, 175, 224, 0.35);
+      border-left: 3px solid var(--blue);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(14, 175, 224, 0.06);
+    }
+
+    .handoff-note strong {
+      color: var(--ink);
+    }
+
+    .pipeline {
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pipe-step {
+      min-height: 76px;
+      display: grid;
+      align-content: center;
+      gap: 5px;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .pipe-step strong {
+      color: var(--ink);
+      font-size: 12px;
+    }
+
+    .pipe-step span {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .summary {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+      gap: 18px;
+    }
+
+    .summary-box,
+    .json-box {
+      min-width: 0;
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      font-size: 13px;
+    }
+
+    .summary-list div {
+      display: grid;
+      grid-template-columns: 92px minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .summary-list strong {
+      color: var(--ink);
+    }
+
+    .summary-list span {
+      color: var(--muted);
+      overflow-wrap: anywhere;
+    }
+
+    .json-output {
+      width: 100%;
+      min-height: 390px;
+      resize: vertical;
+      font-family: Consolas, "SFMono-Regular", Menlo, monospace;
+      font-size: 12px;
+      line-height: 1.48;
+      color: #eaf4f0;
+      background: #182426;
+      border-color: #182426;
+      overflow: auto;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .steps {
+        width: 100%;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 3px;
+      }
+
+      .step {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        text-align: center;
+        padding: 8px 1px;
+      }
+
+      .step-subtitle {
+        display: none;
+      }
+
+      .topbar,
+      .panel-intro {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
+      .topbar-actions {
+        justify-content: flex-start;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      .grid,
+      .choice-grid,
+      .summary {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .panel {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 560px) {
+      body {
+        font-size: 14px;
+      }
+
+      .sidebar,
+      .topbar,
+      .content {
+        padding: 20px;
+      }
+
+      .sidebar {
+        padding-inline: 12px;
+      }
+
+      .brand {
+        align-items: flex-start;
+      }
+
+      .steps {
+        gap: 24px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .step {
+        flex: 0 0 44px;
+        min-height: 72px;
+        padding-inline: 0;
+      }
+
+      .step[aria-current="true"] {
+        border-color: transparent;
+        background: transparent;
+      }
+
+      .step[aria-current="true"] .step-index {
+        box-shadow: 0 0 0 4px rgba(14, 175, 224, 0.12);
+      }
+
+      .step-title {
+        font-size: 9px;
+        line-height: 1.2;
+        white-space: normal;
+      }
+
+      .step-long {
+        display: none;
+      }
+
+      .step-short {
+        display: block;
+      }
+
+      .step-index {
+        width: 28px;
+        height: 28px;
+      }
+
+      .row-editor {
+        grid-template-columns: 1fr;
+      }
+
+      .pipeline {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .choice-grid {
+        gap: 10px;
+      }
+
+      .choice {
+        min-height: 0;
+        grid-template-rows: auto auto;
+        gap: 6px;
+        padding: 10px 12px;
+      }
+
+      .choice-title {
+        font-size: 14px;
+      }
+
+      .choice-copy {
+        font-size: 11px;
+        line-height: 1.35;
+      }
+
+      .mini-preview {
+        display: none;
+      }
+
+      .pipe-step {
+        min-height: 58px;
+        align-content: start;
+        padding: 8px;
+      }
+
+      .pipe-step strong {
+        font-size: 11px;
+      }
+
+      .pipe-step span {
+        font-size: 10px;
+      }
+
+      .json-output {
+        min-height: 260px;
+      }
+
+      .actions {
+        display: grid;
+        align-items: stretch;
+      }
+
+      .button-row,
+      .button-row button,
+      .review-actions button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <img class="brand-mark" src="q-logo.svg" alt="Q logo">
+        <div class="brand-text">Q<span>PPT Intake</span><small>Public Runner</small></div>
+      </div>
+
+      <nav class="steps" aria-label="Intake steps">
+        <button class="step" type="button" data-step="0" aria-current="true">
+          <span class="step-index">1</span>
+          <span><span class="step-title"><span class="step-long">基本请求</span><span class="step-short">请求</span></span><span class="step-subtitle">标题、受众、交付方式</span></span>
+        </button>
+        <button class="step" type="button" data-step="1">
+          <span class="step-index">2</span>
+          <span><span class="step-title"><span class="step-long">内容材料</span><span class="step-short">材料</span></span><span class="step-subtitle">来源、承诺、证据、缺口</span></span>
+        </button>
+        <button class="step" type="button" data-step="2">
+          <span class="step-index">3</span>
+          <span><span class="step-title"><span class="step-long">结构规划</span><span class="step-short">结构</span></span><span class="step-subtitle">自动或手动 section</span></span>
+        </button>
+        <button class="step" type="button" data-step="3">
+          <span class="step-index">4</span>
+          <span><span class="step-title"><span class="step-long">样式方向</span><span class="step-short">样式</span></span><span class="step-subtitle">模板、样张、视觉语法</span></span>
+        </button>
+        <button class="step" type="button" data-step="4">
+          <span class="step-index">5</span>
+          <span><span class="step-title"><span class="step-long">检查导出</span><span class="step-short">导出</span></span><span class="step-subtitle">JSON 与交付门</span></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-note">
+        静态页面只导出 `q-ppt-intake/v1` JSON。Agent 或本地 runner 才负责 story brief、slide map、PPTX、视觉审查和最终打开。
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="panelTitle">基本请求</h1>
+          <p id="panelSubtitle">先把 PPT 请求变成可复用的 JSON，而不是在浏览器里直接生成 PPT。</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="runner-badge" id="modeBadge">Static: exports JSON only</span>
+          <button class="link-danger" type="button" id="resetForm">清空表单</button>
+        </div>
+      </header>
+
+      <section class="content">
+        <form id="intakeForm">
+          <section class="panel active" data-panel="0">
+            <div class="panel-intro">
+              <div>
+                <h2>这份 PPT 要解决什么问题？</h2>
+                <p>首屏只收集请求边界：标题、受众、目的、交付方式和页数合同。</p>
+              </div>
+              <span class="decision-chip">Request boundary</span>
+            </div>
+
+            <div class="choice-grid" aria-label="Content mode">
+              <label class="choice">
+                <input type="radio" name="contentMode" value="agent-generated" checked>
+                <span class="choice-title">从资料生成</span>
+                <span class="mini-preview preview-flow"></span>
+                <span class="choice-copy">把材料、目标和证据交给 Agent，由 Agent 先写 story brief 和 slide map。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="contentMode" value="source-migration">
+                <span class="choice-title">迁移现有 PPT</span>
+                <span class="mini-preview preview-migrate"></span>
+                <span class="choice-copy">保留已批准内容，重建版式、结构和视觉审查证据。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="contentMode" value="outline-to-deck">
+                <span class="choice-title">大纲转 PPT</span>
+                <span class="mini-preview preview-style"></span>
+                <span class="choice-copy">把文字大纲转成可讲述、可验证、可编辑的 PPTX。</span>
+              </label>
+            </div>
+
+            <div class="grid">
+              <div class="field">
+                <label for="deckTitle">PPT 标题<span class="required-mark">必填</span></label>
+                <input id="deckTitle" autocomplete="off" placeholder="例如：Reusable PPT Intake Flow">
+              </div>
+              <div class="field">
+                <label for="subtitle">副标题</label>
+                <input id="subtitle" autocomplete="off" placeholder="一句话说明场景或范围">
+              </div>
+              <div class="field">
+                <label for="audience">受众<span class="required-mark">必填</span></label>
+                <input id="audience" autocomplete="off" placeholder="例如：engineering teammates">
+              </div>
+              <div class="field">
+                <label for="purpose">目的<span class="required-mark">必填</span></label>
+                <input id="purpose" autocomplete="off" placeholder="希望受众理解、决定或执行什么">
+              </div>
+              <div class="field">
+                <label for="deliveryFormat">交付方式</label>
+                <select id="deliveryFormat">
+                  <option value="review-meeting">Review meeting</option>
+                  <option value="live-talk">Live talk</option>
+                  <option value="workshop">Workshop</option>
+                  <option value="email-readout">Email readout</option>
+                  <option value="self-service">Self-service deck</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="language">语言</label>
+                <select id="language">
+                  <option value="zh-CN">中文</option>
+                  <option value="en-US">English</option>
+                  <option value="bilingual">中英双语</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="density">页数密度</label>
+                <select id="density">
+                  <option value="short">short: 6-8 页</option>
+                  <option value="standard" selected>standard: 10-14 页</option>
+                  <option value="sharing">sharing: 18-22 页</option>
+                  <option value="custom">自定义精确页数</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="targetSlideCount">精确页数</label>
+                <input id="targetSlideCount" type="number" min="1" max="120" inputmode="numeric" placeholder="仅自定义时填写">
+              </div>
+              <div class="field">
+                <label for="notesMode">讲稿 Notes</label>
+                <select id="notesMode">
+                  <option value="speaker-notes">Speaker notes</option>
+                  <option value="brief">Brief notes</option>
+                  <option value="full">Full notes</option>
+                  <option value="none">None</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="outputPath">输出路径</label>
+                <input id="outputPath" autocomplete="off" placeholder="可选；只记录给后续 runner，浏览器不会写文件">
+              </div>
+            </div>
+
+            <div class="notice">
+              Public static mode 不读取本机完整路径，也不直接调用生成器。它只复制或下载 JSON；后续由 Agent/runner 接手。你填写的文本会进入 JSON；敏感或专有内容只在下游 runner 已获准时填写。
+            </div>
+          </section>
+
+          <section class="panel" data-panel="1">
+            <div class="panel-intro">
+              <div>
+                <h2>有哪些材料和故事约束？</h2>
+                <p>用结构化条目记录文件、链接、现有 deck、证据点和待补缺口。</p>
+              </div>
+              <span class="decision-chip">Source contract</span>
+            </div>
+
+            <div class="mode-panel">
+              <div class="material-list" id="materialList"></div>
+              <div class="button-row">
+                <button class="secondary" type="button" id="addMaterial">添加材料</button>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="field">
+                <label for="desiredAction">期望受众动作</label>
+                <textarea id="desiredAction" placeholder="例如：采用统一 intake JSON 作为 PPT 生成入口"></textarea>
+              </div>
+              <div class="field">
+                <label for="promise">一句话承诺</label>
+                <textarea id="promise" placeholder="这个 deck 对受众承诺什么价值"></textarea>
+              </div>
+              <div class="field">
+                <label for="proofPoints">证据点</label>
+                <textarea id="proofPoints" placeholder="每行一个证据点"></textarea>
+              </div>
+              <div class="field">
+                <label for="openGaps">待补缺口</label>
+                <textarea id="openGaps" placeholder="每行一个缺口或风险"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-panel="2">
+            <div class="panel-intro">
+              <div>
+                <h2>结构由谁决定？</h2>
+                <p>自动模式只记录目标 section 数；手动模式记录 section 名称，不把示例结构伪装成用户输入。</p>
+              </div>
+              <span class="decision-chip">Slide map input</span>
+            </div>
+
+            <div class="choice-grid">
+              <label class="choice">
+                <input type="radio" name="structureMode" value="auto" checked>
+                <span class="choice-title">Agent 自动规划</span>
+                <span class="mini-preview preview-flow"></span>
+                <span class="choice-copy">根据标题、受众、材料和 story brief 生成 agenda 与 section。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="structureMode" value="manual">
+                <span class="choice-title">我提供 section</span>
+                <span class="mini-preview preview-migrate"></span>
+                <span class="choice-copy">只记录真实 section 名称和说明；生成器仍要检查页数合同。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="structureMode" value="hybrid">
+                <span class="choice-title">半自动</span>
+                <span class="mini-preview preview-style"></span>
+                <span class="choice-copy">保留用户提供的少量锚点，剩余结构由 Agent 补齐。</span>
+              </label>
+            </div>
+
+            <div class="grid">
+              <div class="field">
+                <label for="targetSectionCount">目标 section 数</label>
+                <input id="targetSectionCount" type="number" min="1" max="20" inputmode="numeric" value="4">
+              </div>
+              <div class="field">
+                <label for="sectionNote">结构备注</label>
+                <input id="sectionNote" placeholder="例如：先讲痛点，再讲机制和验证">
+              </div>
+              <div class="field full">
+                <label>Section 列表</label>
+                <div class="section-list" id="sectionList"></div>
+                <div class="button-row">
+                  <button class="secondary" type="button" id="addSection">添加 section</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" data-panel="3">
+            <div class="panel-intro">
+              <div>
+                <h2>采用哪种视觉语法？</h2>
+                <p>这里选择的是公共版样式方向，不绑定任何公司模板。专有模板字段请放到 extensions 包。</p>
+              </div>
+              <span class="decision-chip">Visual grammar</span>
+            </div>
+
+            <div class="choice-grid">
+              <label class="choice">
+                <input type="radio" name="styleBase" value="simple-theme" checked>
+                <span class="choice-title">Q Workbench Clean</span>
+                <span class="mini-preview preview-flow"></span>
+                <span class="choice-copy">轻量工程工作台风格：清晰标题、低噪声面板、功能性色彩和可编辑组件。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="styleBase" value="existing-template">
+                <span class="choice-title">已有模板</span>
+                <span class="mini-preview preview-migrate"></span>
+                <span class="choice-copy">使用用户提供的模板或样张，但公共 schema 只记录引用，不内置专有路径。</span>
+              </label>
+              <label class="choice">
+                <input type="radio" name="styleBase" value="custom-grammar">
+                <span class="choice-title">自定义语法</span>
+                <span class="mini-preview preview-style"></span>
+                <span class="choice-copy">先出样张，视觉审查通过后再生成整份 PPT。</span>
+              </label>
+            </div>
+
+            <div class="grid">
+              <div class="field">
+                <label for="reusableStyleId">可复用样式 ID</label>
+                <input id="reusableStyleId" placeholder="可选；例如 q-workbench-clean">
+              </div>
+              <div class="field">
+                <label for="templateReference">模板或样张引用</label>
+                <input id="templateReference" placeholder="可选；文件名、URL 或项目内相对路径">
+              </div>
+              <div class="field">
+                <label for="visualMotif">视觉动机</label>
+                <textarea id="visualMotif" placeholder="例如：quiet engineering workflow with process lanes"></textarea>
+              </div>
+              <div class="field">
+                <label for="chartTableStyle">图表/表格风格</label>
+                <textarea id="chartTableStyle" placeholder="例如：compact tables and simple progress strips"></textarea>
+              </div>
+              <div class="field">
+                <label for="mustUse">必须使用</label>
+                <textarea id="mustUse" placeholder="每行一个要求"></textarea>
+              </div>
+              <div class="field">
+                <label for="mustAvoid">必须避免</label>
+                <textarea id="mustAvoid" placeholder="每行一个禁用项"></textarea>
+              </div>
+            </div>
+
+            <div class="notice">
+              样式选择不会绕过验证。高可见度、自定义风格或 5 页以上 deck 默认先出代表性样张，再跑 `q-ppt-visual-review`。
+            </div>
+          </section>
+
+          <section class="panel" data-panel="4">
+            <div class="panel-intro">
+              <div>
+                <h2>检查 JSON 与交付门</h2>
+                <p>导出的 JSON 是请求合同，不是最终故事、slide map 或 PPTX。后续步骤必须可追踪。</p>
+              </div>
+              <span class="decision-chip" id="handoffStateChip" data-state="blocked">Needs input</span>
+            </div>
+
+            <div class="pipeline" aria-label="Delivery chain">
+              <div class="pipe-step"><strong>1. Intake JSON</strong><span>静态页导出</span></div>
+              <div class="pipe-step"><strong>2. Story brief</strong><span>Agent 创建</span></div>
+              <div class="pipe-step"><strong>3. Slide map</strong><span>记录页数合同</span></div>
+              <div class="pipe-step"><strong>4. PPTX</strong><span>生成或迁移</span></div>
+              <div class="pipe-step"><strong>5. Visual review</strong><span>必须记录报告</span></div>
+              <div class="pipe-step"><strong>6. Final open</strong><span>默认本地打开</span></div>
+            </div>
+
+            <div class="handoff-note" id="handoffNote">
+              <strong>下一步</strong>
+              <span>补齐必填项后，下载 JSON，并把它交给支持 `q-ppt-intake/v1` 的 Agent 或本地 runner。浏览器静态页不会直接生成 PPTX。</span>
+            </div>
+
+            <div class="review-actions" aria-label="Review export actions">
+              <button class="ghost" type="button" id="reviewCopyJson">复制草稿 JSON</button>
+              <button class="secondary" type="button" id="reviewDownloadJson" data-draft="true">下载草稿 JSON</button>
+            </div>
+
+            <div class="summary">
+              <div class="summary-box">
+                <h2>摘要</h2>
+                <div class="summary-list" id="summaryList"></div>
+              </div>
+              <div class="json-box">
+                <h2>q-ppt-intake/v1 JSON</h2>
+                <textarea class="json-output" id="jsonOutput" spellcheck="false"></textarea>
+              </div>
+            </div>
+          </section>
+
+          <div class="actions" id="formActions">
+            <div class="status" id="status">Static mode: exports JSON only. Runner-powered generation is a later step.</div>
+            <div class="button-row">
+              <button class="ghost" type="button" id="prevStep">上一步</button>
+              <button class="ghost" type="button" id="copyJson">复制草稿 JSON</button>
+              <button class="secondary" type="button" id="downloadJson" data-draft="true">下载草稿 JSON</button>
+              <button class="secondary" type="button" id="nextStep">下一步</button>
+            </div>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const panels = Array.from(document.querySelectorAll(".panel"));
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const titles = [
+      ["基本请求", "先把 PPT 请求变成可复用的 JSON，而不是在浏览器里直接生成 PPT。"],
+      ["内容材料", "记录材料、证据、承诺和缺口，让 Agent 能生成 story brief。"],
+      ["结构规划", "记录结构约束和页数合同，供 slide map/source freeze 使用。"],
+      ["样式方向", "选择公共版视觉语法，专有模板信息只进入 extensions。"],
+      ["检查导出", "确认请求 JSON 和后续验证链路，再交给 Agent 或 runner。"]
+    ];
+    const densityRanges = { short: "6-8", standard: "10-14", sharing: "18-22" };
+    let currentStep = 0;
+
+    const byId = (id) => document.getElementById(id);
+    const value = (id) => byId(id).value.trim();
+    const checkedValue = (name) => document.querySelector(`input[name="${name}"]:checked`).value;
+    const lines = (id) => value(id).split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+
+    function escapeHtml(text) {
+      return String(text || "").replace(/[&<>"']/g, (char) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[char]));
+    }
+
+    function compactObject(object) {
+      return Object.fromEntries(Object.entries(object).filter(([, item]) => {
+        if (item === "" || item === null || item === undefined) return false;
+        if (typeof item === "object" && !Array.isArray(item) && Object.keys(item).length === 0) return false;
+        return true;
+      }));
+    }
+
+    function numberOrNull(id) {
+      const raw = value(id);
+      if (!raw) return null;
+      const parsed = Number.parseInt(raw, 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
+    }
+
+    function addMaterialRow(item = {}) {
+      const row = document.createElement("div");
+      row.className = "row-editor material-row";
+      row.innerHTML = `
+        <select class="material-type" aria-label="材料类型">
+          <option value="note">Note</option>
+          <option value="file">File</option>
+          <option value="folder">Folder</option>
+          <option value="url">URL</option>
+          <option value="existing-deck">Existing deck</option>
+          <option value="data">Data</option>
+        </select>
+        <input class="material-value" aria-label="材料内容" placeholder="文件、链接、现有 deck 或备注">
+        <button class="ghost" type="button" aria-label="删除材料">×</button>
+      `;
+      row.querySelector(".material-type").value = item.type || "note";
+      row.querySelector(".material-value").value = item.value || "";
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        updateRequest();
+      });
+      byId("materialList").appendChild(row);
+    }
+
+    function addSectionRow(item = {}) {
+      const row = document.createElement("div");
+      row.className = "row-editor section-row";
+      row.innerHTML = `
+        <input class="section-name" aria-label="Section 名称" placeholder="Section 名称">
+        <input class="section-description" aria-label="Section 说明" placeholder="Section 说明或目标">
+        <button class="ghost" type="button" aria-label="删除 section">×</button>
+      `;
+      row.querySelector(".section-name").value = item.name || "";
+      row.querySelector(".section-description").value = item.description || "";
+      row.querySelector("button").addEventListener("click", () => {
+        row.remove();
+        updateRequest();
+      });
+      byId("sectionList").appendChild(row);
+    }
+
+    function sourceMaterials() {
+      return Array.from(document.querySelectorAll(".material-row")).map((row) => ({
+        type: row.querySelector(".material-type").value,
+        value: row.querySelector(".material-value").value.trim()
+      })).filter((item) => item.value);
+    }
+
+    function sections() {
+      return Array.from(document.querySelectorAll(".section-row")).map((row) => {
+        const name = row.querySelector(".section-name").value.trim();
+        const description = row.querySelector(".section-description").value.trim();
+        return [name, description].filter(Boolean).join(": ");
+      }).filter(Boolean);
+    }
+
+    function buildRequest() {
+      const density = value("density");
+      const exactTarget = density === "custom" ? numberOrNull("targetSlideCount") : null;
+      const publicDensity = density === "custom" ? "standard" : density;
+      const styleBase = checkedValue("styleBase");
+      const templateReference = value("templateReference");
+      const extensionNotes = templateReference ? { publicStyle: { templateReference } } : {};
+
+      return compactObject({
+        schemaVersion: "q-ppt-intake/v1",
+        createdAt: new Date().toISOString(),
+        profile: compactObject({
+          language: value("language")
+        }),
+        deck: compactObject({
+          title: value("deckTitle"),
+          subtitle: value("subtitle"),
+          audience: value("audience"),
+          purpose: value("purpose"),
+          deliveryFormat: value("deliveryFormat"),
+          language: value("language"),
+          density: publicDensity,
+          targetSlideCount: exactTarget,
+          notesMode: value("notesMode")
+        }),
+        content: compactObject({
+          mode: checkedValue("contentMode"),
+          sourceMaterials: sourceMaterials(),
+          storyBriefHints: compactObject({
+            desiredAction: value("desiredAction"),
+            promise: value("promise"),
+            proofPoints: lines("proofPoints"),
+            openGaps: lines("openGaps")
+          })
+        }),
+        structure: compactObject({
+          mode: checkedValue("structureMode"),
+          targetSectionCount: numberOrNull("targetSectionCount"),
+          sections: sections()
+        }),
+        style: compactObject({
+          base: styleBase,
+          reusableStyleId: value("reusableStyleId"),
+          visualMotif: value("visualMotif") || (styleBase === "simple-theme" ? "Q Workbench clean engineering tool" : ""),
+          chartTableStyle: value("chartTableStyle"),
+          mustUse: lines("mustUse"),
+          mustAvoid: lines("mustAvoid")
+        }),
+        validation: {
+          sampleFirst: checkedValue("styleBase") === "custom-grammar",
+          runStructuralReadback: true,
+          runVisualReview: true,
+          openFinalPpt: true
+        },
+        output: compactObject({
+          path: value("outputPath")
+        }),
+        handoff: {
+          mode: "agent-queue",
+          requestFile: "",
+          agentInstruction: "Create the story brief, slide map/source freeze, editable PPTX, structural readback, visual review evidence, and final local open step from this intake request."
+        },
+        extensions: extensionNotes
+      });
+    }
+
+    function updateSummary(request) {
+      const missing = requiredMissing(request);
+      const slideText = request.deck.targetSlideCount
+        ? `${request.deck.targetSlideCount} 页`
+        : `${request.deck.density} (${densityRanges[request.deck.density] || "10-14"} 页)`;
+      const sectionText = request.structure.sections?.length
+        ? request.structure.sections.join(" / ")
+        : `Agent 规划 ${request.structure.targetSectionCount || "auto"} 个 section`;
+      const materialText = request.content.sourceMaterials.length
+        ? `${request.content.sourceMaterials.length} 条`
+        : "未提供";
+      byId("summaryList").innerHTML = `
+        <div><strong>标题</strong><span>${escapeHtml(request.deck.title || "未填写")}</span></div>
+        <div><strong>受众</strong><span>${escapeHtml(request.deck.audience || "未填写")}</span></div>
+        <div><strong>目的</strong><span>${escapeHtml(request.deck.purpose || "未填写")}</span></div>
+        <div><strong>页数</strong><span>${escapeHtml(slideText)}</span></div>
+        <div><strong>内容</strong><span>${escapeHtml(request.content.mode)} / ${escapeHtml(materialText)}</span></div>
+        <div><strong>结构</strong><span>${escapeHtml(sectionText)}</span></div>
+        <div><strong>样式</strong><span>${escapeHtml(request.style.base)}</span></div>
+        <div><strong>验证</strong><span>readback + visual review + final open</span></div>
+      `;
+      byId("handoffNote").innerHTML = missing.length
+        ? `<strong>还不能交付</strong><span>请先补齐：${escapeHtml(missing.join("、"))}。补齐后再下载 JSON 交给支持 q-ppt-intake/v1 的 Agent 或本地 runner。</span>`
+        : `<strong>下一步</strong><span>下载 JSON，并把它交给支持 q-ppt-intake/v1 的 Agent 或本地 runner。浏览器静态页不会直接生成 PPTX。</span>`;
+      const stateChip = byId("handoffStateChip");
+      stateChip.textContent = missing.length ? "Needs input" : "Handoff ready";
+      stateChip.dataset.state = missing.length ? "blocked" : "ready";
+    }
+
+    function requiredMissing(request) {
+      const missing = [];
+      if (!request.deck.title) missing.push("标题");
+      if (!request.deck.audience) missing.push("受众");
+      if (!request.deck.purpose) missing.push("目的");
+      return missing;
+    }
+
+    function updateRequest() {
+      const request = buildRequest();
+      byId("jsonOutput").value = JSON.stringify(request, null, 2);
+      updateSummary(request);
+      const missing = requiredMissing(request);
+      byId("status").textContent = missing.length
+        ? `待补：${missing.join("、")}。静态模式仍可导出草稿 JSON。`
+        : "Ready: static mode exports JSON only; Agent/runner owns PPT generation.";
+      byId("copyJson").textContent = missing.length ? "复制草稿 JSON" : "复制 JSON";
+      byId("downloadJson").textContent = missing.length ? "下载草稿 JSON" : "下载 JSON";
+      byId("downloadJson").className = missing.length ? "secondary" : "primary";
+      byId("downloadJson").dataset.draft = missing.length ? "true" : "false";
+      byId("reviewCopyJson").textContent = missing.length ? "复制草稿 JSON" : "复制 JSON";
+      byId("reviewDownloadJson").textContent = missing.length ? "下载草稿 JSON" : "下载 JSON";
+      byId("reviewDownloadJson").className = missing.length ? "secondary" : "primary";
+      byId("reviewDownloadJson").dataset.draft = missing.length ? "true" : "false";
+    }
+
+    function setStep(index) {
+      currentStep = Math.max(0, Math.min(index, panels.length - 1));
+      panels.forEach((panel, panelIndex) => panel.classList.toggle("active", panelIndex === currentStep));
+      steps.forEach((step, stepIndex) => step.setAttribute("aria-current", stepIndex === currentStep ? "true" : "false"));
+      byId("panelTitle").textContent = titles[currentStep][0];
+      byId("panelSubtitle").textContent = titles[currentStep][1];
+      byId("prevStep").disabled = currentStep === 0;
+      byId("nextStep").textContent = currentStep === panels.length - 1 ? "回到第一步" : "下一步";
+      if (currentStep === panels.length - 1) updateRequest();
+    }
+
+    async function copyJson() {
+      updateRequest();
+      const missing = requiredMissing(buildRequest());
+      await navigator.clipboard.writeText(byId("jsonOutput").value);
+      byId("status").textContent = missing.length ? "已复制草稿 q-ppt-intake/v1 JSON，正式交付前仍需补齐必填项。" : "已复制 q-ppt-intake/v1 JSON。";
+    }
+
+    function downloadJson() {
+      updateRequest();
+      const request = buildRequest();
+      const missing = requiredMissing(request);
+      const safeTitle = (request.deck.title || "q_ppt_intake").replace(/[\\/:*?"<>|\s]+/g, "_");
+      const blob = new Blob([byId("jsonOutput").value + "\n"], { type: "application/json;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `${safeTitle}_intake.json`;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+      byId("status").textContent = missing.length ? "已下载草稿 q-ppt-intake/v1 JSON，正式交付前仍需补齐必填项。" : "已下载 q-ppt-intake/v1 JSON。";
+    }
+
+    function resetForm() {
+      if (!window.confirm("确定清空当前表单？")) return;
+      byId("intakeForm").reset();
+      byId("materialList").innerHTML = "";
+      byId("sectionList").innerHTML = "";
+      addMaterialRow();
+      addSectionRow();
+      setStep(0);
+      updateRequest();
+    }
+
+    function stepFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const raw = params.get("step") || window.location.hash.replace("#", "");
+      const map = { basics: 0, content: 1, structure: 2, style: 3, review: 4 };
+      if (raw in map) return map[raw];
+      const parsed = Number.parseInt(raw, 10);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
+
+    steps.forEach((step) => step.addEventListener("click", () => setStep(Number(step.dataset.step))));
+    byId("prevStep").addEventListener("click", () => setStep(currentStep - 1));
+    byId("nextStep").addEventListener("click", () => setStep(currentStep === panels.length - 1 ? 0 : currentStep + 1));
+    byId("copyJson").addEventListener("click", copyJson);
+    byId("downloadJson").addEventListener("click", downloadJson);
+    byId("reviewCopyJson").addEventListener("click", copyJson);
+    byId("reviewDownloadJson").addEventListener("click", downloadJson);
+    byId("resetForm").addEventListener("click", resetForm);
+    byId("addMaterial").addEventListener("click", () => {
+      addMaterialRow();
+      updateRequest();
+    });
+    byId("addSection").addEventListener("click", () => {
+      addSectionRow();
+      updateRequest();
+    });
+    byId("intakeForm").addEventListener("input", updateRequest);
+    byId("intakeForm").addEventListener("change", updateRequest);
+
+    addMaterialRow();
+    addSectionRow();
+    setStep(stepFromUrl());
+    updateRequest();
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "format_version": 1,
+  "tiny_exemption": "Exact command, status, or deterministic edit with no reusable, setup, safety, or release effect.",
+  "routes": {
+    "research": {"primary_owner": "source-scout", "primary_label": "Source Scout (寻源)", "reviewer_gate": "doc-architect", "validator_gate": "none", "mode": "parallel-worker", "rationale": "current evidence is primary work", "independence_required": false},
+    "workflow": {"primary_owner": "workflow-distiller", "primary_label": "Workflow Distiller (沉炼)", "reviewer_gate": "code-auditor", "validator_gate": "usability-validator", "mode": "phase-handoff", "rationale": "workflow structure is primary work", "independence_required": true},
+    "code": {"primary_owner": "main-or-assigned-implementer", "primary_label": "Main or assigned implementer", "reviewer_gate": "code-auditor", "validator_gate": "none", "mode": "implementation", "rationale": "code owner implements; auditor independently reviews", "independence_required": true},
+    "interface": {"primary_owner": "pagewright", "primary_label": "Pagewright (页匠)", "reviewer_gate": "visual-arbiter", "validator_gate": "usability-validator", "mode": "phase-handoff", "rationale": "interaction design is primary work", "independence_required": true},
+    "standard": {"primary_owner": "doc-architect", "primary_label": "Doc Architect (文构)", "reviewer_gate": "workflow-distiller", "validator_gate": "none", "mode": "phase-handoff", "rationale": "standard structure is primary work", "independence_required": true},
+    "install": {"primary_owner": "main-or-assigned-installer", "primary_label": "Main or assigned installer", "reviewer_gate": "code-auditor", "validator_gate": "usability-validator", "mode": "subagent-as-tool", "rationale": "independent first-use validation cannot self-validate the installer", "independence_required": true},
+    "release": {"primary_owner": "workflow-distiller", "primary_label": "Workflow Distiller (沉炼)", "reviewer_gate": "code-auditor", "validator_gate": "usability-validator", "mode": "phase-handoff", "rationale": "release evidence must be independently gated", "independence_required": true}
+  },
+  "boundaries": ["The main agent remains integration owner.", "A role plan does not authorize push, publish, credentials, or overlapping writes.", "Reviewer and validator may be deferred only with a durable reason and local-only release state."]
+}

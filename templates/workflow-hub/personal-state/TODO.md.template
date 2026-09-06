@@ -1,0 +1,38 @@
+# TODO
+
+Updated: {{DATE}}
+
+Use this file for lightweight reminders, future ideas, small planning points,
+and inspiration that should not become a project or full work item yet.
+
+## Rules
+
+- `TODO`: list recent open items, newest first, numbered `1.`, `2.`, `3.` so
+  {{USER_NAME}} can reply with a number to select an item. Reply in the
+  preferred language while preserving IDs, file paths, commands, and project
+  names.
+- A plain number after a `TODO` list means select that numbered open item from
+  the current `Open` ordering.
+- `TODO` output must stay compact but actionable. Use a stable two-line item
+  format: line 1 is only `N. TODO id / name`; line 2 is the readable
+  description with the concrete next action plus any evidence, source path,
+  recovery entry, or completion gate already present in the stored entry. Do
+  not insert an extra blank line between one item's description and the next
+  item's name. Do not mix single-line, paragraph, and blank-line-heavy styles.
+  Do not reduce TODO output to bare ids, titles, or unexplained project names
+  unless {{USER_NAME}} explicitly asks for a titles-only list.
+- If a stored TODO is too vague to explain from `TODO.md` alone, mark it as
+  `needs expansion` and offer one concrete expansion path; do not invent
+  missing details or scan project repos on the micro path just to fill gaps.
+- `TODO:<content>` or `TODO：<content>`: add a new open item with today's date.
+  A new TODO should carry enough context for future recovery: topic/id, why it
+  matters, next action, and known evidence or source path when available. If
+  the prompt is only a vague reminder, store that it needs expansion or ask one
+  clarifying question when immediate action is likely.
+- Keep entries short. Promote an item to a work item only when it becomes a
+  concrete task with files, validation, or handoff requirements.
+- Do not store credentials, customer secrets, or private technical details.
+
+## Open
+
+## Done

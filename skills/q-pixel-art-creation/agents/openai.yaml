@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Pixel Art Creation"
+  short_description: "Create and validate detailed pixel characters and scenes"
+  default_prompt: "Use $q-pixel-art-creation to study references safely, build this pixel-art asset at native resolution, and close the grid, action, provenance, and independent visual-review gates."

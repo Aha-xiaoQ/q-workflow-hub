@@ -1,0 +1,60 @@
+{
+  "format_version": 1,
+  "title": "Q workflow managed skill surfaces",
+  "roots": {
+    "source": {
+      "resolver": "profile-repository",
+      "repository": "q-workflow-hub",
+      "relative": "skills",
+      "authority": "canonical-source"
+    },
+    "bootstrap": {
+      "resolver": "personal-hub",
+      "relative": "bootstrap/skills",
+      "authority": "install-input"
+    },
+    "runtime": {
+      "resolver": "codex-home",
+      "relative": "skills",
+      "authority": "generated-runtime"
+    },
+    "personal-source": {
+      "resolver": "personal-hub",
+      "relative": "generated-skills",
+      "authority": "personal-canonical-source"
+    }
+  },
+  "skills": [
+    {"id": "q-workflow", "tier": "core", "category": "router", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-agent-roster", "tier": "core", "category": "orchestration", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-skill-creation", "tier": "core", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-research-discovery", "tier": "core", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-assistant-profile", "tier": "core", "category": "profile", "canonical_surface": "personal-source", "expected_surfaces": ["personal-source", "runtime"]},
+
+    {"id": "q-skill-pattern-learning", "tier": "flagship", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-code-lifecycle", "tier": "flagship", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-project-overview", "tier": "flagship", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-project-storytelling", "tier": "flagship", "category": "workflow", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-ppt-creation", "tier": "flagship", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-ppt-visual-review", "tier": "flagship", "category": "review", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-pdf-reading", "tier": "flagship", "category": "intake", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+
+    {"id": "q-audio-intake", "tier": "lab", "category": "intake", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-diagram-workflow", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-game-canvas-iteration", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-html-interface-design", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-pixel-art-creation", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
+    {"id": "q-video-intake", "tier": "lab", "category": "intake", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]}
+  ],
+  "ignore": {
+    "directories": [".git", "__pycache__", "node_modules", ".venv", "venv", ".tmp"],
+    "suffixes": [".pyc", ".pyo"]
+  },
+  "policy": {
+    "runtime_read_only": true,
+    "bootstrap_is_merge_source": false,
+    "unregistered_runtime_is_error": true,
+    "hash_algorithm": "sha256",
+    "remote_freshness": "unproven-until-fetch-receipt"
+  }
+}

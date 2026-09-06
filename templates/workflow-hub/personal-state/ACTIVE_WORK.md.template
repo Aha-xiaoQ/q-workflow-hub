@@ -1,0 +1,27 @@
+# Active Work
+
+Updated: {{DATE}}
+
+## Current Focus
+
+- No active blocking focus.
+
+## Active Work Items
+
+- None.
+
+## Recovery Rule
+
+- When a task becomes concrete, create a work item under `work-items/` and list
+  it here before doing long-running implementation work.
+- If this file says there is no active work, an agent should scan recent work
+  items, the project registry, Git state, and recently modified local skills
+  before concluding that nothing can be resumed.
+
+## Recently Completed
+
+- None.
+
+## Project Registry
+
+See `..\PROJECT_REGISTRY.md`.

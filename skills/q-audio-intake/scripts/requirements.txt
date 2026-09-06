@@ -1,0 +1,4 @@
+yt-dlp>=2026.3.17
+openai>=2.0.0
+google-genai>=1.0.0
+faster-whisper>=1.2.1

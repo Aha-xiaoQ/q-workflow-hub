@@ -1,0 +1,35 @@
+# Project Registry
+
+This file routes short resume prompts to project repositories. Keep it
+lightweight.
+
+| Project | Type | Local Path | Remote | Resume Skill | Status | Notes |
+|:---|:---|:---|:---|:---|:---|:---|
+| example-project | Example | `{{WORKSPACE_ROOT}}\example-project` | TBD | `q-workflow` | Placeholder | Replace or remove this row. |
+
+
+## Repository Locator Gate
+
+Before `git pull`, `git clone`, `git push`, update, sync, or cross-device
+recovery, resolve the repository with `scripts/resolve-workflow-repo.ps1` when
+available. A registry path is a candidate, not proof. Accept a path only after
+`.git` and the expected Git remote identity are verified. If the
+resolver reports `not_found`, `invalid`, or `ambiguous`, stop and show the
+candidate paths instead of guessing.
+
+Use `scripts/register-project.ps1` to add a project safely: run it once without
+`-ConfirmWrite` to show a focused project summary, one representative
+hardware/software/document detail when detected, and write plan, then rerun with
+`-ConfirmWrite` only after approval.
+
+## Resume Policy
+
+- If `personal-state/ACTIVE_WORK.md` names an active work item, resume it
+  first.
+- If the prompt names a project, the named project overrides the latest active
+  work item.
+- If no active work exists and no project is named, scan recent work-item files,
+  non-placeholder registry entries, recent Git activity, and recently modified
+  local skills before asking for a target.
+- Clone repositories on demand; do not mirror project contents into this hub.
+- Keep imported reference skills and tutorials separate from owned projects.

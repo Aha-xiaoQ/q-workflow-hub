@@ -1,0 +1,34 @@
+# {{USER_NAME}} Workflow Hub
+
+Created: {{DATE}}
+
+This private repository or folder stores cross-project routing state for the user's
+agent-assisted workflow. Most users keep exactly one remote repo for this hub
+when they want backup or cross-machine sync.
+
+## Contents
+
+- `PROJECT_REGISTRY.md`: project paths, remotes, resume skills, and status.
+- `personal-state/ACTIVE_WORK.md`: current or recent active work.
+- `personal-state/TODO.md`: lightweight reminders and micro TODO inbox.
+- `personal-state/ASSISTANT_OPERATING_PROFILE.md`: durable collaboration preferences.
+- `personal-state/ROLE_MODES.md`: optional lightweight working modes.
+- `personal-state/ASSISTANT_HELP.md`: local command/help surface.
+- `personal-state/PAUSED_WORK.md`: paused work candidates.
+- `personal-state/SKILL_SYNC.md`: local skill source/runtime inventory.
+- `personal-state/work-items/`: one file per active or paused work item.
+- `personal-state/journal/`: optional recovery notes.
+- `personal-state/hooks/` and `personal-state/hook-inbox/`: optional reviewed automation notes.
+- `generated-skills/`: user-specific generated skills.
+- `scripts/resolve-workflow-repo.ps1`: resolves and verifies repo paths before pull, push, sync, or recovery.
+- `scripts/register-project.ps1`: previews project summaries and records existing
+  project paths in `PROJECT_REGISTRY.md` after user approval.
+- Public-source test flow: `scripts/human-loop-test-runner.py` in the starter
+  repo lists and runs reusable human-in-loop workflow tests.
+- First-run guide HTML: `FIRST_RUN_GUIDE.html` for English setup or
+  `FIRST_RUN_GUIDE.zh-CN.html` for Chinese setup.
+
+## Privacy
+
+Keep this workflow hub private. Do not store credentials, passwords, private keys,
+private secrets, or large generated project artifacts here.

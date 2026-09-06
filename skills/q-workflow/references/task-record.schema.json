@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://q-workflow.local/schemas/task-record-v1.json",
+  "title": "Q workflow task record v1",
+  "description": "Canonical machine record for one material task. ACTIVE_WORK is only a focus view over these records.",
+  "type": "object",
+  "required": [
+    "format_version",
+    "schema",
+    "task_id",
+    "trace_id",
+    "execution_epoch",
+    "state_revision",
+    "authority_event",
+    "work_state",
+    "integrity_state",
+    "release_state",
+    "role_plan",
+    "remote",
+    "next_action",
+    "updated_at",
+    "focus"
+  ],
+  "properties": {
+    "format_version": {"const": 1},
+    "schema": {"const": "q-workflow-task-v1"},
+    "task_id": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"},
+    "trace_id": {"type": "string", "minLength": 1, "maxLength": 200},
+    "execution_epoch": {"type": "integer", "minimum": 1},
+    "state_revision": {"type": "string", "minLength": 1, "maxLength": 240},
+    "authority_event": {"type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,159}$"},
+    "work_state": {
+      "enum": ["briefing", "active", "paused", "blocked", "validating", "closed"]
+    },
+    "integrity_state": {
+      "enum": ["unknown", "clean", "local-validated", "offline-validated", "stale", "drift", "conflicted", "repairing"]
+    },
+    "release_state": {
+      "enum": ["local-only", "candidate", "ready", "released"]
+    },
+    "role_plan": {
+      "type": "object",
+      "required": ["id", "primary", "reviewer", "validator"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1},
+        "primary": {"$ref": "#/$defs/role"},
+        "reviewer": {"$ref": "#/$defs/gateRole"},
+        "validator": {"$ref": "#/$defs/gateRole"}
+      },
+      "additionalProperties": true
+    },
+    "remote": {
+      "type": "object",
+      "required": ["status", "proven"],
+      "properties": {
+        "status": {"enum": ["unproven", "proven"]},
+        "proven": {"type": "boolean"},
+        "release_receipt": {"type": "string", "minLength": 1},
+        "release_receipt_sha256": {"type": "string", "pattern": "^[0-9a-fA-F]{64}$"},
+        "release_remote": {"type": "string", "minLength": 1},
+        "release_branch": {"type": "string", "minLength": 1},
+        "release_fetched_at": {"type": "string", "format": "date-time"},
+        "release_target_oid": {"type": "string", "pattern": "^(?:[0-9a-fA-F]{40}|[0-9a-fA-F]{64})$"},
+        "signoff_id": {"type": "string", "minLength": 1}
+      },
+      "additionalProperties": true
+    },
+    "blocked_on": {"type": "string", "minLength": 1},
+    "error_code": {"type": "string", "minLength": 1},
+    "next_action": {"type": "string", "minLength": 1},
+    "updated_at": {"type": "string", "format": "date-time"},
+    "focus": {
+      "type": "object",
+      "required": ["summary"],
+      "properties": {
+        "summary": {"type": "string", "minLength": 1},
+        "work_item_path": {"type": "string"},
+        "authority_path": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "detail": {
+      "description": "Domain-specific stage, verdict, experiment, or project state. These values must not replace the generic lifecycle axes.",
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "role": {
+      "type": "object",
+      "required": ["owner", "status"],
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "status": {"enum": ["planned", "running", "completed", "deferred"]}
+      },
+      "additionalProperties": true
+    },
+    "gateRole": {
+      "type": "object",
+      "required": ["owner", "status"],
+      "properties": {
+        "owner": {"type": "string", "minLength": 1},
+        "status": {"enum": ["pending", "completed", "deferred"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"work_state": {"const": "blocked"}}},
+      "then": {"required": ["blocked_on", "error_code"]}
+    },
+    {
+      "if": {"properties": {"release_state": {"enum": ["ready", "released"]}}},
+      "then": {
+        "properties": {
+          "remote": {
+            "required": [
+              "status",
+              "proven",
+              "release_receipt",
+              "release_receipt_sha256",
+              "release_remote",
+              "release_branch",
+              "release_fetched_at",
+              "release_target_oid",
+              "signoff_id"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": true
+}

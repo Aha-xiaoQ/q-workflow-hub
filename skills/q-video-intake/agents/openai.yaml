@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Video Intake"
+  short_description: "Subtitle-first video/audio intake"
+  default_prompt: "Use $q-video-intake to extract a transcript from this video or audio source and turn it into structured notes."

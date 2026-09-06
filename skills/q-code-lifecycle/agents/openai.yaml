@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Code Lifecycle"
+  short_description: "Manage debug checkpoints and releases"
+  default_prompt: "Use q-code-lifecycle to manage code checkpoints, debug state, release handoff, and reproducible demo packaging for this project."

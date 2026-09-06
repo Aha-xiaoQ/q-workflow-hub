@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Skill Pattern Learning"
+  short_description: "Deep-study skills and validate mechanisms"
+  default_prompt: "Use $q-skill-pattern-learning to study these skills, extract transferable patterns, run deep-study mode when the source is high-value, and validate what should enter q-workflow."

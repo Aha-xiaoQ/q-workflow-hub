@@ -1,0 +1,9 @@
+# Decisions
+
+## {{DATE}} - Initialize Durable Project Memory
+
+Decision: use q-workflow durable memory files for this project.
+
+Rationale: a fresh assistant session should be able to recover project purpose,
+current state, decisions, tasks, and environment without relying on chat
+history.

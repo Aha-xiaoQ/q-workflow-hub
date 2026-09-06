@@ -1,0 +1,18 @@
+# Paused Work
+
+Updated: {{DATE}}
+
+Use this file for unfinished work that should be easy to resume later but is not
+the current focus.
+
+## Candidates
+
+- None.
+
+## Rules
+
+- Keep entries short: project, paused reason, next safe action, and evidence
+  path.
+- Move concrete work into `work-items/` when it needs files, validation, or
+  handoff.
+- Remove or mark entries done when they are resumed and closed.

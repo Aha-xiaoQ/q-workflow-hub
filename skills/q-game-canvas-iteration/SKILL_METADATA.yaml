@@ -1,0 +1,32 @@
+skill_id: q-game-canvas-iteration
+display_name: Q Game Canvas Iteration
+variant: generic
+category: domain
+status: pilot
+publish_profile: public
+source_of_truth: q-workflow-hub/skills/q-game-canvas-iteration
+runtime_paths:
+  - %USERPROFILE%/.codex/skills/q-game-canvas-iteration
+activation_contract:
+  - trigger: Improve or debug an original local Canvas, WebGL, browser, or desktop-wrapper game from concrete playtest feedback.
+    aliases: [game-canvas-iteration, game feel, power-up, enemy behavior, level flow, 8-bit music, game playtest]
+    negative_triggers: [copy original game assets, recreate copyrighted audio, general web dashboard]
+    tier: Project
+    risk_label: allow
+    risk_notes: Local source and package changes are reversible; public sharing, push, publishing, and third-party asset use remain separately gated.
+    reference: SKILL.md
+    validation_prompt: Use q-game-canvas-iteration to fix a Fire Flower that should stop after emerging, then show behavior, draw, reset, and launcher checks.
+output_contract:
+  chat_summary: Changed mechanics, controls, validation evidence, package path, and residual risk.
+  file_outputs: Scoped game files and a newly named local package when requested.
+  report_path: optional
+  validation_evidence: Syntax plus state-path and launcher checks; visual playtest or explicit blocked reason.
+dependencies: Local game source, Node or browser runtime as applicable, and existing launcher when present.
+encoding_guard: required
+validation: source/runtime parity, metadata readback, syntax/state/launcher checks, and scenario replay.
+review_ownership:
+  pre_review_required: conditional
+  post_review_required: conditional
+  primary_reviewer: Workflow Distiller (沉炼)
+  review_evidence: REVIEW_LOG.md
+sync_notes: Canonical source is installed to runtime after source validation; public/company/bootstrap surfaces are recorded in SOURCE_RUNTIME.md.

@@ -1,0 +1,14 @@
+local-state/
+.venv*/
+__pycache__/
+*.py[cod]
+*.zip
+*.log
+.DS_Store
+Thumbs.db
+auth-routes.json
+cookies.txt
+*.cookies.txt
+.env
+.env.*
+!.env.example

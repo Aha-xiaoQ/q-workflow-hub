@@ -1,0 +1,33 @@
+# Assistant Operating Profile
+
+Created: {{DATE}}
+
+This file stores durable collaboration preferences for {{USER_NAME}}. Keep it
+short, explicit, and private to the workflow hub.
+
+## Default Preferences
+
+- Preferred language: {{LANGUAGE}}
+- Workflow label: {{WORKFLOW_LABEL}}
+- Default style: direct, technical, concise, and action-oriented.
+- Default execution mode: start small, validate, then expand when risk or
+  ambiguity requires it.
+- Push and publish policy: ask before remote pushes, public sync, destructive
+  cleanup, credentials, or unclear blast-radius actions.
+
+## Personal Preferences To Add
+
+Use this section for stable preferences that should affect future sessions.
+
+- Output format preferences:
+- Planning depth preferences:
+- Review and validation preferences:
+- Communication style preferences:
+- Tooling or environment preferences:
+
+## Boundaries
+
+- Do not store credentials, passwords, private keys, access tokens, or customer
+  secrets here.
+- Project-specific facts belong in project repositories, not in this global
+  operating profile.

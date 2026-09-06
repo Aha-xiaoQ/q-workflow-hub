@@ -1,0 +1,136 @@
+# Minimal q-workflow experiment inspired by YAML DAG workflow engines.
+# This is a draft contract for Codex/human execution, not an Archon file and
+# not an installed runtime dependency.
+
+version: 0
+kind: q-workflow-experiment
+name: plan-edit-validate-review
+status: draft
+description: >
+  A small repeatable coding workflow for one bounded task: route context, make a
+  concrete plan, edit narrowly, validate with repo-native checks, review the
+  resulting diff, and checkpoint durable state.
+
+compatibility:
+  archon_install_required: false
+  executable_by:
+    - codex
+    - human
+  file_is_authoritative_for:
+    - stage_order
+    - required_artifacts
+    - safety_gates
+  file_is_not_authoritative_for:
+    - exact shell commands before repo discovery
+    - remote push approval
+    - destructive cleanup approval
+
+inputs:
+  task: "User request or selected TODO item"
+  repo: "Target repository path"
+  profile: "company | personal"
+  optional_work_item: "Durable hub work item path when the task is not trivial"
+
+policies:
+  preserve_user_changes: true
+  prefer_repo_native_commands: true
+  avoid_unrelated_refactors: true
+  ask_before:
+    - destructive_changes
+    - remote_push
+    - public_sync
+    - credential_handling
+    - broad_dependency_install
+
+artifacts:
+  plan: ".agents/tmp/qwf-plan.md"
+  validation_log: ".agents/tmp/qwf-validation.md"
+  review_notes: ".agents/tmp/qwf-review.md"
+  checkpoint: "project state file or personal-state work item"
+
+stages:
+  - id: route
+    type: context
+    goal: "Identify the smallest safe project scope and active instructions."
+    actions:
+      - "Read the matching skill router and only task-relevant references."
+      - "Check targeted git status for the repo before edits."
+      - "Identify user-owned dirty files that must be preserved."
+    outputs:
+      - "scope"
+      - "risk_gates"
+      - "dirty_state_summary"
+
+  - id: plan
+    type: agent
+    depends_on:
+      - route
+    goal: "Create a short implementation plan with validation commands."
+    actions:
+      - "Read only the files needed to make the change safely."
+      - "Choose the narrowest file set that satisfies the task."
+      - "Write or summarize the plan before editing when the task is non-trivial."
+    outputs:
+      - "plan"
+      - "expected_changed_files"
+      - "validation_commands"
+
+  - id: edit
+    type: agent
+    depends_on:
+      - plan
+    goal: "Apply narrow edits consistent with existing project style."
+    actions:
+      - "Use structured parsers or local helpers when practical."
+      - "Use apply_patch for manual edits."
+      - "Do not overwrite unrelated user changes."
+    outputs:
+      - "changed_files"
+      - "implementation_notes"
+
+  - id: validate
+    type: deterministic
+    depends_on:
+      - edit
+    goal: "Run repo-native checks that match the blast radius."
+    actions:
+      - "Run format/lint/unit/build checks discovered during plan."
+      - "If a check is unavailable, record the exact blocker."
+      - "Capture warnings separately from failures."
+    success_when:
+      - "Required checks pass or unavailable checks have explicit blockers."
+      - "git diff --check has no new whitespace errors."
+    outputs:
+      - "validation_log"
+
+  - id: review
+    type: agent
+    depends_on:
+      - validate
+    goal: "Review the diff for correctness, scope, and recovery quality."
+    actions:
+      - "Inspect git diff for changed files."
+      - "Look for missed tests, hidden behavior changes, and stale docs."
+      - "Confirm durable state reflects the work."
+    outputs:
+      - "review_notes"
+      - "residual_risks"
+
+  - id: checkpoint
+    type: state
+    depends_on:
+      - review
+    goal: "Make the result recoverable across sessions."
+    actions:
+      - "Update the active work item or project state."
+      - "Move completed lightweight TODO entries to Done when appropriate."
+      - "Report changed files, validation, and next action."
+    outputs:
+      - "checkpoint"
+      - "handoff_summary"
+
+finish:
+  response_must_include:
+    - "changed_files"
+    - "validation"
+    - "next_action_or_done_state"

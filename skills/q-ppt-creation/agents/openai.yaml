@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q PPT Creation"
+  short_description: "Create and refine presentation decks"
+  default_prompt: "Use q-ppt-creation to create, migrate, or polish a presentation deck. For a bare PPT-making request, open the local HTML intake by default, then proceed when the user says start making the PPT or provides details in chat."

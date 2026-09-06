@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Agent Roster"
+  short_description: "Route Xiao Q expert agents and handoffs"
+  default_prompt: "Use $q-agent-roster to route named experts and specialist subagents, create new experts through admission gates when justified, auto-check self-review risk, enforce review-before-human-review, require Xiao Q explicit approval before push/publish/release, fan-out/fan-in, phase handoff, guardrail/release readiness, and parallel opportunities, announce a standardized multi-line dispatch card with Expert role, English and Chinese expert names, Run instance, Mode, Mission, Permissions, and Boundaries, build Q-AGENT-PACKET/AGENT-TASK context packets, run first-user usability tests, collect handoffs, and close the review loop, and capture low-overhead expert self-improvement deltas when material."

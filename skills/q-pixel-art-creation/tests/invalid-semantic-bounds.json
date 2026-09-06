@@ -1,0 +1,20 @@
+{
+  "schema": "eye-semantic-manual-v1",
+  "coordinate_space": "face-crop-native-pixels",
+  "eye_side_convention": "screen-left/screen-right",
+  "box_semantics": "xywh-half-open",
+  "samples": [
+    {
+      "id": "INVALID-BOUNDS",
+      "screen_left_eye_box": [29, 5, 6, 4],
+      "screen_right_eye_box": null,
+      "merged_eye_box": [29, 5, 6, 4],
+      "visible_eye_count": 1,
+      "not_visible_reason": "far eye hidden",
+      "visible_eye_complete": true,
+      "upper_lid_complete": true,
+      "status": "annotated",
+      "face_size": [32, 24]
+    }
+  ]
+}

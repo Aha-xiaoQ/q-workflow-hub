@@ -1,0 +1,4 @@
+interface:
+  display_name: "Q Research Discovery"
+  short_description: "Plan searches and record source lessons"
+  default_prompt: "Use $q-research-discovery to plan targeted research, evaluate sources, and record reusable search lessons."

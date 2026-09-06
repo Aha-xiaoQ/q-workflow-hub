@@ -1,0 +1,20 @@
+# {{PROJECT_NAME}}
+
+## Purpose
+
+{{PROJECT_OBJECTIVE}}
+
+## Structure
+
+| Path | Purpose |
+|:---|:---|
+| `docs/` | Project documentation |
+| `scripts/` | Automation and helper scripts |
+| `assets/` | Source assets |
+| `archive/` | Archived outputs or references |
+
+## Resume
+
+```text
+Continue {{PROJECT_NAME}}. Use q-workflow.
+```

@@ -1,0 +1,38 @@
+# Assistant Help
+
+Created: {{DATE}}
+
+This file is the short user-facing command guide for {{WORKFLOW_LABEL}}.
+
+## Common Commands
+
+- `{{USER_NAME}}`: quick workflow pointer and recovery check.
+- `continue my project`: resume the current or most likely project.
+- `continue <project name>`: resume a named project.
+- `status`: summarize current focus, blockers, changed files, and next action.
+- `checkpoint`: write a recoverable state note before switching or pausing.
+- `TODO`: list lightweight open reminders.
+- `TODO: <item>`: add a lightweight reminder without starting a full project
+  workflow.
+- `workflow-audit`: run a deeper workflow health check when rules or state feel
+  bloated, stale, or inconsistent.
+- `human-loop test`: from the public starter repo, list or run reusable
+  human-in-loop workflow tests with `scripts/human-loop-test-runner.py`.
+- `register project`: preview a focused project summary, one representative
+  hardware/software/document detail when detected, and the write plan; present
+  the user-facing card in the user's preferred language; after approval,
+  record an existing Git project in `PROJECT_REGISTRY.md` using
+  `scripts/register-project.ps1`.
+
+## What The Workflow Should Do
+
+- Recover from files instead of relying only on chat history.
+- Keep project facts inside project repositories.
+- Keep reusable behavior in skills.
+- Keep cross-project routing and preferences inside this private workflow hub.
+- Ask before remote pushes, publishing, destructive cleanup, credentials, broad
+  installs, or public/customer sync.
+
+## Personal Notes
+
+Add short local notes here when {{USER_NAME}} wants a customized help surface.

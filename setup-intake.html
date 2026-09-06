@@ -1,0 +1,1666 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>小Q工作流安装向导</title>
+  <style>
+    :root {
+      --green: #69ca00;
+      --blue: #0eafe0;
+      --orange: #f9b500;
+      --teal: #00a08b;
+      --ink: #252a2d;
+      --muted: #64737a;
+      --line: #d9e0e4;
+      --line-strong: #a9b8bd;
+      --soft: #f5f8f8;
+      --panel: #ffffff;
+      --danger: #c74343;
+      --code-bg: #111b20;
+      --code-ink: #eff8f7;
+      --shadow: 0 14px 38px rgba(20, 34, 40, 0.10);
+      --shadow-soft: 0 8px 20px rgba(20, 34, 40, 0.07);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      background: #f8faf9;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 286px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+      min-width: 0;
+      padding: 24px 20px;
+      background: #ffffff;
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: grid;
+      grid-template-columns: 46px minmax(0, 1fr);
+      gap: 12px;
+      align-items: center;
+      min-height: 58px;
+    }
+
+    .brand-mark {
+      display: block;
+      width: 46px;
+      height: 46px;
+      object-fit: contain;
+      border-radius: 8px;
+      flex: 0 0 auto;
+    }
+    .brand-title {
+      min-width: 0;
+      font-size: 18px;
+      line-height: 1.05;
+      font-weight: 850;
+    }
+
+    .brand-title span {
+      display: block;
+      margin-top: 4px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 750;
+    }
+
+    .steps {
+      display: grid;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .step {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+      padding: 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      font: inherit;
+      cursor: pointer;
+      transition: border-color 120ms ease, background 120ms ease, color 120ms ease;
+    }
+
+    .step[aria-current="true"] {
+      color: var(--ink);
+      border-color: var(--line);
+      background: var(--soft);
+    }
+
+    .step:hover {
+      color: var(--ink);
+      border-color: rgba(14, 175, 224, 0.35);
+      background: #fbfdfd;
+    }
+
+    .step-index {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      color: #ffffff;
+      background: var(--green);
+      font-weight: 900;
+    }
+
+    .step:nth-child(2) .step-index {
+      background: var(--blue);
+    }
+
+    .step:nth-child(3) .step-index {
+      background: var(--orange);
+      color: #3b2a00;
+    }
+
+    .step:nth-child(4) .step-index {
+      background: var(--teal);
+    }
+
+    .step-title {
+      display: block;
+      font-size: 13px;
+      font-weight: 850;
+      line-height: 1.25;
+    }
+
+    .step-subtitle {
+      display: block;
+      margin-top: 4px;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    .sidebar-note {
+      margin-top: auto;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: #ffffff;
+      font-size: 12px;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      min-height: 78px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding: 19px 32px;
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .topbar h1 {
+      margin: 0;
+      font-size: 23px;
+      line-height: 1.2;
+      letter-spacing: 0;
+    }
+
+    .topbar p {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 10px;
+      border: 1px solid rgba(14, 175, 224, 0.40);
+      border-radius: 8px;
+      color: #066d8b;
+      background: rgba(14, 175, 224, 0.10);
+      font-size: 12px;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .badge.status {
+      border-color: rgba(105, 202, 0, 0.45);
+      color: #346700;
+      background: rgba(105, 202, 0, 0.12);
+    }
+
+    .badge.marker {
+      max-width: 360px;
+      border-color: rgba(249, 181, 0, 0.50);
+      color: #705000;
+      background: rgba(249, 181, 0, 0.13);
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .content {
+      width: min(1160px, 100%);
+      padding: 30px 32px 38px;
+    }
+
+    .panel {
+      display: none;
+      min-width: 0;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(330px, 0.7fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .form-card,
+    .preview-card,
+    .review-card,
+    .output-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .form-card h2,
+    .preview-card h2,
+    .review-card h2,
+    .output-card h2 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      line-height: 1.3;
+      letter-spacing: 0;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .field {
+      display: grid;
+      gap: 7px;
+      min-width: 0;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label,
+    .field-label {
+      color: var(--ink);
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.3;
+    }
+
+    .field-hint {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .path-control {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 8px;
+      align-items: center;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      min-width: 0;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--ink);
+      background: #ffffff;
+      font: inherit;
+      font-size: 14px;
+      transition: border-color 120ms ease, box-shadow 120ms ease;
+    }
+
+    textarea {
+      min-height: 112px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus,
+    button:focus-visible,
+    .choice:focus-within {
+      outline: 2px solid rgba(14, 175, 224, 0.30);
+      outline-offset: 2px;
+      border-color: var(--blue);
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .choice {
+      position: relative;
+      display: grid;
+      gap: 10px;
+      min-height: 176px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+    }
+
+    .choice:hover {
+      border-color: rgba(14, 175, 224, 0.45);
+      transform: translateY(-1px);
+    }
+
+    .choice input {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 18px;
+      height: 18px;
+      min-height: 18px;
+      accent-color: var(--green);
+    }
+
+    .choice:has(input:checked) {
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+    }
+
+    .choice-title {
+      padding-right: 24px;
+      font-size: 14px;
+      font-weight: 850;
+    }
+
+    .choice-copy {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .mini-preview {
+      height: 70px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #ffffff;
+      position: relative;
+    }
+
+    .preview-q::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 0 54%;
+      background: linear-gradient(135deg, var(--green) 0 28%, var(--blue) 28% 62%, var(--orange) 62% 78%, var(--teal) 78%);
+    }
+
+    .preview-q span {
+      position: absolute;
+      left: 13px;
+      top: 15px;
+      width: 34%;
+      height: 11px;
+      border-radius: 8px;
+      background: var(--ink);
+      box-shadow: 0 20px 0 var(--green), 0 40px 0 var(--line);
+    }
+
+    .preview-cn {
+      padding: 12px;
+    }
+
+    .preview-cn span {
+      display: block;
+      height: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      background: var(--line);
+    }
+
+    .preview-cn span:nth-child(1) {
+      width: 78%;
+      background: var(--orange);
+    }
+
+    .preview-cn span:nth-child(2) {
+      width: 58%;
+      background: var(--ink);
+    }
+
+    .preview-cn span:nth-child(3) {
+      width: 88%;
+      background: var(--teal);
+    }
+
+    .preview-custom {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 10px;
+      padding: 12px;
+      align-items: center;
+    }
+
+    .preview-custom::before {
+      content: "Q";
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      color: #ffffff;
+      background: var(--ink);
+      font-weight: 900;
+    }
+
+    .preview-custom span {
+      display: block;
+      height: 10px;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      background: var(--line);
+    }
+
+    .preview-custom span:nth-child(1) {
+      width: 82%;
+      background: var(--blue);
+    }
+
+    .preview-custom span:nth-child(2) {
+      width: 58%;
+    }
+
+    .marker-box {
+      display: grid;
+      gap: 13px;
+      align-content: start;
+      min-height: 100%;
+    }
+
+    .marker-live {
+      padding: 18px;
+      border: 1px solid rgba(249, 181, 0, 0.45);
+      border-left: 6px solid var(--orange);
+      border-radius: 8px;
+      color: #372a0a;
+      background: #fff8e8;
+      font-size: 19px;
+      font-weight: 900;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+
+    .contract-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .contract-list li {
+      display: grid;
+      grid-template-columns: 11px minmax(0, 1fr);
+      gap: 9px;
+      align-items: start;
+    }
+
+    .contract-list li::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      margin-top: 4px;
+      border-radius: 3px;
+      background: var(--green);
+    }
+
+    .contract-list li:nth-child(2)::before {
+      background: var(--blue);
+    }
+
+    .contract-list li:nth-child(3)::before {
+      background: var(--orange);
+    }
+
+    .check-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .check {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      min-height: 42px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #ffffff;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .check input {
+      width: 18px;
+      min-height: 18px;
+      accent-color: var(--green);
+    }
+
+    .check span {
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+    }
+
+    .check strong {
+      font-size: 13px;
+      line-height: 1.3;
+    }
+
+    .check small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .privacy-band {
+      margin-top: 16px;
+      padding: 13px 14px;
+      border: 1px solid rgba(0, 160, 139, 0.30);
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      background: rgba(0, 160, 139, 0.07);
+      color: #245653;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .review-layout {
+      display: grid;
+      grid-template-columns: minmax(330px, 0.70fr) minmax(420px, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .summary-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .summary-row {
+      display: grid;
+      grid-template-columns: 118px minmax(0, 1fr);
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .summary-row:last-child {
+      border-bottom: 0;
+    }
+
+    .summary-row strong {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .summary-row span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+      font-weight: 800;
+    }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-radius: 8px 8px 0 0;
+      overflow: hidden;
+      background: var(--soft);
+    }
+
+    .tab {
+      min-height: 44px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      border-radius: 0;
+      color: var(--muted);
+      background: transparent;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .tab:last-child {
+      border-right: 0;
+    }
+
+    .tab[aria-selected="true"] {
+      color: var(--ink);
+      background: #ffffff;
+      box-shadow: inset 0 -3px 0 var(--green);
+    }
+
+    .output-pane {
+      display: none;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 0 0 8px 8px;
+      background: #ffffff;
+    }
+
+    .output-pane.active {
+      display: block;
+    }
+
+    .primary-output {
+      display: grid;
+      gap: 12px;
+    }
+
+    .manual-details {
+      margin-top: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--soft);
+      overflow: hidden;
+    }
+
+    .manual-details summary {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .manual-details-body {
+      display: grid;
+      gap: 12px;
+      padding: 0 12px 12px;
+    }
+
+    .manual-details-body h3 {
+      margin: 0 0 7px;
+      font-size: 13px;
+    }
+
+    .pane-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .pane-head h3 {
+      margin: 0;
+      font-size: 14px;
+      letter-spacing: 0;
+    }
+
+    pre {
+      min-height: 292px;
+      max-height: 430px;
+      margin: 0;
+      padding: 14px;
+      border-radius: 8px;
+      color: var(--code-ink);
+      background: var(--code-bg);
+      overflow: auto;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      font-family: Consolas, "Cascadia Mono", monospace;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .install-log {
+      min-height: 260px;
+      background: #f7faf9;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      font-family: Consolas, "Cascadia Mono", monospace;
+    }
+
+    .warning {
+      display: none;
+      margin-top: 12px;
+      padding: 12px;
+      border: 1px solid rgba(199, 67, 67, 0.35);
+      border-left: 4px solid var(--danger);
+      border-radius: 8px;
+      color: var(--danger);
+      background: rgba(199, 67, 67, 0.06);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .warning.active {
+      display: block;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-top: 26px;
+      padding: 18px 0 14px;
+      border-top: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(248, 250, 249, 0.88), #f8faf9 45%);
+      backdrop-filter: blur(8px);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button.primary,
+    button.secondary,
+    button.ghost,
+    button.path-picker {
+      min-height: 42px;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font: inherit;
+      font-size: 14px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button.primary {
+      border: 1px solid var(--green);
+      color: #ffffff;
+      background: var(--green);
+    }
+
+    button.secondary {
+      border: 1px solid var(--ink);
+      color: #ffffff;
+      background: var(--ink);
+    }
+
+    button.ghost {
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #ffffff;
+    }
+
+    button.path-picker {
+      border: 1px solid rgba(14, 175, 224, 0.40);
+      color: #066d8b;
+      background: rgba(14, 175, 224, 0.10);
+      white-space: nowrap;
+    }
+
+    button.copy-small {
+      min-height: 34px;
+      padding: 7px 11px;
+      border: 1px solid rgba(14, 175, 224, 0.40);
+      border-radius: 8px;
+      color: #066d8b;
+      background: rgba(14, 175, 224, 0.10);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.50;
+    }
+
+    .status-text {
+      min-height: 18px;
+      min-width: 180px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    @media (max-width: 980px) {
+      .app {
+        grid-template-columns: minmax(0, 1fr);
+        min-height: auto;
+      }
+
+      .sidebar {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+        padding: 18px 20px;
+        gap: 14px;
+      }
+
+      .steps {
+        display: flex;
+        overflow-x: auto;
+        padding-bottom: 4px;
+        scrollbar-width: thin;
+      }
+
+      .step {
+        min-width: 166px;
+      }
+
+      .sidebar-note {
+        margin-top: 0;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .content {
+        padding: 24px 20px 32px;
+      }
+
+      .intro-grid,
+      .review-layout,
+      .grid,
+      .choice-grid,
+      .check-grid,
+      .path-control {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .brand {
+        grid-template-columns: 40px minmax(0, 1fr);
+      }
+
+      .brand-mark {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+
+      .topbar {
+        display: grid;
+      }
+
+      .topbar-actions {
+        justify-content: stretch;
+      }
+
+      .badge {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .tabs {
+        grid-template-columns: 1fr;
+      }
+
+      .tab {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .tab:last-child {
+        border-bottom: 0;
+      }
+
+      .summary-row {
+        grid-template-columns: 1fr;
+        gap: 3px;
+      }
+
+      .actions,
+      .pane-head {
+        display: grid;
+      }
+
+      .actions {
+        position: static;
+        background: transparent;
+        backdrop-filter: none;
+      }
+
+      .button-row,
+      .button-row button,
+      .actions button {
+        width: 100%;
+      }
+
+      pre {
+        min-height: 230px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand" aria-label="小Q工作流安装向导">
+        <img class="brand-mark" src="assets/q-logo.svg" alt="Q logo">
+        <div class="brand-title">小Q工作流<span>安装向导</span></div>
+      </div>
+
+      <nav class="steps" aria-label="安装步骤">
+        <button class="step" type="button" data-step="0" aria-current="true">
+          <span class="step-index">1</span>
+          <span><span class="step-title">身份标识</span><span class="step-subtitle">名称、标签、语言</span></span>
+        </button>
+        <button class="step" type="button" data-step="1">
+          <span class="step-index">2</span>
+          <span><span class="step-title">本地路径</span><span class="step-subtitle">工作区与私有资料夹</span></span>
+        </button>
+        <button class="step" type="button" data-step="2">
+          <span class="step-index">3</span>
+          <span><span class="step-title">安装偏好</span><span class="step-subtitle">Git、远程仓库、备注</span></span>
+        </button>
+        <button class="step" type="button" data-step="3">
+          <span class="step-index">4</span>
+          <span><span class="step-title">确认输出</span><span class="step-subtitle">复制提示词安装</span></span>
+        </button>
+      </nav>
+
+      <div class="sidebar-note">
+        这个页面只是本地格式化工具，不会主动发送任何数据。请不要在这里填写密钥、客户资料、私有 token 或其他敏感信息。
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="stepTitle">身份标识</h1>
+          <p id="stepSubtitle">为工作流设置一个清晰的恢复标签，让新会话中的 Agent 能识别并恢复专属工作流。</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="badge status" id="modeBadge">检测安装模式</span>
+          <span class="badge marker" id="topMarker">【小Q工作流 | 快速恢复】</span>
+        </div>
+      </header>
+
+      <form class="content" id="setupForm">
+        <section class="panel active" data-panel="0">
+          <div class="intro-grid">
+            <section class="form-card">
+              <h2>工作流身份</h2>
+              <div class="grid">
+                <label class="field">
+                  恢复触发词 / 显示名称
+                  <span class="field-hint">也可以作为最短恢复提示词，例如直接输入“小Q”。</span>
+                  <input id="userName" value="小Q" autocomplete="name">
+                </label>
+                <label class="field">
+                  工作流标签
+                  <span class="field-hint">会显示在快速恢复回复的开头，帮助同事记住工作流名称。</span>
+                  <input id="workflowLabel" value="小Q工作流">
+                </label>
+                <label class="field">
+                  生成语言
+                  <span class="field-hint">当前优先服务中国同事，默认生成中文安装提示词。</span>
+                  <select id="language">
+                    <option value="zh">中文</option>
+                    <option value="en">English</option>
+                  </select>
+                </label>
+                <label class="field">
+                  Agent
+                  <span class="field-hint">用于生成安装提示词和交接说明。</span>
+                  <select id="agent">
+                    <option>Codex</option>
+                    <option>Claude Code</option>
+                    <option>其他可执行终端命令的编码 Agent</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="choice-grid" aria-label="工作流标签预设">
+                <label class="choice">
+                  <input type="radio" name="labelPreset" value="小Q工作流" checked>
+                  <span class="mini-preview preview-cn"><span></span><span></span><span></span></span>
+                  <span class="choice-title">小Q工作流</span>
+                  <span class="choice-copy">推荐。打开新会话时只要说“小Q”，Agent 就能识别这是小Q工作流。</span>
+                </label>
+                <label class="choice">
+                  <input type="radio" name="labelPreset" value="q-workflow">
+                  <span class="mini-preview preview-q"><span></span></span>
+                  <span class="choice-title">q-workflow</span>
+                  <span class="choice-copy">适合希望使用仓库原名的同事。也可以直接在上方输入框自定义名称。</span>
+                </label>
+              </div>
+            </section>
+
+            <aside class="preview-card marker-box">
+              <h2>恢复标识预览</h2>
+              <div class="marker-live" id="heroMarker">【小Q工作流 | 快速恢复】</div>
+              <ul class="contract-list">
+                <li>当用户只输入“小Q”这类短提示时，回复开头应该先出现这个标识。</li>
+                <li>标签可以自定义，但推广给同事时建议保留清晰、可记忆的工作流名称。</li>
+                <li>短场景测试会用恢复触发词作为提示词，并检查这个标识是否出现。</li>
+              </ul>
+            </aside>
+          </div>
+        </section>
+
+        <section class="panel" data-panel="1">
+          <section class="form-card">
+            <h2>本地工作区与私有工作流资料夹</h2>
+            <div class="grid">
+              <label class="field">
+                工作区根目录
+                <span class="field-hint">日常项目文件夹通常放在这里。</span>
+                <span class="path-control">
+                  <input id="workspaceRoot" value="%USERPROFILE%\AI_Work">
+                  <button class="path-picker" type="button" data-path-target="workspaceRoot">选择文件夹</button>
+                </span>
+              </label>
+              <label class="field">
+                私有 workflow hub
+                <span class="field-hint">默认跟随工作区根目录，生成到工作区下的 workflow-hub；保存项目索引、当前工作和个人 profile，应保持私有。</span>
+                <span class="path-control">
+                  <input id="workflowHubPath" value="%USERPROFILE%\AI_Work\workflow-hub">
+                  <button class="path-picker" type="button" data-path-target="workflowHubPath">选择文件夹</button>
+                </span>
+              </label>
+              <label class="field">
+                Codex home
+                <span class="field-hint">真实安装可留空，默认写入当前用户的 Codex home。闭环测试请填一个全新的临时目录，避免影响已有工作流。</span>
+                <span class="path-control">
+                  <input id="codexHome" placeholder="%USERPROFILE%\.codex">
+                  <button class="path-picker" type="button" data-path-target="codexHome">选择文件夹</button>
+                </span>
+              </label>
+              <label class="field">
+                备份到私有 Git 仓库（可选）
+                <span class="field-hint">如果你已经有私有仓库用于同步个人工作流配置，可以填写；没有就留空。</span>
+                <input id="workflowHubRemote" placeholder="https://github.com/<you>/<private-hub>.git">
+              </label>
+            </div>
+            <div class="privacy-band">
+              公开 starter 应该保持可分享；个人画像、私有状态、项目记忆和机器路径会进入生成的私有工作流资料夹。私有 Git 仓库只用于你自己备份和同步。
+              如果你是在复测安装体验，建议把工作区、私有工作流资料夹和 Codex home 都放进同一个全新的测试目录；测试完成后只清理这个测试目录即可。
+            </div>
+          </section>
+        </section>
+
+        <section class="panel" data-panel="2">
+          <section class="form-card">
+            <h2>安装偏好</h2>
+            <label class="field">
+              给 Agent 的安装备注
+              <span class="field-hint">这里写偏好和注意事项，不要填写密钥或客户资料。</span>
+              <textarea id="preferences">请用中文简洁说明。执行命令前先解释会创建什么内容，哪些内容应该保持私有。安装完成后请用我填写的显示名称做第一次恢复测试，并确认回复开头出现我填写的工作流标签。</textarea>
+            </label>
+            <div class="check-grid">
+              <label class="check">
+                <input id="initializeGit" type="checkbox" checked>
+                <span>
+                  <strong>为私有工作流资料夹创建本地版本记录</strong>
+                  <small>推荐开启。以后可以查看改动、回滚配置，也方便接入私有仓库备份。</small>
+                </span>
+              </label>
+            </div>
+            <div class="privacy-band">
+              生成的命令仍然会走正常终端和 Agent 权限模型。运行前请先检查命令内容。
+            </div>
+          </section>
+        </section>
+
+        <section class="panel" data-panel="3">
+          <div class="review-layout">
+            <section class="review-card">
+              <h2>安装摘要</h2>
+              <p class="muted">把这里作为新 Agent 会话的交接契约：先安装，再验证恢复标识。</p>
+              <div class="summary-list">
+                <div class="summary-row"><strong>恢复标识</strong><span id="markerSummary"></span></div>
+                <div class="summary-row"><strong>触发词</strong><span id="pointerSummary"></span></div>
+                <div class="summary-row"><strong>工作区</strong><span id="workspaceSummary"></span></div>
+                <div class="summary-row"><strong>私有工作流资料夹</strong><span id="hubSummary"></span></div>
+                <div class="summary-row"><strong>Agent</strong><span id="agentSummary"></span></div>
+              </div>
+              <div class="warning" id="warningBox"></div>
+            </section>
+
+            <section class="output-card">
+              <h2 id="nextTitle">下一步</h2>
+              <div class="primary-output">
+                <p class="muted" id="nextText">点击底部按钮继续。</p>
+                <pre id="promptOut"></pre>
+                <pre class="install-log hidden" id="installLog"></pre>
+              </div>
+
+              <details class="manual-details">
+                <summary>备用：查看安装命令和短场景测试</summary>
+                <div class="manual-details-body">
+                  <div>
+                    <h3>PowerShell 安装命令</h3>
+                    <pre id="commandOut"></pre>
+                  </div>
+                  <div>
+                    <h3>快速恢复短场景测试</h3>
+                    <pre id="smokeOut"></pre>
+                  </div>
+                </div>
+              </details>
+            </section>
+          </div>
+        </section>
+
+        <div class="actions">
+          <div class="status-text" id="statusText">已在本地生成，不会发送或存储数据。</div>
+          <div class="button-row">
+            <button type="button" class="ghost" id="prevStep">上一步</button>
+            <button type="button" class="primary" id="nextStep">下一步</button>
+          </div>
+        </div>
+      </form>
+    </main>
+  </div>
+
+  <script>
+    const fields = {
+      userName: document.getElementById("userName"),
+      workflowLabel: document.getElementById("workflowLabel"),
+      language: document.getElementById("language"),
+      agent: document.getElementById("agent"),
+      workspaceRoot: document.getElementById("workspaceRoot"),
+      workflowHubPath: document.getElementById("workflowHubPath"),
+      codexHome: document.getElementById("codexHome"),
+      workflowHubRemote: document.getElementById("workflowHubRemote"),
+      preferences: document.getElementById("preferences"),
+      initializeGit: document.getElementById("initializeGit")
+    };
+
+    const out = {
+      command: document.getElementById("commandOut"),
+      prompt: document.getElementById("promptOut"),
+      smoke: document.getElementById("smokeOut"),
+      marker: document.getElementById("markerSummary"),
+      pointer: document.getElementById("pointerSummary"),
+      workspace: document.getElementById("workspaceSummary"),
+      hub: document.getElementById("hubSummary"),
+      agent: document.getElementById("agentSummary"),
+      heroMarker: document.getElementById("heroMarker"),
+      topMarker: document.getElementById("topMarker"),
+      status: document.getElementById("statusText"),
+      warning: document.getElementById("warningBox"),
+      stepTitle: document.getElementById("stepTitle"),
+      stepSubtitle: document.getElementById("stepSubtitle"),
+      modeBadge: document.getElementById("modeBadge"),
+      nextTitle: document.getElementById("nextTitle"),
+      nextText: document.getElementById("nextText"),
+      installLog: document.getElementById("installLog")
+    };
+
+    const stepCopy = [
+      ["身份标识", "为工作流设置一个清晰的恢复标签，让新会话中的 Agent 能识别并恢复专属工作流。"],
+      ["本地路径", "公开 starter 保持可分享，私有状态和机器路径进入私有工作流资料夹。"],
+      ["安装偏好", "选择安装行为，并给安装 Agent 补充非敏感说明。"],
+      ["确认输出", "静态模式复制安装提示词；本机安装模式可直接安装。"]
+    ];
+
+    const panels = Array.from(document.querySelectorAll("[data-panel]"));
+    const steps = Array.from(document.querySelectorAll(".step"));
+    const nextButton = document.getElementById("nextStep");
+    const prevButton = document.getElementById("prevStep");
+    let currentStep = 0;
+    let runnerMode = false;
+    let workflowHubManuallyChanged = false;
+    let lastWorkspaceRoot = fields.workspaceRoot.value.trim();
+
+    function psQuote(value) {
+      return '"' + String(value || "").replace(/"/g, '`"') + '"';
+    }
+
+    function marker() {
+      const label = fields.workflowLabel.value.trim() || "小Q工作流";
+      const suffix = fields.language.value === "zh" ? "快速恢复" : "Quick Resume";
+      return `【${label} | ${suffix}】`;
+    }
+
+    function buildCommand() {
+      const parts = [
+        "powershell -ExecutionPolicy Bypass -File .\\scripts\\init-user.ps1",
+        "  -UserName " + psQuote(fields.userName.value.trim() || "小Q"),
+        "  -WorkspaceRoot " + psQuote(fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work"),
+        "  -WorkflowHubPath " + psQuote(fields.workflowHubPath.value.trim() || "%USERPROFILE%\\AI_Work\\workflow-hub"),
+        "  -WorkflowLabel " + psQuote(fields.workflowLabel.value.trim() || "小Q工作流"),
+        "  -Language " + psQuote(fields.language.value || "zh")
+      ];
+
+      if (fields.codexHome.value.trim()) {
+        parts.push("  -CodexHome " + psQuote(fields.codexHome.value.trim()));
+      }
+
+      if (fields.initializeGit.checked || fields.workflowHubRemote.value.trim()) {
+        parts.push("  -InitializeGit");
+      }
+
+      if (fields.workflowHubRemote.value.trim()) {
+        parts.push("  -WorkflowHubRemote " + psQuote(fields.workflowHubRemote.value.trim()));
+      }
+
+      return parts.join(" `\n");
+    }
+
+    function joinWorkflowHubPath(workspaceRoot) {
+      const root = String(workspaceRoot || "").trim().replace(/[\\\/]+$/, "");
+      return root ? `${root}\\workflow-hub` : "%USERPROFILE%\\AI_Work\\workflow-hub";
+    }
+
+    function shouldAutoUpdateWorkflowHub() {
+      const currentHub = fields.workflowHubPath.value.trim();
+      return !workflowHubManuallyChanged || currentHub === joinWorkflowHubPath(lastWorkspaceRoot);
+    }
+
+    function syncWorkflowHubFromWorkspace() {
+      const workspace = fields.workspaceRoot.value.trim();
+      if (!workspace || !shouldAutoUpdateWorkflowHub()) {
+        lastWorkspaceRoot = workspace;
+        return;
+      }
+      fields.workflowHubPath.value = joinWorkflowHubPath(workspace);
+      lastWorkspaceRoot = workspace;
+    }
+
+    function buildPrompt() {
+      const name = fields.userName.value.trim() || "小Q";
+      const label = fields.workflowLabel.value.trim() || "小Q工作流";
+      const prefs = fields.preferences.value.trim();
+      if (fields.language.value === "zh") {
+        return [
+          "请从这个公开 starter 帮我设置 q-workflow：",
+          "https://github.com/Aha-xiaoQ/q-workflow-hub.git",
+          "",
+          "请用简单中文一步一步引导我。",
+          "请阅读 QUICKSTART.zh-CN.md、QUICKSTART.md、MACHINE_BOOTSTRAP.md 和 setup-intake.html。",
+          `我的显示名称是：${name}`,
+          `工作流标签是：${label}`,
+          `我使用的 Agent 是：${fields.agent.value}`,
+          `工作区根目录是：${fields.workspaceRoot.value.trim()}`,
+          `私有 workflow hub 路径是：${fields.workflowHubPath.value.trim()}`,
+          fields.initializeGit.checked ? "请为私有工作流资料夹创建本地 Git 版本库，方便之后查看变化、回滚配置和接入私有仓库备份。" : "暂时不需要为私有工作流资料夹创建本地 Git 版本库。",
+          fields.workflowHubRemote.value.trim() ? `我想把私有工作流资料夹备份到这个私有 Git 仓库：${fields.workflowHubRemote.value.trim()}` : "我暂时不配置私有工作流资料夹备份仓库。",
+          "",
+          "请先检查 Git 和编码 Agent 是否可用，再运行安装命令。",
+          "执行命令前，请用用户能理解的语言说明会创建什么、哪些内容应该保持私有；不要让我自己判断 setup-runner.ps1 和 init-user.ps1 的区别。",
+          `安装完成后，请验证私有工作流资料夹已创建，并带我用“${name}”做第一次恢复测试，确认回复开头出现“【${label} | 快速恢复】”。`,
+          "好了，请按上面的信息开始处理。",
+          prefs ? "\n偏好：" + prefs : ""
+        ].filter(Boolean).join("\n");
+      }
+
+      return [
+        "Set up q-workflow from this public starter:",
+        "https://github.com/Aha-xiaoQ/q-workflow-hub.git",
+        "",
+        "Please guide me step by step in plain language.",
+        "Read QUICKSTART.md, MACHINE_BOOTSTRAP.md, and setup-intake.html.",
+        `Display name: ${name}`,
+        `Workflow label: ${label}`,
+        `Agent: ${fields.agent.value}`,
+        `Workspace root: ${fields.workspaceRoot.value.trim()}`,
+        `Private workflow hub path: ${fields.workflowHubPath.value.trim()}`,
+        fields.initializeGit.checked ? "Create a local Git repository for the private workflow folder so changes can be reviewed, rolled back, and backed up later." : "Do not create a local Git repository for the private workflow folder for now.",
+        fields.workflowHubRemote.value.trim() ? `Private workflow folder backup repo: ${fields.workflowHubRemote.value.trim()}` : "No private workflow folder backup repo for now.",
+        "",
+        "Check that Git and my chosen coding agent are available before installing.",
+        "Before running commands, explain in user language what will be created and what should stay private; do not make me choose between setup-runner.ps1 and init-user.ps1 unless needed.",
+        "After setup, show me the first-run guide at FIRST_RUN_GUIDE.html, verify the private workflow folder exists, show me the daily resume prompt, and walk me through the first Quick Resume smoke test.",
+        "All set. Please start with the information above.",
+        prefs ? "\nPreferences: " + prefs : ""
+      ].filter(Boolean).join("\n");
+    }
+
+    function buildSmoke() {
+      const pointer = fields.userName.value.trim() || "小Q";
+      return [
+        "提示词：",
+        pointer,
+        "",
+        "预期回复开头：",
+        marker()
+      ].join("\n");
+    }
+
+    function warnings() {
+      const items = [];
+      if (!fields.userName.value.trim()) items.push("恢复触发词为空。");
+      if (!fields.workflowLabel.value.trim()) items.push("工作流标签为空。");
+      if (/token|api[_ -]?key|secret/i.test(fields.preferences.value)) {
+        items.push("安装备注里可能包含敏感词。请不要在这里粘贴密钥或客户资料。");
+      }
+      return items;
+    }
+
+    function syncPresetFromLabel() {
+      const value = fields.workflowLabel.value.trim();
+      let matched = false;
+      document.querySelectorAll("input[name='labelPreset']").forEach((input) => {
+        input.checked = input.value === value;
+        matched = matched || input.checked;
+      });
+      if (!matched) {
+        document.querySelectorAll("input[name='labelPreset']").forEach((input) => {
+          input.checked = false;
+        });
+      }
+    }
+
+    function setStep(index) {
+      currentStep = Math.max(0, Math.min(index, panels.length - 1));
+      panels.forEach((panel, panelIndex) => panel.classList.toggle("active", panelIndex === currentStep));
+      steps.forEach((step, stepIndex) => step.setAttribute("aria-current", String(stepIndex === currentStep)));
+      out.stepTitle.textContent = stepCopy[currentStep][0];
+      out.stepSubtitle.textContent = stepCopy[currentStep][1];
+      prevButton.style.display = currentStep === 0 ? "none" : "inline-flex";
+      nextButton.textContent = currentStep === panels.length - 1
+        ? (runnerMode ? "开始本机安装" : "复制安装提示词")
+        : "下一步";
+      update();
+    }
+
+    function update() {
+      syncPresetFromLabel();
+      const currentMarker = marker();
+      out.command.textContent = buildCommand();
+      out.prompt.textContent = buildPrompt();
+      out.smoke.textContent = buildSmoke();
+      out.prompt.classList.toggle("hidden", runnerMode && currentStep === panels.length - 1);
+      out.installLog.classList.toggle("hidden", !runnerMode || currentStep !== panels.length - 1);
+      out.nextTitle.textContent = runnerMode ? "本机安装模式" : "静态模式";
+      out.nextText.textContent = runnerMode
+        ? "点击底部“开始本机安装”后，页面会显示安装日志。成功后请按页面提示重启或新开 Agent，并用你填写的显示名称做第一次恢复测试。"
+        : "点击底部“复制安装提示词”后，页面会复制一段安装请求。切到 Codex、Claude Code 或其他编码 Agent，粘贴并发送，或直接跟 Agent 说“好了”。";
+      out.marker.textContent = currentMarker;
+      out.heroMarker.textContent = currentMarker;
+      out.topMarker.textContent = currentMarker;
+      out.pointer.textContent = fields.userName.value.trim() || "小Q";
+      out.workspace.textContent = fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work";
+      out.hub.textContent = fields.workflowHubPath.value.trim() || "%USERPROFILE%\\AI_Work\\workflow-hub";
+      out.agent.textContent = fields.agent.value;
+      const warningItems = warnings();
+      out.warning.textContent = warningItems.join(" ");
+      out.warning.classList.toggle("active", warningItems.length > 0);
+      out.status.textContent = warningItems.length
+        ? "继续前请先处理提示项。"
+        : (runnerMode ? "本机安装模式：可以选择文件夹并直接安装。" : "静态模式：不会发送数据，可复制安装提示词。");
+    }
+
+    for (const field of Object.values(fields)) {
+      field.addEventListener("input", update);
+      field.addEventListener("change", update);
+    }
+
+    fields.workspaceRoot.addEventListener("input", () => {
+      syncWorkflowHubFromWorkspace();
+      update();
+    });
+    fields.workspaceRoot.addEventListener("change", () => {
+      syncWorkflowHubFromWorkspace();
+      update();
+    });
+    fields.workflowHubPath.addEventListener("input", () => {
+      workflowHubManuallyChanged = fields.workflowHubPath.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
+      update();
+    });
+    fields.workflowHubPath.addEventListener("change", () => {
+      workflowHubManuallyChanged = fields.workflowHubPath.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
+      update();
+    });
+
+    document.querySelectorAll("input[name='labelPreset']").forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.checked) {
+          fields.workflowLabel.value = input.value;
+          update();
+        }
+      });
+    });
+
+    document.querySelectorAll("[data-path-target]").forEach((button) => {
+      button.addEventListener("click", () => chooseFolder(button.dataset.pathTarget));
+    });
+
+    steps.forEach((step) => {
+      step.addEventListener("click", () => setStep(Number(step.dataset.step)));
+    });
+
+    prevButton.addEventListener("click", () => setStep(currentStep - 1));
+    nextButton.addEventListener("click", () => {
+      if (currentStep === panels.length - 1) {
+        if (runnerMode) {
+          installWorkflow();
+        } else {
+          copyPrompt();
+        }
+        return;
+      }
+      setStep(currentStep + 1);
+    });
+
+    async function copyPrompt() {
+      update();
+      const target = out.prompt;
+      try {
+        await navigator.clipboard.writeText(target.textContent);
+        out.status.textContent = "已准备好给 Agent 的安装请求。下一步：粘贴到 Agent 并发送，或跟 Agent 说“好了”。";
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(target);
+        const selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        out.status.textContent = "浏览器限制了剪贴板，已选中安装请求，可手动复制给 Agent。";
+      }
+    }
+
+    async function chooseFolder(fieldId) {
+      const field = fields[fieldId];
+      if (!field) return;
+
+      if (runnerMode) {
+        try {
+          out.status.textContent = "正在打开文件夹选择窗口...";
+          const response = await fetch("/api/choose-folder", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ title: "请选择文件夹" })
+          });
+          const result = await response.json();
+          if (result.ok && result.path) {
+            field.value = result.path;
+            if (fieldId === "workspaceRoot") {
+              syncWorkflowHubFromWorkspace();
+            }
+            if (fieldId === "workflowHubPath") {
+              workflowHubManuallyChanged = field.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
+            }
+            update();
+            out.status.textContent = `已选择：${result.path}`;
+          } else if (!result.cancelled) {
+            out.status.textContent = result.error || "没有选择文件夹。";
+          } else {
+            out.status.textContent = "已取消选择文件夹。";
+          }
+          return;
+        } catch (error) {
+          out.status.textContent = `无法连接本地安装向导：${error.message}`;
+        }
+      }
+
+      if (window.showDirectoryPicker) {
+        try {
+          const handle = await window.showDirectoryPicker();
+          const pasted = window.prompt(
+            `已选择文件夹“${handle.name}”。浏览器出于安全限制不能读取完整 Windows 路径。\n请从资源管理器地址栏复制完整路径，并粘贴到这里：`,
+            field.value || handle.name
+          );
+          if (pasted && pasted.trim()) {
+            field.value = pasted.trim();
+            if (fieldId === "workspaceRoot") {
+              syncWorkflowHubFromWorkspace();
+            }
+            if (fieldId === "workflowHubPath") {
+              workflowHubManuallyChanged = field.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
+            }
+            update();
+          }
+          return;
+        } catch (error) {
+          if (error && error.name === "AbortError") return;
+        }
+      }
+
+      const pasted = window.prompt("请粘贴文件夹完整路径，例如 C:\\Users\\你的名字\\AI_Work：", field.value || "");
+      if (pasted && pasted.trim()) {
+        field.value = pasted.trim();
+        if (fieldId === "workspaceRoot") {
+          syncWorkflowHubFromWorkspace();
+        }
+        if (fieldId === "workflowHubPath") {
+          workflowHubManuallyChanged = field.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
+        }
+        update();
+      }
+    }
+
+    function buildInstallPayload() {
+      return {
+        userName: fields.userName.value.trim() || "小Q",
+        workflowLabel: fields.workflowLabel.value.trim() || "小Q工作流",
+        language: fields.language.value,
+        agent: fields.agent.value,
+        workspaceRoot: fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work",
+        workflowHubPath: fields.workflowHubPath.value.trim() || "%USERPROFILE%\\AI_Work\\workflow-hub",
+        codexHome: fields.codexHome.value.trim(),
+        workflowHubRemote: fields.workflowHubRemote.value.trim(),
+        preferences: fields.preferences.value.trim(),
+        initializeGit: Boolean(fields.initializeGit.checked)
+      };
+    }
+
+    async function installWorkflow() {
+      update();
+      const warningItems = warnings();
+      if (warningItems.length) {
+        out.status.textContent = "请先处理提示项，再开始安装。";
+        return;
+      }
+
+      nextButton.disabled = true;
+      prevButton.disabled = true;
+      out.installLog.classList.remove("hidden");
+      const displayName = fields.userName.value.trim() || "小Q";
+      const workflowLabel = fields.workflowLabel.value.trim() || "小Q工作流";
+      const guideFile = fields.language.value === "zh" ? "FIRST_RUN_GUIDE.zh-CN.html" : "FIRST_RUN_GUIDE.html";
+      out.installLog.textContent = "正在安装工作流...\n";
+      out.status.textContent = "正在运行本地安装脚本，请等待日志更新。";
+      try {
+        const response = await fetch("/api/install", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(buildInstallPayload())
+        });
+        const result = await response.json();
+        if (!response.ok || !result.ok) {
+          throw new Error(result.error || `HTTP ${response.status}`);
+        }
+        const nextSteps = [
+          "",
+          "下一步：",
+          "1. 查看上面的安装输出，确认没有失败提示。",
+          `2. 打开私有工作流资料夹里的 ${guideFile}，先看首次入门说明。`,
+          "3. 重启当前 Agent，或打开一个新的 Agent 会话；当前对话通常不会自动重新加载刚安装的 skills。",
+          `4. 只输入“${displayName}”做第一次恢复测试。`,
+          `5. 预期回复开头出现“【${workflowLabel} | ${fields.language.value === "zh" ? "快速恢复" : "Quick Resume"}】”。`,
+          "6. 如果这是闭环复测，请确认新会话使用的是本次填写的 Codex home，而不是你原来的真实 Codex home。",
+          "7. 如果没有出现恢复标识，把本页日志复制给 Agent，让它检查安装路径和 Codex home。"
+        ].join("\n");
+        out.installLog.textContent = (result.output || "安装完成。") + nextSteps;
+        out.status.textContent = `安装完成。下一步：重启或新开 Agent，然后输入“${displayName}”做恢复测试。`;
+      } catch (error) {
+        out.installLog.textContent += `安装失败：${error.message}\n`;
+        out.status.textContent = "安装失败，请查看日志或改用备用提示词。";
+      } finally {
+        nextButton.disabled = false;
+        prevButton.disabled = false;
+      }
+    }
+
+    async function detectRunnerMode() {
+      try {
+        const response = await fetch("/api/status", { cache: "no-store" });
+        const result = await response.json();
+        runnerMode = Boolean(response.ok && result.ok && result.mode === "runner");
+      } catch {
+        runnerMode = false;
+      }
+      out.modeBadge.textContent = runnerMode ? "本机安装模式" : "静态模式";
+      setStep(currentStep);
+    }
+
+    const initialStepByHash = {
+      "#paths": 1,
+      "#preferences": 2,
+      "#review": panels.length - 1
+    };
+    setStep(initialStepByHash[window.location.hash] || 0);
+    detectRunnerMode();
+  </script>
+</body>
+</html>
