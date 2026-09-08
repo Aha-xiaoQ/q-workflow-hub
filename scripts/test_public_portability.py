@@ -23,6 +23,15 @@ def load(name: str, path: Path):
 
 
 class PublicPortabilityTests(unittest.TestCase):
+    def test_quickstarts_do_not_reinstall_withdrawn_tag(self):
+        for name in ('QUICKSTART.md', 'QUICKSTART.zh-CN.md'):
+            with self.subTest(guide=name):
+                guide = (ROOT / name).read_text(encoding='utf-8')
+                self.assertIn('git clone --branch main --depth 1', guide)
+                self.assertNotIn('git clone --branch v1.1-beta', guide)
+                self.assertNotIn('git switch --detach v1.1-beta', guide)
+                self.assertIn('git rev-parse HEAD', guide)
+
     def test_default_policy_has_no_implicit_waivers(self):
         policy = json.loads((ROOT / "docs/governance/VARIANT_MAP.json").read_text())
         for side in ("public", "company"):
@@ -79,18 +88,13 @@ class PublicPortabilityTests(unittest.TestCase):
                 intake.validate_private_field_leaks({"nested": {key: "example"}}, "request", errors)
                 self.assertTrue(errors)
 
-    def test_company_variant_supported_by_metadata(self):
-        metadata = load("public_metadata", ROOT / "skills/q-pixel-art-creation/scripts/validate_metadata.py")
-        with tempfile.TemporaryDirectory() as tmp:
-            fixture = Path(tmp) / "metadata.yaml"
-            values = {key: "example" for key in metadata.REQUIRED}
-            values.update(variant="company", category="domain", status="candidate", publish_profile="private", encoding_guard="required")
-            for variant, expected in (("company", 0), ("unknown-variant", 1)):
-                with self.subTest(variant=variant):
-                    values["variant"] = variant
-                    fixture.write_text("\n".join(f"{k}: {v}" for k, v in values.items()), encoding="utf-8")
-                    result = subprocess.run([sys.executable, "-B", str(ROOT / "skills/q-pixel-art-creation/scripts/validate_metadata.py"), str(fixture)], capture_output=True, text=True)
-                    self.assertEqual(result.returncode, expected, result.stdout + result.stderr)
+    def test_unvalidated_skills_are_not_distributed_or_registered(self):
+        registry = json.loads((ROOT / "skills/q-workflow/references/surface-registry.json").read_text(encoding="utf-8"))
+        registered = {item["id"] for item in registry["skills"]}
+        for name in ("q-pixel-art-creation", "q-game-canvas-iteration", "q-html-interface-design", "q-font-design", "q-game-production", "q-arduino-ach-release", "q-public-content-review"):
+            with self.subTest(skill=name):
+                self.assertFalse((ROOT / "skills" / name).exists())
+                self.assertNotIn(name, registered)
 
 
 if __name__ == "__main__":

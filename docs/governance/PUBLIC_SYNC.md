@@ -19,7 +19,7 @@ Keep these areas aligned unless a documented variant reason exists:
 - `templates\skills\assistant-profile\`
 - generic skills such as q-workflow, research discovery, audio/video intake,
   diagram workflow, code lifecycle, project overview, PPT creation/review, and
-  HTML interface design
+  other explicitly included companion skills
 
 ## Naming Map
 

@@ -186,6 +186,10 @@ def run_public_install(repo: Path, args) -> int:
                 result = run([sys.executable, "-B", scripts / "test_release_v11_regressions.py"])
                 check(f"{label}-release-regressions", result.returncode == 0 and "Ran 10 tests" in result.stderr and "OK" in result.stderr,
                       {"rc": result.returncode, "detail": result.stderr[-1800:]})
+                for test_name in ("test_execution_policy.py", "test_release_repository.py", "test_task_transaction_recovery.py"):
+                    result = run([sys.executable, "-B", scripts / test_name])
+                    check(f"{label}-{Path(test_name).stem}", result.returncode == 0 and "Ran " in result.stderr and "OK" in result.stderr,
+                          {"rc": result.returncode, "detail": result.stderr[-1800:]})
         except Exception as exc:
             check(f"{label}-fatal", False, str(exc))
 

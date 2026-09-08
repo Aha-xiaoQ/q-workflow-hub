@@ -36,7 +36,11 @@ def atomic_replace_bytes(path: Path, value: bytes, attempts: int = 40) -> None:
             temp.unlink()
 
 
-def acquire_lock(path: Path) -> BinaryIO:
+def transaction_journal_path(lock_path: Path) -> Path:
+    return lock_path.with_name(lock_path.name + ".journal.json")
+
+
+def acquire_lock(path: Path, *, recovery: bool = False) -> BinaryIO:
     """Acquire one crash-released, non-blocking OS lock for a shared state file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     handle = path.open("a+b")
@@ -55,6 +59,11 @@ def acquire_lock(path: Path) -> BinaryIO:
             import fcntl
 
             fcntl.flock(handle.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        if not recovery and transaction_journal_path(path).exists():
+            raise WorkflowFileLockError("Unresolved state transaction; run q_workflow_manager.py task recover --yes before writing")
+    except WorkflowFileLockError:
+        handle.close()
+        raise
     except (BlockingIOError, OSError) as exc:
         handle.close()
         raise WorkflowFileLockError(f"Another q-workflow state transaction holds {path}") from exc

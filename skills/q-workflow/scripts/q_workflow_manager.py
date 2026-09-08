@@ -34,6 +34,7 @@ from workflow_file_ops import (
     acquire_lock,
     atomic_replace_bytes,
     release_lock,
+    transaction_journal_path,
 )
 from workflow_task_state import (
     TASK_ID_RE,
@@ -119,12 +120,15 @@ def live_remote_receipt_errors(
 ) -> list[str]:
     """Verify the release receipt's bound ref against the named remote."""
     repositories = profile.get("repositories") if isinstance(profile.get("repositories"), dict) else {}
-    repository = repositories.get("q-workflow-hub")
+    repository_id = binding.get("release_repository", "q-workflow-hub")
+    if not isinstance(repository_id, str) or not repository_id.strip():
+        return ["release_repository must name a registered repository"]
+    repository = repositories.get(repository_id)
     if not isinstance(repository, dict):
-        return ["q-profile lacks q-workflow-hub for live remote verification"]
+        return [f"q-profile lacks registered repository {repository_id!r} for live remote verification"]
     raw_path = repository.get("path") or repository.get("registry_path") or repository.get("local_path")
     if not isinstance(raw_path, str) or not raw_path.strip():
-        return ["q-profile q-workflow-hub path is missing for live remote verification"]
+        return [f"q-profile {repository_id} path is missing for live remote verification"]
     repository_path = Path(raw_path).resolve()
     remote = binding.get("release_remote", "").strip()
     expected_remote = str(repository.get("remote", "")).strip()
@@ -133,7 +137,7 @@ def live_remote_receipt_errors(
     if not remote or not branch or not target_oid:
         return ["release remote, branch, and target OID are required for live verification"]
     if not expected_remote:
-        return ["q-profile q-workflow-hub remote is missing for live remote verification"]
+        return [f"q-profile {repository_id} remote is missing for live remote verification"]
     if remote != expected_remote:
         if remote in {".", ".."} or re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", remote) is None:
             return ["release_remote must equal the configured URL or name a configured Git remote"]
@@ -421,6 +425,89 @@ def _targets_already_applied(targets: dict[str, Any]) -> bool:
     )
 
 
+def _write_transaction_journal(path: Path, plan: dict, originals: dict, receipt: dict | None = None) -> None:
+    body = {"version": 1, "plan": plan, "originals": originals, "receipt": receipt}
+    body["sha256"] = sha256_bytes(canonical_json_bytes(body))
+    atomic_replace_bytes(path, canonical_json_bytes(body))
+
+
+def recover_task_transaction(profile_path: Path, *, yes: bool) -> dict[str, Any]:
+    """Restore a stopped transaction, only if every target still matches a known version.
+
+    This covers process interruption, not guaranteed durability across power loss.
+    Validation of all entries precedes the first restore; a failed restore leaves
+    the journal in place so all cooperative writers remain blocked.
+    """
+    if not yes:
+        raise TaskStateError("Task recovery requires explicit --yes")
+    profile_path, profile = load_profile(profile_path)
+    hub = personal_hub(profile)
+    lock_path = hub / "personal-state" / ".q-workflow-manager.lock"
+    descriptor = acquire_lock(lock_path, recovery=True)
+    journal_path = transaction_journal_path(lock_path)
+    try:
+        if not journal_path.exists():
+            return {"status": "no-pending-transaction"}
+        journal = read_json_object(journal_path)
+        digest = journal.pop("sha256", None)
+        if journal.get("version") != 1 or digest != sha256_bytes(canonical_json_bytes(journal)):
+            raise TaskStateError("Transaction journal integrity mismatch")
+        plan = journal.get("plan")
+        if not isinstance(plan, dict):
+            raise TaskStateError("Transaction journal plan is invalid")
+        verify_plan_identity(plan)
+        if (plan.get("schema") != PLAN_SCHEMA or plan.get("format_version") != 1
+                or Path(str(plan.get("profile_path", ""))).resolve() != profile_path
+                or Path(str(plan.get("hub", ""))).resolve() != hub
+                or Path(str(plan.get("codex_home", ""))).resolve() != codex_home().resolve()):
+            raise TaskStateError("Transaction journal authority mismatch")
+        targets = plan.get("targets")
+        originals = journal.get("originals")
+        if not isinstance(targets, dict) or not targets or not isinstance(originals, dict) or set(originals) != set(targets):
+            raise TaskStateError("Transaction journal target inventory mismatch")
+        allowed = _allowed_transaction_paths(profile_path, plan)
+        restores = []
+        seen = set()
+        for name, row in targets.items():
+            if not isinstance(row, dict):
+                raise TaskStateError("Transaction journal target is invalid")
+            target = Path(str(row.get("path", ""))).resolve()
+            if target not in allowed or target in seen:
+                raise TaskStateError("Transaction journal target escaped or duplicates its boundary")
+            seen.add(target)
+            original = originals[name]
+            before = None if original is None else decode_bytes(str(original))
+            before_hash = MISSING_HASH if before is None else sha256_bytes(before)
+            candidate = decode_bytes(str(row.get("candidate_base64", "")))
+            if before_hash != row.get("expected_sha256") or sha256_bytes(candidate) != row.get("candidate_sha256"):
+                raise TaskStateError("Transaction journal payload hash mismatch")
+            if path_hash(target) not in {before_hash, row["candidate_sha256"]}:
+                raise TaskStateError(f"Transaction recovery refuses external drift: {target}")
+            restores.append((target, before))
+        receipt_path = _transaction_receipt_path(hub, str(plan["plan_id"]))
+        receipt = journal.get("receipt")
+        if receipt is not None:
+            if not isinstance(receipt, dict) or receipt.get("path") != str(receipt_path):
+                raise TaskStateError("Transaction receipt boundary mismatch")
+            candidate = decode_bytes(str(receipt.get("candidate_base64", "")))
+            if sha256_bytes(candidate) != receipt.get("candidate_sha256"):
+                raise TaskStateError("Transaction receipt hash mismatch")
+            if path_hash(receipt_path) not in {MISSING_HASH, receipt["candidate_sha256"]}:
+                raise TaskStateError("Transaction recovery refuses receipt drift")
+            restores.append((receipt_path, None))
+        elif receipt_path.exists():
+            raise TaskStateError("Unexpected receipt exists during transaction recovery")
+        for target, before in reversed(restores):
+            if before is None:
+                target.unlink(missing_ok=True)
+            else:
+                atomic_replace_bytes(target, before)
+        journal_path.unlink()
+        return {"status": "recovered", "plan_id": plan["plan_id"], "restored": len(restores)}
+    finally:
+        release_lock(lock_path, descriptor)
+
+
 def apply_task_plan(
     profile_path: Path,
     plan: dict[str, Any],
@@ -477,6 +564,9 @@ def apply_task_plan(
     lock_descriptor = acquire_lock(lock_path)
     originals: dict[Path, bytes | None] = {}
     written: list[Path] = []
+    journal_path = transaction_journal_path(lock_path)
+    journal_originals: dict[str, str | None] = {}
+    committed = False
     try:
         if _test_after_lock is not None:
             _test_after_lock()
@@ -491,14 +581,18 @@ def apply_task_plan(
                 raise TaskStateError(
                     f"CAS mismatch for {name}: expected {row.get('expected_sha256')}, found {actual}"
                 )
+            journal_originals[name] = encode_bytes(target.read_bytes()) if target.is_file() else None
+        if receipt_path.exists():
+            raise TaskStateError("Existing receipt does not match applied targets")
+        _write_transaction_journal(journal_path, plan, journal_originals)
         for row in targets.values():
             target = Path(str(row["path"]))
             candidate = decode_bytes(str(row["candidate_base64"]))
             originals[target] = target.read_bytes() if target.is_file() else None
             if path_hash(target) == row["candidate_sha256"]:
                 continue
-            atomic_replace_bytes(target, candidate)
             written.append(target)
+            atomic_replace_bytes(target, candidate)
             if _test_fail_after_write > 0 and len(written) == _test_fail_after_write:
                 raise TaskStateError(f"Injected task transaction failure after write {len(written)}")
 
@@ -546,12 +640,19 @@ def apply_task_plan(
             "pushed_or_published": False,
             "idempotent_replay": False,
         }
-        atomic_replace_bytes(
-            receipt_path,
-            (json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode("utf-8"),
-        )
+        receipt_bytes = (json.dumps(receipt, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+        _write_transaction_journal(journal_path, plan, journal_originals, _target_row(receipt_path, receipt_bytes))
+        originals[receipt_path] = None
+        written.append(receipt_path)
+        atomic_replace_bytes(receipt_path, receipt_bytes)
+        # The data and receipt are complete. An interruption while removing the
+        # journal must not begin an unjournaled rollback after unlink succeeds.
+        committed = True
+        journal_path.unlink()
         return receipt
-    except Exception:
+    except BaseException:
+        if committed:
+            raise
         for target in reversed(written):
             original = originals.get(target)
             if original is None:
@@ -561,6 +662,7 @@ def apply_task_plan(
                     pass
             else:
                 atomic_replace_bytes(target, original)
+        journal_path.unlink(missing_ok=True)
         raise
     finally:
         release_lock(lock_path, lock_descriptor)
@@ -1546,6 +1648,8 @@ def build_parser() -> argparse.ArgumentParser:
     apply = task_commands.add_parser("apply", help="Apply a reviewed plan with lock, CAS, rollback, and readback.")
     apply.add_argument("--plan", type=Path, required=True, help="Plan JSON produced by task plan.")
     apply.add_argument("--yes", action="store_true", help="Required explicit non-interactive confirmation.")
+    recovery = task_commands.add_parser("recover", help="Restore an interrupted transaction after validating journal paths and hashes.")
+    recovery.add_argument("--yes", action="store_true", help="Required confirmation to restore the journaled original state.")
     return parser
 
 
@@ -1609,6 +1713,9 @@ def main(argv: list[str] | None = None) -> int:
                 },
                 "next_action": "Review the plan, then run task apply --plan <path> --yes.",
             }
+            code = 0
+        elif args.command == "task" and args.task_command == "recover":
+            payload = recover_task_transaction(args.profile, yes=args.yes)
             code = 0
         elif args.command == "task" and args.task_command == "apply":
             plan = read_json_object(args.plan)

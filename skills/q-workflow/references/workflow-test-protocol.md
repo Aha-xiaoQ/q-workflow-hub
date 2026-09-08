@@ -27,7 +27,7 @@ Use this path for:
 |---|---|---|
 | `smoke` | quick sanity after a small change | format surface audit and skill portfolio blocker scan |
 | `core` | after personal pull, runtime refresh, or ordinary workflow change | smoke plus q-standard, strict lifecycle, lifecycle receipt, Phase B preflight, and release observation |
-| `full` | before push/release candidate, after source/runtime drift, or before user endpoint testing | core plus runtime text/encoding guards, release install/upgrade smoke, and stability suite |
+| `full` | before push/release candidate, remote rebuild verification, or user endpoint testing | core plus runtime text/encoding guards, release install/upgrade smoke, and stability suite |
 | `release` | colleague/promotion/public readiness | full plus endpoint feedback and explicit signoff gates |
 
 ## Standard Command

@@ -1,5 +1,0 @@
-interface:
-  display_name: "Q Game Canvas Iteration"
-  short_description: "Tune and validate original local browser games"
-  default_prompt: "Use $q-game-canvas-iteration to improve the controls, power-ups, level flow, feedback, audio, and local runnable package for this Canvas or browser game."
-

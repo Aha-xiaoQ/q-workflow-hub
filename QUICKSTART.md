@@ -1,9 +1,9 @@
 # Quickstart
 
-> **Public beta:** this guide currently targets `v1.1-beta`. For a reproducible
-> install, clone the tag with `git clone --branch v1.1-beta --depth 1 ...`.
-> Read the [beta limitations and rollback notes](docs/releases/q-workflow-v1.1-beta.md)
-> before installing.
+> **Current public scope:** use `main` and read the
+> [v1.2 scope and limitations](docs/releases/q-workflow-v1.2.md) before installing.
+> Record `git rev-parse HEAD` to identify the exact source installed. Historical
+> beta tags contain withdrawn skills and are not the current package.
 
 Use this guide when you want a coding agent to install q-workflow on a Windows
 machine. The recommended path is agent-first: give the agent the public starter
@@ -57,7 +57,7 @@ Set up q-workflow from this public starter:
 https://github.com/Aha-xiaoQ/q-workflow-hub.git
 
 Please guide me step by step in plain language.
-Clone and use the immutable `v1.1-beta` tag, not an unpinned default branch.
+Clone main, review its current scope, and record the exact commit before installing.
 Use QUICKSTART.md and MACHINE_BOOTSTRAP.md as your setup source.
 First explain what q-workflow will create and what should stay private.
 Check that Git and my chosen coding agent are installed.
@@ -85,8 +85,9 @@ terminal path.
 Guided local runner:
 
 ```powershell
-git clone --branch v1.1-beta --depth 1 https://github.com/Aha-xiaoQ/q-workflow-hub.git
+git clone --branch main --depth 1 https://github.com/Aha-xiaoQ/q-workflow-hub.git
 cd q-workflow-hub
+git rev-parse HEAD
 powershell -ExecutionPolicy Bypass -File .\scripts\setup-runner.ps1
 ```
 
@@ -149,13 +150,17 @@ dirty, the remote is unexpected, or the agent finds multiple starter checkouts,
 stop and ask it to report the ambiguity instead of using remote as a blind
 overwrite source.
 
-For an immutable beta-tag checkout, do not use `git pull`:
+For an old detached/tag checkout, do not use `git pull`. In a clean checkout,
+fetch and inspect the current public commit, then select it explicitly:
 
 ```powershell
 git status --short --branch
 git remote -v
-git fetch --tags origin
-git switch --detach v1.1-beta
+git fetch origin main
+git log -1 --oneline FETCH_HEAD
+# Review the fetched release scope before selecting this commit.
+git switch --detach FETCH_HEAD
+git rev-parse HEAD
 
 powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -WorkflowHubPath "$env:USERPROFILE\AI_Work\workflow-hub" `
@@ -163,7 +168,11 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -InstallRuntime
 ```
 
-Replace `v1.1-beta` only when a newer reviewed tag is published.
+The updater does not automatically remove withdrawn pixel, Canvas or HTML
+skills from an existing installation. They may remain discoverable but are
+outside current support. To disable them, first preserve any custom work and
+move only those exact skill folders to a private archive outside both runtime
+and bootstrap `skills` directories. Do not delete your local self-use sources.
 
 ## Success Check
 

@@ -41,9 +41,6 @@
 
     {"id": "q-audio-intake", "tier": "lab", "category": "intake", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
     {"id": "q-diagram-workflow", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
-    {"id": "q-game-canvas-iteration", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
-    {"id": "q-html-interface-design", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
-    {"id": "q-pixel-art-creation", "tier": "lab", "category": "domain", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]},
     {"id": "q-video-intake", "tier": "lab", "category": "intake", "canonical_surface": "source", "expected_surfaces": ["source", "bootstrap", "runtime"]}
   ],
   "ignore": {

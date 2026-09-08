@@ -57,14 +57,10 @@ def main() -> int:
     feedback_cases=json.loads((ROOT / "references" / "workflow-feedback-regression-cases.json").read_text(encoding="utf-8")).get("cases", [])
     reference_roots={
         "references/q-standard-contract.md": ROOT / "references" / "q-standard-contract.md",
-        "q-html-interface-design/references/html-visual-review-gate.md": ROOT.parent / "q-html-interface-design" / "references" / "html-visual-review-gate.md",
     }
     expected_vig={
-        "VIG-01-scale-is-not-optimization",
-        "VIG-02-inspection-layer-missing",
         "VIG-03-live-before-review",
         "VIG-04-review-after-integration",
-        "VIG-05-clean-before-inspection-approval",
     }
     vig_rows={row.get("id"): row for row in feedback_cases if str(row.get("id", "")).startswith("VIG-")}
     cases.append({"id":"visual-imitation-case-set","pass":set(vig_rows)==expected_vig,"evidence":{"found":sorted(vig_rows),"expected":sorted(expected_vig)}})

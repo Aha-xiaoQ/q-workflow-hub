@@ -1,4 +1,0 @@
-interface:
-  display_name: "Q HTML Interface Design"
-  short_description: "High-quality local HTML UI and diagrams"
-  default_prompt: "Use $q-html-interface-design to brief, build, audit, and validate a polished local HTML dashboard, intake page, report, or diagram interface."

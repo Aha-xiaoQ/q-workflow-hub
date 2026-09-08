@@ -45,7 +45,6 @@
 - `q-skill-creation`：创建、更新、审查、同步和发布 skill。
 - `q-workflow`：工作流恢复、文本编码与生成面一致性检查。
 - `q-ppt-creation` / `q-ppt-visual-review`：PPT 生成和视觉审查。
-- `q-html-interface-design`：本地 HTML 工具、帮助页、表单和报告界面。
 - `q-research-discovery` / `q-skill-pattern-learning`：外部资料、竞品/优秀流程学习和机制沉淀。
 
 ## 本地补充

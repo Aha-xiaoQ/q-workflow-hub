@@ -324,7 +324,7 @@ def write_markdown(report: dict, path: Path) -> None:
 
 def main() -> int:
     args = parse_args()
-    profile_path, authority_errors = profile_authority_errors()
+    profile_path, authority_errors = (None, []) if args.root else profile_authority_errors()
     if authority_errors and not args.root:
         blocked = {
             "status": "blocked",
@@ -337,7 +337,8 @@ def main() -> int:
             Path(args.json_out).write_text(json.dumps(blocked, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         print(json.dumps(blocked, ensure_ascii=False, indent=2))
         return 2
-    roots = {} if authority_errors else default_roots()
+    # Explicit roots define an isolated audit, not additions to personal roots.
+    roots = {} if args.root or authority_errors else default_roots()
     for item in args.root:
         if "=" not in item:
             raise SystemExit("--root must be label=path")
@@ -346,8 +347,8 @@ def main() -> int:
 
     report = {
         "authority": {
-            "mode": "profile" if not authority_errors else "explicit-roots",
-            "profile": str(profile_path),
+            "mode": "explicit-roots" if args.root else "profile",
+            "profile": str(profile_path) if profile_path is not None else None,
             "warnings": authority_errors,
         },
         "roots": {},

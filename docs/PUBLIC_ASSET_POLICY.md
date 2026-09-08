@@ -38,7 +38,8 @@ unreviewed maintainer installation.
 
 ## Current maintenance scope
 
-The September 2026 maintenance update promotes selected HTML finish/state
-guidance, pixel contour/delivery guidance, and subtitle-reading fixes. It does
-not promote the full experimental game, animation, font, or board-release
-skill sets. The workflow core retains the public v1.1-beta regression fixes.
+The current scope retains the workflow core, supported companions and public
+v1.1-beta regression fixes. Pixel-art, Canvas-game and HTML-interface skill
+packages are withdrawn pending validation; unfinished local skill experiments
+are not included. See [v1.2 scope](releases/q-workflow-v1.2.md). Historical
+maintenance notes describe their original revision, not current availability.

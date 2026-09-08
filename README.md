@@ -8,8 +8,8 @@ Use this public starter when you want one private workflow hub for your own
 projects. The starter is public-safe; your generated workflow hub is private and
 can optionally be backed by one Git remote that you control.
 
-> **Public beta:** [q-workflow v1.1-beta](docs/releases/q-workflow-v1.1-beta.md)
-> · [versioned source](https://github.com/Aha-xiaoQ/q-workflow-hub/tree/v1.1-beta)
+> **Current public scope:** [q-workflow v1.2](docs/releases/q-workflow-v1.2.md)
+> · [historical v1.1-beta notes](docs/releases/q-workflow-v1.1-beta.md)
 > · [English quickstart](QUICKSTART.md)
 > · [中文快速开始](QUICKSTART.zh-CN.md)
 > · [report an issue](https://github.com/Aha-xiaoQ/q-workflow-hub/issues)
@@ -70,7 +70,7 @@ rerun the updater after resolving the file lock instead of deleting active
 skills by hand.
 
 If you installed an immutable release tag, do not run `git pull` in that
-detached checkout. Follow the explicit tag update and sync path in
+detached checkout. Follow the detached-checkout migration and sync path in
 [QUICKSTART.md](QUICKSTART.md#updating-later-from-github) or
 [QUICKSTART.zh-CN.md](QUICKSTART.zh-CN.md#后续更新).
 
@@ -199,7 +199,7 @@ Promotion-facing entry files are:
 - `setup-intake.html`;
 - `scripts/init-user.ps1` and setup helpers;
 - `templates/`;
-- stable bundled skills under `skills/`.
+- supported bundled skills under `skills/`, with their documented validation limits.
 
 Run the public-safety and promotion scans before pushing a release candidate.
 

@@ -30,7 +30,7 @@ Level mapping:
 - `smoke`: T2 quick sanity for small workflow/skill changes.
 - `core`: T2/T3 default after personal pull, runtime refresh, or ordinary
   workflow rule updates.
-- `full`: T3 before push/reclone claims, source/runtime drift closure, or Xiao Q
+- `full`: T3 before push/reclone claims, remote rebuild verification, or Xiao Q
   endpoint testing.
 - `release`: T4 for colleague, promotion, public, or stable-release readiness.
 
@@ -50,12 +50,31 @@ standard was too loose or too strict.
 
 ## Selection Rules
 
+### Evidence-Bounded Stop
+
+Bind evidence to the changed files/revision, acceptance criteria, environment
+and the claim being made. Once required checks pass, stop testing unless new
+changes, failures, or unresolved concerns invalidate that evidence. Do not
+repeat a broad suite merely to feel more certain. A mandated two-round suite
+still runs twice; this rule does not waive required checks.
+
+Local drift requires affected-surface repair and retest, not automatically a
+remote clone. T3 remains necessary for remote rebuild claims; T4 remains
+necessary for stable/public/team release claims. Separate known baseline
+failures from regressions without relabeling a failing suite as passed.
+
+Changing user requirements or artifacts makes affected evidence stale. A
+successful old result, a pending tool, or a review not yet returned cannot
+justify a completion claim. The optional `execution_policy.py` scenarios test
+these decision boundaries, not model intelligence or actual task completion.
+
 - Start at the tier matching the risk surface; do not run a higher tier for a
   tiny task unless the user asks or the result will be published, pushed, or
   reused as a workflow rule.
-- Escalate one tier when a test finds remote freshness, source/runtime drift,
-  missing dependency, hidden path ambiguity, public/private boundary risk, or a
-  repeated user-found defect.
+- Reassess the affected tier when a test finds remote freshness, source/runtime
+  drift, missing dependency, path ambiguity, public/private risk, or a repeated
+  defect. Repair and rerun that scope first; escalate only if the intended claim
+  or newly demonstrated risk requires broader evidence.
 - A local runtime pass is not remote rebuild evidence. Push/reclone or clone from
   the target remote before saying GitHub or internal Git remote can reconstruct behavior.
 - If a command times out, leaves only `.git`, or depends on a missing package,

@@ -1,5 +1,9 @@
 # Selective skill maintenance — 2026-09-06
 
+Historical note: the [v1.2 public scope](q-workflow-v1.2.md) supersedes the
+HTML and pixel package inclusion below. Those packages are withdrawn from the
+current distribution pending validation; historical revisions are unchanged.
+
 This branch update follows `v1.1-beta`; it does not replace or move that tag.
 The workflow core remains unchanged from the public release.
 

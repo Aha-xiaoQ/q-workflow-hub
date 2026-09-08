@@ -1,8 +1,9 @@
 # 快速开始
 
-> **公开测试版：** 本指南当前对应 `v1.1-beta`。如需可复现安装，请使用
-> `git clone --branch v1.1-beta --depth 1 ...` 固定到该标签，并先阅读
-> [测试版限制与回滚说明](docs/releases/q-workflow-v1.1-beta.md)。
+> **当前公开范围：** 请使用 `main`，安装前阅读
+> [v1.2 范围与限制](docs/releases/q-workflow-v1.2.md)，并记录
+> `git rev-parse HEAD` 的结果以标识安装来源。历史 beta 标签仍含已撤回技能，
+> 不代表当前安装包。
 
 这份说明帮你在 Windows 机器上安装 q-workflow。最推荐的方式不是自己判断要运行哪个
 脚本，而是把公开 starter 地址交给 Codex、Claude Code 或其他能运行终端命令的编码
@@ -52,7 +53,7 @@ workflow hub 应保持私有。里面可能包含本地路径、项目名、工�
 https://github.com/Aha-xiaoQ/q-workflow-hub.git
 
 请用简单中文一步一步引导我。
-请克隆并使用不可变的 `v1.1-beta` 标签，不要使用未固定版本的默认分支。
+请克隆 main，检查当前发布范围，并在安装前记录准确的提交号。
 请把 QUICKSTART.zh-CN.md、QUICKSTART.md 和 MACHINE_BOOTSTRAP.md 作为安装依据。
 先说明 q-workflow 会创建什么、哪些内容应该保持私有。
 检查 Git 和我的编码 Agent 环境是否可用。
@@ -77,8 +78,9 @@ Agent 应该向你询问：
 本地安装向导：
 
 ```powershell
-git clone --branch v1.1-beta --depth 1 https://github.com/Aha-xiaoQ/q-workflow-hub.git
+git clone --branch main --depth 1 https://github.com/Aha-xiaoQ/q-workflow-hub.git
 cd q-workflow-hub
+git rev-parse HEAD
 powershell -ExecutionPolicy Bypass -File .\scripts\setup-runner.ps1
 ```
 
@@ -131,13 +133,17 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -InstallRuntime
 ```
 
-本指南推荐的不可变 beta 标签不使用 `git pull`：
+旧标签或分离头指针检出不使用 `git pull`。确认工作树干净后，先获取、检查当前
+公开提交，再明确选用该提交：
 
 ```powershell
 git status --short --branch
 git remote -v
-git fetch --tags origin
-git switch --detach v1.1-beta
+git fetch origin main
+git log -1 --oneline FETCH_HEAD
+# 检查获取到的发布范围后，再选用此提交。
+git switch --detach FETCH_HEAD
+git rev-parse HEAD
 
 powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -WorkflowHubPath "$env:USERPROFILE\AI_Work\workflow-hub" `
@@ -145,8 +151,12 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -InstallRuntime
 ```
 
-只有发布了新的已复核标签后，才替换上面的 `v1.1-beta`。如果工作树不干净、远端
-不符合预期或发现多个 starter 副本，应停止并让 Agent 报告歧义，不要盲目覆盖。
+如果工作树不干净、远端不符合预期或发现多个 starter 副本，应停止并让 Agent
+报告歧义，不要盲目覆盖。
+
+更新不会自动删除既有安装中的像素、Canvas 或 HTML 技能。它们可能仍被 Agent
+发现，但不在当前支持范围。若要停用，先保留自定义内容，再将这些准确的技能目录
+移到 runtime 和 bootstrap 的 `skills` 目录之外的私有归档处；不要删除本地自用源文件。
 
 ## 成功标准
 

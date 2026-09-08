@@ -4,24 +4,6 @@
     "purpose":  "Regression cases for workflow feedback improvements. These cases check whether short user-facing prompts still route to the intended q-workflow reference after feedback-driven patches.",
     "cases":  [
                   {
-                      "id": "VIG-01-scale-is-not-optimization",
-                      "prompt": "A 64x64 pixel avatar was scaled to 256x256 and called an optimized reconstruction.",
-                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
-                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
-                      "must_have_terms": ["reference-inspection", "optimization-inspection", "coordinate-diff", "A proportional or nearest-neighbour scale-up"],
-                      "must_not_route": ["activate live asset", "call it optimized without changes"],
-                      "reason": "Scaling alone cannot satisfy a request for a higher-resolution optimized reconstruction."
-                  },
-                  {
-                      "id": "VIG-02-inspection-layer-missing",
-                      "prompt": "A changed visual candidate has no coordinate origin, major ticks, or legend showing reference and changed cells.",
-                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
-                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
-                      "must_have_terms": ["grid", "origin", "major ticks", "legend", "inspection manifest"],
-                      "must_not_route": ["clean candidate review", "skip inspection"],
-                      "reason": "Expert and Xiao Q need a first grid inspection edition to identify the actual edits."
-                  },
-                  {
                       "id": "VIG-03-live-before-review",
                       "prompt": "A visual candidate was wired into an asset manifest before expert review and Xiao Q decision.",
                       "expected_route": "visual-candidate-review-before-live-activation",
@@ -38,15 +20,6 @@
                       "must_have_terms": ["does not count as pre-review", "restore the known live baseline", "collect fresh evidence and pre-review", "one explicit activation diff"],
                       "must_not_route": ["accept retrospective review as approval"],
                       "reason": "Post-activation review cannot validate the required ordering."
-                  },
-                  {
-                      "id": "VIG-05-clean-before-inspection-approval",
-                      "prompt": "A clean visual was shown before the grid inspection edition had expert and Xiao Q approval.",
-                      "expected_route": "visual-reproduction-grid-inspection-before-clean",
-                      "expected_reference": "q-html-interface-design/references/html-visual-review-gate.md",
-                      "must_have_terms": ["return the candidate to inspection state", "Visual Arbiter", "Xiao Q review record", "clean candidate derived"],
-                      "must_not_route": ["present clean output as final"],
-                      "reason": "A clean derivative is allowed only after the reviewable grid state is approved."
                   },
                   {
                       "id":  "identity-pure-distinctiveness",

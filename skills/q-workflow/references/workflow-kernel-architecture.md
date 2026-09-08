@@ -86,10 +86,22 @@ it does not prove task authority or recoverability.
 TODO commits, the base-command runtime mirror, and the task manager share the
 same non-blocking OS state-writer lock. The operating system releases ownership
 when a process exits, so a persistent lock file is not a stale-lock condition.
-Each writer rolls back every switched file after an in-process failure.
-Unexpected process termination between file switches can still leave a partial
-multi-file transaction; that remains a local-only residual risk until a durable
-write-ahead recovery journal is implemented.
+Task apply records a recovery journal before switching files and rolls back
+on in-process exceptions, including cancellation. An unresolved journal blocks
+shared state writers after process termination. Run `q_workflow_manager.py
+--profile <profile.json> task recover --yes` to recover explicitly: recovery
+validates profile binding, allowed paths and current hashes before restoring
+original files. External drift or a corrupt journal blocks recovery instead of
+overwriting it. Preserve the journal and inspect the reported conflict.
+
+This protection covers task-apply transactions, not every command that uses
+the shared lock. Tests cover forced process termination at each task write;
+they do not prove power-loss durability or multi-file filesystem atomicity.
+
+Release verification may name `remote.release_repository`, which must match
+the receipt repository and a registered profile entry. Omitting it preserves
+the workflow-hub default for existing records. A single receipt does not prove
+release state across multiple repositories.
 
 ## Compatibility And Migration
 

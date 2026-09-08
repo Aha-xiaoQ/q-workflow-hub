@@ -147,6 +147,8 @@ def validate_task_record(
         errors.append("remote must be an object")
         remote = {}
     remote_status = remote.get("status")
+    if "release_repository" in remote and not _nonempty_string(remote.get("release_repository")):
+        errors.append("remote.release_repository must be a non-empty registered repository id")
     remote_proven = remote.get("proven")
     if remote_status not in {"unproven", "proven"}:
         errors.append("remote.status must be unproven or proven")
@@ -330,6 +332,7 @@ def flatten_task_record(
     for key in (
         "release_receipt",
         "release_receipt_sha256",
+        "release_repository",
         "release_remote",
         "release_branch",
         "release_fetched_at",
@@ -384,6 +387,14 @@ def release_receipt_errors(path: Path, binding: dict[str, str], hub: Path) -> li
         errors.append("release_receipt format_version must equal 1")
     if data.get("strict_readiness_status") != "pass":
         errors.append("release_receipt strict_readiness_status must equal pass")
+    # Old receipts remain valid only for the legacy workflow-hub binding.
+    # An explicit project binding must be present in the hashed receipt too.
+    repository_id = binding.get("release_repository", "q-workflow-hub")
+    if "release_repository" in binding:
+        if data.get("repository") != repository_id:
+            errors.append("release_receipt repository does not match task release_repository")
+    elif data.get("repository", "q-workflow-hub") != "q-workflow-hub":
+        errors.append("project release_receipt requires explicit task release_repository")
     bindings = {
         "remote": "release_remote",
         "branch": "release_branch",

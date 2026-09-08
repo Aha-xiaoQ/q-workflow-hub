@@ -67,6 +67,11 @@ intensity by themselves.
 The score is an escalation signal, not a bundled model/effort/cost/permission
 setting.
 
+The effort examples in this table and the four-axis assessment apply only
+after an explicit override is justified, supported and allowed. Otherwise
+inherit model and effort without sending override parameters, including for
+full-history forks. A suggested `medium` or `high` here is not a mandatory value.
+
 ## Four Independent Decision Axes
 
 1. **Model class — capability gap.** Use a higher child model only when the
@@ -86,45 +91,37 @@ setting.
    write, install, deletion, credentials, push/publish, privacy, or approval
    authority. Those decisions stay under their existing risk gates.
 
-## Current GPT-5.6 Binding
+## Observed Host Binding
 
-GPT-5.6 has three task-shaped classes:
+Default to inheriting the current main model and effort when a child is useful.
+Do not choose a historical model name from this reference as an automatic
+escalation. Read the current tool's exposed choices separately from the main
+model identity; if identity is not observable, record `unknown`.
 
-- `gpt-5.6-sol`: frontier agentic coding model; preferred high-capability
-  child model for the 4–5 and 6+ rows when it is available.
-- `gpt-5.6-terra`: balanced model; appropriate for bounded routine delegated
-  work and the conservative everyday baseline when a durable default is being
-  chosen after representative evaluation.
-- `gpt-5.6-luna`: efficient model for clear, repeatable, high-volume work with
-  an objective validator. It may be the current main model even when the child
-  agent API does not expose it as a selectable override.
+For example, an Astra main agent must not route a difficult pass to Sol merely
+because older guidance called Sol the highest tier. Conversely, a host exposing
+only older models still uses its actual supported choices. Model capability,
+reasoning depth, cost posture and action authority remain four separate axes.
 
-Treat these names as a platform binding, not a permanent taxonomy. Read the
-active main model and the currently exposed child-agent choices separately at
-dispatch time. Main-model availability does not prove child-model availability,
-and a skill cannot switch the already-running main conversation. If a higher
-approved class is not available, do not silently substitute a weaker model and
-call it an escalation: state the constraint, keep the main path, or use the
-strongest available class with an explicit compensating validation step.
+Overrides require a concrete capability/efficiency reason, an exposed choice,
+and permission under the host's actual tool contract. Some hosts disallow
+overrides with full-history forks; use the supported inheritance mode or an
+explicit minimal packet, never invent a configuration. Capability descriptions
+are not measured quality or cost evidence for this user's tasks.
 
 ## Task-Shaped Default Posture
 
 - Keep the current main model as integration owner. Do not spawn merely to move
   routine work to a cheaper model; coordination can cost more tokens than the
   delegated work saves.
-- When the current main model is `gpt-5.6-luna`, keep clear routing, bounded
-  transformation, structured synthesis, and validator-backed work on the main
-  path. Use one `gpt-5.6-sol` child only for a documented capability gap such
-  as conflicting current sources, costly ambiguity, difficult diagnosis,
-  adversarial review, or a failed bounded pass.
-- When the current main model is `gpt-5.6-sol`, delegate to Terra or Luna only
-  when that exact child class is exposed and isolation, parallel wall-clock
-  value, or high-volume repeatability already justifies a child agent.
-- For a durable cross-task default, treat `gpt-5.6-terra` main plus bounded Sol
-  escalation as the conservative candidate. Do not promote it, Luna-main, or
-  Sol-main routing to stable until representative local tasks compare quality,
-  total tokens, cached and uncached input, wall-clock time, retries, rework,
-  escalation precision, and missed-escalation rate.
+- Delegate only when a bounded independent question, review or parallel task
+  earns the coordination cost. Stronger models do not remove self-review risk.
+- A different child model is an explicit experiment, not an automatic response
+  to task length or intensity score. Prefer inheritance until evidence supports
+  an override. No routing rule overrides a user or platform no-delegation rule.
+- Promote cross-task defaults only after representative matched runs compare
+  accepted quality, total tokens, elapsed time, retries, rework and missed
+  escalation. Keep untested alternatives experimental, including Astra routes.
 
 ## Dispatch Record And Feedback
 
@@ -184,10 +181,10 @@ it cannot establish a global default.
 
 1. **Tiny deterministic fix:** a one-line label repair with a snapshot check
    scores 0. Keep it on the main path; a higher child is over-provisioned.
-2. **Bounded research synthesis:** four conflicting current first-party sources
-   plus local constraints score at least 4. Use one `gpt-5.6-sol` child at
-   `high` because the evidence conflicts, require a source table, and keep the
-   main agent as integrator.
+2. **Bounded research synthesis:** conflicting current sources justify one
+   independent child while the main agent inspects local constraints. Inherit
+   the current model/effort unless a supported override has a documented reason;
+   require a source table, not a higher-model claim.
 3. **Unavailable escalation:** a score-6 code diagnosis has no higher child
    model exposed. State `main_model_switchable: no`, select the strongest
    available permitted path, add an independent regression check, and do not
@@ -196,13 +193,10 @@ it cannot establish a global default.
    reliable main-path validator that covers the coupled requirements. Record
    `why_main_is_not_enough: not-applicable`, keep the work on the main path,
    and do not escalate merely because the score is high.
-5. **Luna main with bounded Sol escalation:** the active main model is Luna and
-   a full workflow audit must reconcile current external evidence with a dirty
-   local authority tree. Keep Luna as integration owner and dispatch at most one
-   Sol child first for the highest-intensity disjoint scope. Fan out only after
-   that bounded pass shows independent parallel value; require compact evidence
-   reports and compare accepted quality and total run cost with a no-child
-   baseline.
+5. **Astra main with independent review:** keep Astra as integration owner and
+   inherit for one disjoint review. Do not silently downgrade to an old named
+   default. Required review still runs; compare utility against a no-child
+   baseline before claiming a permanent efficiency improvement.
 6. **Luna main but Luna child unavailable:** runtime evidence shows Luna is the
    active main model while the spawn surface exposes only Sol and Terra. Record
    both facts separately; do not claim a Luna worker was dispatched and do not

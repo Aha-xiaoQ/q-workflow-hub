@@ -22,6 +22,7 @@ lives in the user's private hub.
 | Existing project resume | Project README/state files, project-local workflow instruction, then targeted Git status/log |
 | New project bootstrap, project structure, folder standardization, or migration cleanup | `references/project-structure.md`, then `references/full-guide.md` `New Project Bootstrap` section |
 | Workflow architecture, evolution, or native capability replacement | `references/workflow-evolution.md` |
+| Capability adaptation, excessive clarification/testing, native-tool selection, or model changes | `references/adaptive-execution.md`; optional `scripts/execution_policy.py` for regression or ambiguous planning, never a per-turn gate |
 | Workflow health check, manager CLI, task registry, state transaction, or source/bootstrap/runtime surface drift | `references/workflow-kernel-architecture.md`, then `scripts/q_workflow_manager.py status` or `doctor` |
 | Long-running work with scattered evidence, competing principles, stale pointers, or repeated micro-tuning | `references/q-standard-contract.md` `Single Active Authority Gate`, then the owning domain skill |
 | Learning/training, design, visual creation, translation, tool selection, or quality-improvement work | `references/q-standard-contract.md` `evidence-led-learning-design`, then the owning domain skill; collect/inspect reliable material before promoting a method or candidate |
@@ -70,6 +71,13 @@ lives in the user's private hub.
   plan/apply transaction and requires explicit `--yes`.
 
 ## Core Principles
+
+- Before drafting, exporting, or approving externally delivered text, verify
+  its actual audience. Remove assistant or
+  commissioner process narration; preserve reader-useful instructions, limits,
+  safety and attribution. Check authoritative generators and final exports.
+  Apply this check to the final exported content, not only its source;
+  do not publish internal review notes as product copy.
 
 - Use the smallest context that makes the next action safe, reversible, and
   recoverable.
@@ -193,17 +201,25 @@ Use progressive context loading:
 | Micro | Fixed command or stable answer | Avoid tool reads when the answer is known |
 | Quick | Resume/status with clear target | Read routing state and one targeted status check |
 | Project | Normal project work | Read targeted project state and relevant files |
-| Deep | Dirty, stale, contradictory, public, destructive, or cross-profile state | Inspect diffs, decisions, handoff notes, and sources |
+| Deep | Overlapping/unclear dirty ownership, stale authority, contradictory, public, destructive, or cross-profile state | Inspect relevant diffs, decisions, handoff notes, and sources |
 | Full | Broad audit or legacy detail | Read `references/full-guide.md` only after a reason is clear |
 
-Stop reading when the next action is clear and low risk. Escalate when the
-worktree is dirty, state is contradictory, validation failed without a localized
-cause, or the next action could commit, push, publish, delete, or expose data.
+Stop reading when the next action is clear and low risk. Inspect dirty changes
+in the touched scope first; unrelated dirty files do not require a whole-repo
+audit. Escalate when ownership overlaps, authority conflicts, a failure cannot
+be localized, or an action adds publication, deletion, or data-exposure risk.
+Required AGENTS/skill reads and task/event validation are not optional context.
 
 ## Safety And Portability
 
 - Ask before destructive actions, credential handling, global configuration,
   publishing, public/GitHub sync, or unclear blast-radius operations.
+- First check the newest user instruction and existing scope-specific approval.
+  Do not ask again for the same already-authorized local action. Ask when the
+  needed decision, target, candidate, or side-effect boundary is new or unclear.
+  An answer or diagnosis request does not authorize implementation. A newer
+  no-push/cancel instruction invalidates earlier approval for that action;
+  model capability never expands authorization.
 - Record local checkpoints freely when useful, but push/publish/public sync only
   after Xiao Q explicitly approves the current candidate. Release/handoff need
   or critical recovery risk is a reason to ask, not a reason to push silently.
@@ -230,7 +246,8 @@ Before ending a substantial round:
 - run targeted Git status and review relevant diffs;
 - commit meaningful checkpoints locally;
 - when reusable skills changed, verify source, runtime, workflow bootstrap, and
-  GitHub remote mirrors with recursive file-list and hash checks;
+  applicable mirrors with file-list and hash checks; remote evidence is required
+  for remote sync/rebuild/release claims, not for a clearly local-only change;
 - record any deferred push, mirror sync, validation gap, or native-capability
   retirement decision.
 

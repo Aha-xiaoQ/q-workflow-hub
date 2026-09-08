@@ -6,6 +6,16 @@ This project follows semantic versioning once stable release tags are created.
 
 ## Unreleased
 
+### v1.2 public scope
+
+- Add capability-aware core execution and project-specific release binding.
+- Isolate explicitly scoped portfolio audits; retain v1.1 safety regressions.
+- Withdraw pixel-art, Canvas-game and HTML-interface skill packages from the
+  current public distribution; keep unfinished specialties local-only.
+- See [v1.2 scope and verification](docs/releases/q-workflow-v1.2.md).
+
+### Historical September maintenance scope (superseded for withdrawn skills)
+
 - Add targeted interface finish/state review and organic pixel-contour cleanup guidance.
 - Add avatar master/derivative packaging and archive rules.
 - Preserve Bilibili multipart selection, reuse authorized local subtitle routes,
