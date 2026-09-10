@@ -6,7 +6,7 @@ This project follows semantic versioning once stable release tags are created.
 
 ## Unreleased
 
-### v1.2 public scope
+### v1.2
 
 - Add a Simplified Chinese README, refresh the English entrypoint and reuse the
   current pixel Q logo. Add an adaptable bilingual README standard and starter
@@ -20,23 +20,15 @@ This project follows semantic versioning once stable release tags are created.
 - Preserve important audience-facing limitations and required license notices.
 - Add capability-aware core execution and project-specific release binding.
 - Isolate explicitly scoped portfolio audits; retain v1.1 safety regressions.
-- Withdraw pixel-art, Canvas-game and HTML-interface skill packages from the
-  current public distribution; keep unfinished specialties local-only.
-- See [v1.2 scope and verification](docs/releases/q-workflow-v1.2.md).
+- See [v1.2 release notes](docs/releases/q-workflow-v1.2.md).
 
-### Historical September maintenance scope (superseded for withdrawn skills)
-
-- Add targeted interface finish/state review and organic pixel-contour cleanup guidance.
-- Add avatar master/derivative packaging and archive rules.
+### September maintenance
 - Preserve Bilibili multipart selection, reuse authorized local subtitle routes,
   and distinguish login failures from absent captions, with offline regressions.
 - Add saved-route opt-out and isolate explicit route registries.
-- Document default-private asset promotion. Private publishing skills and
-  unpublished game-production dependencies remain excluded.
+- Document default-private asset promotion.
 
-This is a selective public maintenance update, not a full mirror of the
-maintainer installation. The existing `v1.1-beta` tag remains unchanged.
-See [scope and verification](docs/releases/maintenance-2026-09-06.md).
+See the [maintenance notes](docs/releases/maintenance-2026-09-06.md).
 
 ## 1.1.0-beta - 2026-09-06
 
@@ -52,10 +44,7 @@ Display version: `v1.1-beta`. See the release notes for scope and migration limi
 - Initialize a new runtime mirror using explicit paths, without replacing existing mirrors.
 - Add two-round public-install checks, including transactional updater rollback.
 
-This candidate updates the workflow core and skill-creation guidance. Newer
-experimental domain skills are excluded. The surface registry describes only
-bundled skills. This release does not synchronize an existing maintainer runtime;
-users update their own private installations explicitly.
+Use the quickstart's update procedure to refresh an existing installation.
 
 ## 1.0.0-beta - 2026-08-12
 

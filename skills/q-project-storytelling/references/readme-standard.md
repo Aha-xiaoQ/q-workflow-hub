@@ -44,6 +44,26 @@ Link long procedures to their existing owner. Avoid parallel copies of commands
 that will drift. Do not hide the only prerequisites, safety warning or recommended
 first action in a collapsed block. Keep maintainer process logs outside the README.
 
+## Reader-only delivery boundary
+
+Apply the audience check to the whole authorized delivery surface, including
+translations, linked release pages, assets/metadata and generated downloads.
+For each questionable passage, ask what reader decision, interpretation, action
+or recovery step would become worse without it. A true internal fact is not
+automatically useful public copy. Prefer what the project supports to internal
+omission lists, rejected experiments, assistant reports or reviewer verdicts.
+
+Keep commissioning discussion and commissioner-facing validation reports in
+private task evidence. Preserve assessments and reproducibility reports that
+intentionally serve public readers.
+Do not relocate rejected copy into another public appendix. A contributor guide
+needs its own reader purpose. Preserve real upgrade effects/actions, safety,
+privacy, compatibility and license information, without internal decision defense.
+Unresolved assistant/commissioner commentary blocks publication of the candidate.
+Use `q-public-content-review` when available; this check remains self-contained
+when that skill is not installed. A user-identified miss must be checked across
+the package and its source template, not only removed from the quoted sentence.
+
 ## Language editions
 
 Keep an existing default filename unless migration is requested. For English and

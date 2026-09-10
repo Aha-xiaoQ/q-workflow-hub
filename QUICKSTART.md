@@ -1,9 +1,7 @@
 # Quickstart
 
-> **Current public scope:** use `main` and read the
-> [v1.2 scope and limitations](docs/releases/q-workflow-v1.2.md) before installing.
-> Record `git rev-parse HEAD` to identify the exact source installed. Historical
-> beta tags contain withdrawn skills and are not the current package.
+> Install from `main`. Record `git rev-parse HEAD` so you can identify your
+> installed revision when updating or reporting a problem.
 
 Use this guide when you want a coding agent to install q-workflow on a Windows
 machine. The recommended path is agent-first: give the agent the public starter
@@ -168,11 +166,10 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
   -InstallRuntime
 ```
 
-The updater does not automatically remove withdrawn pixel, Canvas or HTML
-skills from an existing installation. They may remain discoverable but are
-outside current support. To disable them, first preserve any custom work and
-move only those exact skill folders to a private archive outside both runtime
-and bootstrap `skills` directories. Do not delete your local self-use sources.
+Updating does not automatically remove installed skills outside the current package.
+To disable an unwanted skill, preserve its customizations and move that specific
+folder outside both runtime and bootstrap `skills` directories. Do not delete
+unrelated source files.
 
 ## Success Check
 

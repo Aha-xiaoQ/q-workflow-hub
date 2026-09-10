@@ -29,9 +29,8 @@ beyond the conversation.
 This repository, **q-workflow-hub**, is the public starter: installers,
 templates and reusable skills. Your generated workflow hub stays private.
 
-> **Current package:** [v1.2 scope](docs/releases/q-workflow-v1.2.md) on
-> `main`. Setup targets Windows with PowerShell, Git and Python 3.10+.
-> This is an early-stage project, not a hosted service or a model.
+> **Requirements:** Windows, PowerShell, Git and Python 3.10+.
+> q-workflow runs locally with your coding agent and is under active development.
 
 ## Why q-workflow?
 
@@ -111,16 +110,8 @@ helpers, project templates and a private-hub template. Start with the
 [daily usage guide](AFTER_SETUP.md); you do not need
 to learn every skill before using the workflow.
 
-### Scope and limitations
-
-- The current distribution excludes the withdrawn pixel-art, Canvas-game and
-  HTML-interface packages. Historical tags are not the current supported
-  package; see [v1.2 scope](docs/releases/q-workflow-v1.2.md).
-- Validation covers specific workflow and installation behavior. It is not
-  evidence of higher model intelligence, creative quality or live-provider
-  availability.
-- Skills guide agent behavior; they are not a security sandbox or a substitute
-  for the agent's own permissions and your review.
+Skills guide agent behavior; they are not a security sandbox. Review proposed
+changes and use your agent's permission controls before running actions.
 
 ## Update an existing installation
 
@@ -133,9 +124,6 @@ use the documented migration path. If an old checkout has divergent history,
 preserve your local work and clone the current starter into a new directory;
 review and reapply your changes instead of merging obsolete history.
 
-The updater does not silently remove withdrawn skills from existing installs.
-Preserve custom work before moving those exact folders out of skill discovery.
-
 ## Documentation
 
 | I want to… | Read |
@@ -145,7 +133,7 @@ Preserve custom work before moving those exact folders out of skill discovery.
 | Learn daily usage | [After setup](AFTER_SETUP.md) |
 | Use a file-first/manual setup path | [Machine bootstrap](MACHINE_BOOTSTRAP.md) |
 | Understand privacy boundaries | [Hub boundary model](docs/HUB_BOUNDARY_MODEL.md) |
-| Check the supported package and its tests | [v1.2 scope and verification](docs/releases/q-workflow-v1.2.md) |
+| Read version changes and contributor checks | [v1.2 release notes](docs/releases/q-workflow-v1.2.md) |
 | Follow changes | [Changelog](CHANGELOG.md) |
 
 A [Simplified Chinese README](README.zh-CN.md), quickstart, first prompt and

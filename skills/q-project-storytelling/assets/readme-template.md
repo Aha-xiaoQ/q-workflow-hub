@@ -5,6 +5,11 @@ using [the README standard](../references/readme-standard.md). Replace guidance
 with verified project facts and remove unused sections. Do not copy this
 preface into the result.
 
+Final copy is for the repository's readers. Keep assistant notes, internal
+selection decisions and commissioner-facing review reports outside the delivered
+package. Preserve reader-useful assessments and limitations that affect use or
+interpretation.
+
 Original editorial template authored for q-workflow; licensed with the repository
 documentation. No third-party template text or brand artwork is included here.
 

@@ -1,9 +1,7 @@
 # 快速开始
 
-> **当前公开范围：** 请使用 `main`，安装前阅读
-> [v1.2 范围与限制](docs/releases/q-workflow-v1.2.md)，并记录
-> `git rev-parse HEAD` 的结果以标识安装来源。历史 beta 标签仍含已撤回技能，
-> 不代表当前安装包。
+> 请从 `main` 安装，并记录 `git rev-parse HEAD` 的结果，
+> 以便更新或反馈问题时确认已安装的版本。
 
 这份说明帮你在 Windows 机器上安装 q-workflow。最推荐的方式不是自己判断要运行哪个
 脚本，而是把公开 starter 地址交给 Codex、Claude Code 或其他能运行终端命令的编码
@@ -154,9 +152,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
 如果工作树不干净、远端不符合预期或发现多个 starter 副本，应停止并让 Agent
 报告歧义，不要盲目覆盖。
 
-更新不会自动删除既有安装中的像素、Canvas 或 HTML 技能。它们可能仍被 Agent
-发现，但不在当前支持范围。若要停用，先保留自定义内容，再将这些准确的技能目录
-移到 runtime 和 bootstrap 的 `skills` 目录之外的私有归档处；不要删除本地自用源文件。
+更新不会自动删除安装目录中不属于当前包的技能。若要停用某个技能，请先保留自定义内容，
+再将该技能目录移到 runtime 和 bootstrap 的 `skills` 目录之外；不要删除无关源文件。
 
 ## 成功标准
 

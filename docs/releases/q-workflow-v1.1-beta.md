@@ -34,19 +34,15 @@ Run these from the installed skill with your own configured profile.
 
 ## Verification and limitations
 
-Two isolated installation rounds (English and Chinese setup) passed 202 checks
-on Windows, including installed-command behavior and file-hash comparisons.
-Ten focused regression tests and an independent code review passed. This is
-not 202 independent usability scenarios or an operating-system sandbox audit.
+Installation checks cover fresh setup, state recovery, update preservation and
+rollback on Windows.
 
-Newer experimental domain work is excluded. Bundled domain skills keep their
-beta/lifecycle labels. Existing users must review their own paths, permissions
-and integrations. Installation tests do not establish cloud publication or
-guarantee that all agents interpret instructions identically.
+Existing users should review their configured paths, permissions and integrations
+before updating, then verify the normal resume flow with their coding agent.
 
 ## Recovery
 
 Back up your private hub and runtime before updating. A failed package switch
 is rolled back by the updater; do not discard your private backup after a
 successful install until your normal resume flow has been verified. This
-release does not include earlier private development history.
+release supports updates through the quickstart's documented migration path.

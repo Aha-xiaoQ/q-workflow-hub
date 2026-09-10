@@ -1,11 +1,9 @@
 # Third-Party References
 
-- GitHub's About READMEs guide and the Microsoft PowerToys, FastAPI and Bun
-  repository READMEs were reviewed on 2026-09-10 for project identity,
-  first-use instructions and documentation navigation patterns. The README
-  standard links these sources. No third-party prose, code, badges or assets
-  were copied for this update. The current Q logo is maintainer-supplied brand
-  artwork with separate terms in [assets/README.md](assets/README.md).
+- Sources for the README guidance are linked in the
+  [README standard](skills/q-project-storytelling/references/readme-standard.md).
+  The guidance is independently written; it does not include third-party prose,
+  code, badges or assets from those sources.
 
 q-workflow-hub code and documentation are licensed under Apache-2.0; the current
 Q brand artwork has separate terms in [assets/README.md](assets/README.md).

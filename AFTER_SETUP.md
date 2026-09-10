@@ -112,8 +112,7 @@ clarification question when the target is unclear.
 ## Updating q-workflow
 
 When updating the public starter, locate its checkout, verify the GitHub remote
-and preserve local changes first. The current public package is on `main`;
-historical beta tags are not the current supported package. Follow
+and preserve local changes first. The current package is on `main`. Follow
 [Updating later from GitHub](QUICKSTART.md#updating-later-from-github) to inspect
 and select the current revision, including migration from a detached or divergent
 checkout. Do not run `git pull` from a detached checkout. After selecting the
