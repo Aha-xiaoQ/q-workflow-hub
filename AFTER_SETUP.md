@@ -111,12 +111,13 @@ clarification question when the target is unclear.
 
 ## Updating q-workflow
 
-When the public starter has a new version, locate the starter checkout, verify
-its GitHub remote and preserve local changes first. For a pinned tag installation,
-fetch tags and explicitly select the new approved release tag; do not run
-`git pull` from a detached checkout. Only a clean, tracking branch installation
-uses `git pull --ff-only`. Follow the version-selection instructions in
-QUICKSTART.md, then run:
+When updating the public starter, locate its checkout, verify the GitHub remote
+and preserve local changes first. The current public package is on `main`;
+historical beta tags are not the current supported package. Follow
+[Updating later from GitHub](QUICKSTART.md#updating-later-from-github) to inspect
+and select the current revision, including migration from a detached or divergent
+checkout. Do not run `git pull` from a detached checkout. After selecting the
+revision, run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `

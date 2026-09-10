@@ -8,6 +8,10 @@ This project follows semantic versioning once stable release tags are created.
 
 ### v1.2 public scope
 
+- Add a Simplified Chinese README, refresh the English entrypoint and reuse the
+  current pixel Q logo. Add an adaptable bilingual README standard and starter
+  template to project storytelling; align the after-setup update link with the
+  current package. Installation behavior is unchanged.
 - Apply proportionate skill routing: focused PDF/transcript work no longer
   requires unrelated extraction packs or provider benchmarks; retain evidence,
   privacy, authorization and independent release-review gates.

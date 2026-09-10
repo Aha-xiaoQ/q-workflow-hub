@@ -1,213 +1,168 @@
-# q-workflow-hub
+<p align="center">
+  <img src="assets/q-logo-pixel-framed.svg" width="96" height="96" alt="Xiao Q pixel logo">
+</p>
 
-q-workflow is a recovery-first workflow layer for coding agents. It helps an
-agent know where your projects are, what is active, what is private, and how to
-resume from files and Git instead of relying only on chat history.
+<h1 align="center">q-workflow</h1>
 
-Use this public starter when you want one private workflow hub for your own
-projects. The starter is public-safe; your generated workflow hub is private and
-can optionally be backed by one Git remote that you control.
+<p align="center">
+  Recover project context from files and Git, not just chat history.
+</p>
 
-> **Current public scope:** [q-workflow v1.2](docs/releases/q-workflow-v1.2.md)
-> · [historical v1.1-beta notes](docs/releases/q-workflow-v1.1-beta.md)
-> · [English quickstart](QUICKSTART.md)
-> · [中文快速开始](QUICKSTART.zh-CN.md)
-> · [report an issue](https://github.com/Aha-xiaoQ/q-workflow-hub/issues)
+<p align="center">
+  <strong>English</strong> · <a href="README.zh-CN.md">Simplified Chinese</a>
+</p>
 
-## Start Here
+<p align="center">
+  <a href="QUICKSTART.md">Quickstart</a> ·
+  <a href="#how-it-works">How it works</a> ·
+  <a href="#documentation">Documentation</a> ·
+  <a href="https://github.com/Aha-xiaoQ/q-workflow-hub/issues">Issues</a>
+</p>
 
-Recommended first action: open the quickstart for your language and use the
-agent-first setup prompt there. That is the single supported path for most new
-users.
+---
 
-1. Install Git and Python 3.10 or newer, and choose one terminal-capable coding agent, such as Codex or
-   Claude Code.
-2. Open [QUICKSTART.md](QUICKSTART.md) or
-   [QUICKSTART.zh-CN.md](QUICKSTART.zh-CN.md).
-3. Paste the recommended setup prompt into your agent.
-4. Let the agent explain what will be created, ask for the few missing fields,
-   run setup, and verify the first resume test.
+q-workflow is a file- and Git-based workflow layer for coding agents. It keeps
+project locations, active tasks, decisions and recovery notes in a private hub
+and your project repositories, so a new agent session has a starting point
+beyond the conversation.
 
-Reference links after you choose a language:
+This repository, **q-workflow-hub**, is the public starter: installers,
+templates and reusable skills. Your generated workflow hub stays private.
 
-| Language | Setup Guide | First Prompt | After Setup |
-|:---|:---|:---|:---|
-| English | [QUICKSTART.md](QUICKSTART.md) | [FIRST_PROMPT.md](FIRST_PROMPT.md) | [AFTER_SETUP.md](AFTER_SETUP.md) |
-| 中文 | [QUICKSTART.zh-CN.md](QUICKSTART.zh-CN.md) | [FIRST_PROMPT.zh-CN.md](FIRST_PROMPT.zh-CN.md) | [AFTER_SETUP.zh-CN.md](AFTER_SETUP.zh-CN.md) |
+> **Current package:** [v1.2 scope](docs/releases/q-workflow-v1.2.md) on
+> `main`. Setup targets Windows with PowerShell, Git and Python 3.10+.
+> This is an early-stage project, not a hosted service or a model.
 
-The public starter URL used by the quickstart is:
+## Why q-workflow?
 
-```text
-https://github.com/Aha-xiaoQ/q-workflow-hub.git
-```
+Use it when you work across sessions or repositories and need to recover what
+was in progress, which files are authoritative, and what has actually been
+checked.
 
-## Updating An Existing Install
+- **Resume with context.** A project registry and active-work pointer guide the
+  agent to the relevant files.
+- **Keep decisions with the work.** Tasks, environment notes and validation
+  evidence live alongside the project.
+- **Separate reusable skills from private state.** Public templates can be
+  shared without publishing your personal workflow hub.
+- **Make handoffs traceable.** Local validation and verified publication are
+  recorded separately; one does not imply the other.
 
-Use this branch-checkout path when the public starter has changed and you want
-to refresh your private workflow hub and runtime skills. Do not force-overwrite
-an unknown local repo.
+The workflow is optimized for Codex skills. Other agents that can read and
+edit files, run commands and use Git can follow the file-based approach through
+[manual bootstrap](MACHINE_BOOTSTRAP.md); equivalent integration is not assumed.
 
-```powershell
-# Run inside your local q-workflow-hub starter checkout.
-git status --short --branch
-git remote -v
-git pull --ff-only
+## Get started
 
-powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
-  -WorkflowHubPath "$env:USERPROFILE\AI_Work\workflow-hub" `
-  -CodexHome "$env:USERPROFILE\.codex" `
-  -InstallRuntime
-```
+**Start with the [English quickstart](QUICKSTART.md).** It contains the
+recommended agent-guided setup prompt and the complete prerequisites.
 
-Restart the agent after runtime skill updates, then run a Quick Resume smoke
-test. If the repo is dirty, the remote is not the expected GitHub starter, or
-more than one checkout matches, stop and resolve the ambiguity before pulling.
-
-The updater stages every selected skill, verifies recursive SHA-256 hashes, and
-switches the package with backups. If a switch fails, it restores the previous
-selected copies. A cleanup warning can leave an obsolete copy behind safely;
-rerun the updater after resolving the file lock instead of deleting active
-skills by hand.
-
-If you installed an immutable release tag, do not run `git pull` in that
-detached checkout. Follow the detached-checkout migration and sync path in
-[QUICKSTART.md](QUICKSTART.md#updating-later-from-github) or
-[QUICKSTART.zh-CN.md](QUICKSTART.zh-CN.md#后续更新).
-
-If an older checkout reports divergent history after a public-content cleanup,
-keep your local work backed up and clone the current starter into a new folder.
-Review and reapply your own changes there; do not merge the old history back
-into the public repository. Use the new checkout for the bootstrap update above.
-
-如果旧副本在公开内容清理后提示历史分叉，请先备份本地修改，重新克隆到新目录，
-再逐项迁移自己的修改。不要把旧历史合并回公开仓库；使用新副本执行上面的更新。
-
-## What It Creates
-
-q-workflow uses three layers:
-
-```mermaid
-flowchart LR
-    Starter[Public starter] --> Hub[Private workflow hub]
-    Hub --> Projects[Your project repos]
-    Projects --> Agent[Coding agent resumes work]
-```
-
-- **Public starter:** this repository. It contains installers, templates, and
-  reusable public-safe skills.
-- **Private workflow hub:** your generated local workflow folder. It stores your
-  project registry, active-work pointer, assistant profile, first-run guide,
-  and bootstrap skill mirror. Keep it private. Most users use one private remote
-  repo for this hub when they want backup or cross-machine sync.
-- **Project repositories:** your actual projects. They store project-specific
-  tasks, decisions, environment notes, validation evidence, and source code.
-
-The installer can also create `FIRST_RUN_GUIDE.html` or
-`FIRST_RUN_GUIDE.zh-CN.html` inside your private hub. That local page is the
-first visual explanation of the workflow after setup.
-
-## What A Successful First Run Looks Like
-
-After setup, open a new agent session and say:
+1. Prepare a Windows machine with PowerShell, Git, Python 3.10+ and a
+   terminal-capable coding agent.
+2. Give the quickstart's setup prompt to your agent. It should explain the
+   folders it will create, check the prerequisites and confirm the required
+   settings before installing.
+3. Keep the generated workflow hub private. Configure provider credentials in
+   your agent or secret manager, never in setup prompts.
+4. Restart the agent after installation, then try:
 
 ```text
 Continue my project. Use q-workflow.
 ```
 
-If you configured a display name or workflow nickname, you can also use that for
-a quick pointer check. A healthy profile should answer with a visible marker,
-for example:
+**Expected result:** the agent finds your configured hub and reports the
+current project state. If no project is registered yet, ask it to register an
+existing project or create one. See the
+[success check](QUICKSTART.md#success-check) and
+[after-setup guide](AFTER_SETUP.md) for the next steps.
 
-```text
-【q-workflow | Quick Resume】
-```
+Setup writes a local profile and managed skill folders. Review the proposed
+paths first; use the documented dry run for direct installation. For manual
+setup or troubleshooting, stay with the [quickstart](QUICKSTART.md) rather
+than copying commands from an older release.
 
-It is normal if there is no active project yet. Your next step can be to ask the
-agent to register an existing project or create a new q-workflow project.
+## How it works
 
-## What You Get
+The public starter, private hub and project repositories have different jobs:
 
-The starter includes:
+| Layer | What belongs there |
+| --- | --- |
+| **Public starter** — this repository | Installers, reusable skills and templates; no personal active-work state. |
+| **Private workflow hub** — your local folder | Project registry, active-work pointer, preferences and bootstrap skill copies. An optional private remote provides backup or cross-machine sync. |
+| **Project repositories** — your work | Source files, tasks, decisions, environment notes and validation evidence. |
 
-- `scripts/init-user.ps1` and `scripts/setup-runner.ps1` for setup;
-- `scripts/resolve-workflow-repo.ps1` and `scripts/repo-locator-smoke.ps1` for
-  verified repo location before pull, push, sync, or recovery;
-- a generated `q-assistant-profile` skill customized with your paths;
-- a private workflow hub template with `PROJECT_REGISTRY.md`,
-  `personal-state/ACTIVE_WORK.md`, work items, journal, and first-run guide;
-- reusable skills such as `q-workflow`, `q-agent-roster`, `q-skill-creation`,
-  `q-research-discovery`, `q-code-lifecycle`, `q-project-overview`, PDF/video/
-  audio intake, PPT creation, visual review, and project storytelling;
-- project templates for recoverable repositories;
-- public-safe product docs under `docs/`.
+The agent uses the hub to locate a project, then reads that project's files to
+resume work. A generated first-run HTML guide explains the setup locally.
+See the [boundary model](docs/HUB_BOUNDARY_MODEL.md) before moving material
+between layers.
 
-You do not need to understand every skill on day one. After installation, use
-`help`, `status`, `checkpoint`, and `TODO` first. The generated assistant profile
-also includes short feature hints: after a task finishes or when you ask what to
-do next, the agent may briefly mention useful workflow capabilities instead of
-expecting you to remember them.
+## What's included
 
-## Hub Boundaries
+The current public package contains **14 reusable skills**:
 
-Read `docs/HUB_BOUNDARY_MODEL.md` before moving rules or state between the private workflow hub, the public starter, and project repositories.
+| Area | Included skills |
+| --- | --- |
+| Workflow and handoff | `q-workflow`, `q-agent-roster`, `q-code-lifecycle`, `q-skill-creation` |
+| Research and source intake | `q-research-discovery`, `q-skill-pattern-learning`, `q-pdf-reading`, `q-video-intake`, `q-audio-intake` |
+| Project communication | `q-project-overview`, `q-project-storytelling`, `q-diagram-workflow`, `q-ppt-creation`, `q-ppt-visual-review` |
 
-## Privacy And Trust
+Setup also generates your customized `q-assistant-profile`. You get setup/update
+helpers, project templates and a private-hub template. Start with the
+[daily usage guide](AFTER_SETUP.md); you do not need
+to learn every skill before using the workflow.
 
-q-workflow separates reusable public material from your private state.
+### Scope and limitations
 
-- Do not publish your generated workflow hub unless you intentionally sanitized
-  it.
-- Do not store API keys, passwords, customer data, or private notes in this
-  public starter.
-- Configure API keys in your agent, CC Switch, or normal secret manager, not in
-  q-workflow prompts.
-- Before setup, the agent should explain what folders will be created and what
-  should stay private.
-- Before push, publish, destructive cleanup, or broad installs, the agent should
-  ask for explicit approval.
+- The current distribution excludes the withdrawn pixel-art, Canvas-game and
+  HTML-interface packages. Historical tags are not the current supported
+  package; see [v1.2 scope](docs/releases/q-workflow-v1.2.md).
+- Validation covers specific workflow and installation behavior. It is not
+  evidence of higher model intelligence, creative quality or live-provider
+  availability.
+- Skills guide agent behavior; they are not a security sandbox or a substitute
+  for the agent's own permissions and your review.
 
-## Setup Options
+## Update an existing installation
 
-Recommended path: use [QUICKSTART.md](QUICKSTART.md) and let your agent guide
-setup.
+Follow [Updating later from GitHub](QUICKSTART.md#updating-later-from-github).
+Check the checkout and remote, update the starter, sync the managed copies,
+then restart the agent and repeat the resume check.
 
-Alternative paths:
+Do not pull into a dirty or ambiguous checkout. For a detached release checkout,
+use the documented migration path. If an old checkout has divergent history,
+preserve your local work and clone the current starter into a new directory;
+review and reapply your changes instead of merging obsolete history.
 
-- [setup-intake.html](setup-intake.html): local/static intake page for preparing
-  setup values.
-- [MACHINE_BOOTSTRAP.md](MACHINE_BOOTSTRAP.md): manual bootstrap prompt for
-  agents that need a file-first path.
-- `scripts/setup-runner.ps1`: guided local setup runner.
-- `scripts/init-user.ps1`: direct PowerShell installer for headless or test
-  runs.
+The updater does not silently remove withdrawn skills from existing installs.
+Preserve custom work before moving those exact folders out of skill discovery.
 
-## Use With Other Agents
+## Documentation
 
-The workflow is optimized for Codex skills, but the pattern is agent-agnostic.
-Any assistant that can read files, edit files, run shell commands, and use Git
-can follow the same workflow hub, project registry, and durable memory files.
+| I want to… | Read |
+| --- | --- |
+| Install for the first time | [Quickstart](QUICKSTART.md) |
+| Give an agent a first-session brief | [First prompt](FIRST_PROMPT.md) |
+| Learn daily usage | [After setup](AFTER_SETUP.md) |
+| Use a file-first/manual setup path | [Machine bootstrap](MACHINE_BOOTSTRAP.md) |
+| Understand privacy boundaries | [Hub boundary model](docs/HUB_BOUNDARY_MODEL.md) |
+| Check the supported package and its tests | [v1.2 scope and verification](docs/releases/q-workflow-v1.2.md) |
+| Follow changes | [Changelog](CHANGELOG.md) |
 
-For agents without Codex skill support, point them at
-[MACHINE_BOOTSTRAP.md](MACHINE_BOOTSTRAP.md), then ask them to read the generated
-workflow hub and project state files.
+A [Simplified Chinese README](README.zh-CN.md), quickstart, first prompt and
+after-setup guide are available. Deeper reference documents may be English-only.
 
-## For Maintainers
+## Contribute and get help
 
-Promotion-facing entry files are:
+Maintained by [Xiao Q](https://github.com/Aha-xiaoQ). Bug reports,
+documentation improvements and reproducible workflow fixes are welcome.
+Read the [contribution guide](CONTRIBUTING.md) before opening a pull request.
 
-- `README.md`, `QUICKSTART*.md`, `FIRST_PROMPT*.md`, `AFTER_SETUP*.md`;
-- `setup-intake.html`;
-- `scripts/init-user.ps1` and setup helpers;
-- `templates/`;
-- supported bundled skills under `skills/`, with their documented validation limits.
-
-Run the public-safety and promotion scans before pushing a release candidate.
+For general questions or bugs, [open an issue](https://github.com/Aha-xiaoQ/q-workflow-hub/issues).
+For security or privacy concerns, follow [SECURITY.md](SECURITY.md).
+Never include credentials, private paths or project data in a public report.
 
 ## License
 
-See [LICENSE](LICENSE).
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). Keep public docs generic and do not add
-private project paths, credentials, or company/customer-specific material.
+[Apache-2.0](LICENSE) for the workflow code and documentation. The current Q
+brand artwork has [separate usage terms](assets/README.md). See
+[third-party notices](THIRD_PARTY_NOTICES.md) for attribution and references.

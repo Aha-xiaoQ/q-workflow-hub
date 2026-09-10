@@ -1,6 +1,14 @@
 # Third-Party References
 
-q-workflow-hub is licensed under Apache-2.0.
+- GitHub's About READMEs guide and the Microsoft PowerToys, FastAPI and Bun
+  repository READMEs were reviewed on 2026-09-10 for project identity,
+  first-use instructions and documentation navigation patterns. The README
+  standard links these sources. No third-party prose, code, badges or assets
+  were copied for this update. The current Q logo is maintainer-supplied brand
+  artwork with separate terms in [assets/README.md](assets/README.md).
+
+q-workflow-hub code and documentation are licensed under Apache-2.0; the current
+Q brand artwork has separate terms in [assets/README.md](assets/README.md).
 
 The project may study public projects, skills, and documentation to learn
 workflow patterns. Contributors must distinguish:

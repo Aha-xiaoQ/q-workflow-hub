@@ -49,6 +49,7 @@ When the next artifact is a PPT:
 
 - README or overview: make the promise, proof, quick start, and limitations
   visible near the top.
+  For README structure, language editions and branding, use `readme-standard.md`.
 - Demo script: convert the adoption path into a runnable sequence, with
   expected observations and fallback notes.
 - Onboarding guide: split the mechanism into learning milestones and define the

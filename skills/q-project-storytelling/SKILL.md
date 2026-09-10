@@ -13,6 +13,7 @@ PPT, README, project overview, diagram, or onboarding asset.
 
 | User intent | Read next |
 |---|---|
+| Create, rewrite or localize a repository README; define a README template | `references/readme-standard.md`; use its README-specific brief and review instead of slide-note deliverables |
 | Improve a project/product/architecture explanation | `workflows/shape-narrative.md` |
 | Prepare a PPT or speaker notes story before slide generation | `workflows/shape-narrative.md`, then `references/artifact-handoff.md` |
 | Convert an approved story brief into deck, README, overview, demo, or onboarding instructions | `references/artifact-handoff.md`, then the target artifact skill |
