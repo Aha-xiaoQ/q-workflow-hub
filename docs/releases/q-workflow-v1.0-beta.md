@@ -1,15 +1,17 @@
 # q-workflow v1.0-beta
 
+**English** | [Simplified Chinese](q-workflow-v1.0-beta.zh-CN.md)
+
 `v1.0-beta` is the first public beta of the recovery-first q-workflow kernel.
-Its SemVer-compatible prerelease identity is `1.0.0-beta`; the shorter display
-tag is kept because it is the version explicitly selected for this milestone.
+Its SemVer-compatible prerelease identity is `1.0.0-beta`; its display tag is
+`v1.0-beta`.
 
 ## Promotion links
 
 - [Repository](https://github.com/Aha-xiaoQ/q-workflow-hub)
 - [Versioned source](https://github.com/Aha-xiaoQ/q-workflow-hub/tree/v1.0-beta)
 - [English quickstart](../../QUICKSTART.md)
-- [中文快速开始](../../QUICKSTART.zh-CN.md)
+- [Simplified Chinese quickstart](../../QUICKSTART.zh-CN.md)
 - [Changelog](../../CHANGELOG.md)
 - [Issue tracker](https://github.com/Aha-xiaoQ/q-workflow-hub/issues)
 
@@ -24,10 +26,6 @@ tag is kept because it is the version explicitly selected for this milestone.
   portfolio probe used by full doctor.
 - `scripts/sync-workflow-bootstrap.ps1`: registry-validated source-to-bootstrap
   and optional runtime synchronization.
-
-This release intentionally excludes domain-skill work, generated bootstrap
-trees, personal reports/state, unrelated project material, the local telemetry pilot, and
-other unrelated dirty-worktree changes.
 
 ## What changed
 
@@ -63,8 +61,8 @@ git switch --detach v1.0-beta
 The tag is immutable. A detached tag checkout does not use `git pull`; fetch
 tags and switch explicitly to a newer reviewed tag when one is published.
 
-After selecting the beta source, follow [QUICKSTART.md](../../QUICKSTART.md) or
-[QUICKSTART.zh-CN.md](../../QUICKSTART.zh-CN.md). Existing users can run the
+After selecting the beta source, follow the [English quickstart](../../QUICKSTART.md) or
+[Simplified Chinese quickstart](../../QUICKSTART.zh-CN.md). Existing users can run the
 documented `scripts/sync-workflow-bootstrap.ps1` path to refresh a private
 bootstrap and optional runtime installation.
 
@@ -80,19 +78,13 @@ bootstrap and optional runtime installation.
 
 ## Validation evidence
 
-The final isolated candidate passed its independent release gates. The locally
-enabled copy also completed two strict full-doctor rounds with 76 checks and
-zero failures. Evidence included:
+Local verification completed two strict full-doctor rounds with 76 checks and
+zero failures. Checks included:
 
 - registry validation and strict core-surface inspection;
 - manager, task-state, lifecycle, q-standard, and output-preflight self-tests;
 - the two-round strict stability suite and two-round full doctor;
-- public/private scan, UTF-8 guard, Python compilation, and `git diff --check`;
-- independent Code Auditor (码鉴) and Usability Validator (验用) review with
-  no remaining P0-P3 findings before publication.
-
-Final command receipts and the commit permalink are reported with the GitHub
-handoff; no GitHub Release page or pull request is implied by this tag.
+- public/private scan, UTF-8 guard, Python compilation, and `git diff --check`.
 
 ## Known limitations
 

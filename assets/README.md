@@ -1,5 +1,7 @@
 # Q brand assets
 
+**English** · [Simplified Chinese](README.zh-CN.md)
+
 | File | Variant |
 | --- | --- |
 | `q-logo.svg` | Transparent blue-and-yellow pixel Q, without an outer frame. |

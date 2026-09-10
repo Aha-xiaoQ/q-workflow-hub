@@ -1,5 +1,7 @@
 # Security Policy
 
+**English** | [Simplified Chinese](SECURITY.zh-CN.md)
+
 ## Supported Versions
 
 This project is early-stage. Security and privacy fixes should target the

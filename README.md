@@ -188,8 +188,9 @@ review and reapply your changes instead of merging obsolete history.
 | Read version changes and contributor checks | [v1.2 release notes](docs/releases/q-workflow-v1.2.md) |
 | Follow changes | [Changelog](CHANGELOG.md) |
 
-A [Simplified Chinese README](README.zh-CN.md), quickstart, first prompt and
-after-setup guide are available. Deeper reference documents may be English-only.
+User-facing guides are available in English and Simplified Chinese, with a
+language switch at the top of each page. Browse the [full documentation index](docs/README.md).
+Skill execution references remain in their original language.
 
 ## Contribute and get help
 

@@ -1,5 +1,7 @@
 # 安装后怎么用
 
+[English](AFTER_SETUP.md) · **简体中文**
+
 在 q-workflow 已经安装、workflow hub 已经创建之后，再读这份说明。
 
 ## 首次入门页
@@ -59,7 +61,7 @@ flowchart LR
 生成的 `q-assistant-profile` 应该用类似下面的可见恢复头开头：
 
 ```text
-【小Q工作流 | 快速恢复 】
+【q-workflow | 快速恢复】
 ```
 
 恢复最近的当前工作：
@@ -103,6 +105,27 @@ TODO
 英文别名也可用：`help`, `status`, `checkpoint`, `TODO`, `update-rules`,
 `sync-rules`, `publish`。像 `同步`、`上传` 这样的宽泛词可能指规则同步、runtime
 mirror 同步或仓库发布；目标不清楚时，Agent 应先问一个简短确认。
+
+## 更新 q-workflow
+
+更新公开起步包时，先定位本地副本、核实 GitHub 远程地址并保留本地修改。当前包位于 `main`。
+按[后续更新](QUICKSTART.zh-CN.md#后续更新)检查并选择目标版本；其中也说明旧标签或历史分叉的迁移方式。
+不要从分离头指针状态直接运行 `git pull`。选定版本后运行：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
+  -WorkflowHubPath "$env:USERPROFILE\AI_Work\workflow-hub" `
+  -CodexHome "$env:USERPROFILE\.codex" `
+  -InstallRuntime
+```
+
+同步后重启智能体，再输入：
+
+```text
+继续我的项目，使用 q-workflow。
+```
+
+没有确认准确仓库路径、预期远程地址及备份或暂存方案前，不要要求智能体强制用远程内容覆盖本地文件。
 
 ## 智能能力提醒
 

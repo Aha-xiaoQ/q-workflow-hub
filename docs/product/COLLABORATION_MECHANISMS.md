@@ -1,5 +1,7 @@
 # Collaboration Mechanisms
 
+**English** · [Simplified Chinese](COLLABORATION_MECHANISMS.zh-CN.md)
+
 This document captures public-safe collaboration mechanisms that make
 agent-assisted project work easier to recover, verify, and share. It is a
 mechanism guide, not a private assistant profile. Keep real users, companies,

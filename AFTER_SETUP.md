@@ -1,5 +1,7 @@
 # After Setup
 
+**English** · [Simplified Chinese](AFTER_SETUP.zh-CN.md)
+
 Use this after q-workflow has been installed and the private workflow hub exists.
 
 ## First-Run Guide

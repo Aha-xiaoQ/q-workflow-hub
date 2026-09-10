@@ -1,5 +1,7 @@
 # 给编码 Agent 的首次提示词
 
+[English](FIRST_PROMPT.md) · **简体中文**
+
 把下面这段直接粘贴给 Codex、Claude Code 或其他可以运行终端命令的编码 Agent：
 
 ```text
@@ -7,10 +9,10 @@
 https://github.com/Aha-xiaoQ/q-workflow-hub.git
 
 请用简单中文一步一步引导我。
-请把 QUICKSTART.zh-CN.md、QUICKSTART.md 和 MACHINE_BOOTSTRAP.md 作为安装依据。
+请把 QUICKSTART.zh-CN.md 和 MACHINE_BOOTSTRAP.zh-CN.md 作为安装依据。
 先说明 q-workflow 会创建什么、哪些内容应该保持私有。
 检查 Git 和我的编码 Agent 环境是否可用。
-只询问安装必需的信息，然后帮我安装 q-workflow。
+只询问安装必需的信息，然后帮我安装 q-workflow，生成中文安装和配置文件（直接运行脚本时使用 -Language zh）。
 安装完成后，请打开或概括 FIRST_RUN_GUIDE.zh-CN.html，验证是否成功，告诉我日常恢复提示词，并带我做第一次恢复测试。
 ```
 
@@ -37,7 +39,7 @@ Agent 应该向你询问：
 预期第一行类似：
 
 ```text
-【小Q工作流 | 快速恢复 】
+【q-workflow | 快速恢复】
 ```
 
 恢复指定项目：

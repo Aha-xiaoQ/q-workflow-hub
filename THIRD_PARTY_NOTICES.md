@@ -1,5 +1,7 @@
 # Third-Party References
 
+**English** | [Simplified Chinese](THIRD_PARTY_NOTICES.zh-CN.md)
+
 - Sources for the README guidance are linked in the
   [README standard](skills/q-project-storytelling/references/readme-standard.md).
   The guidance is independently written; it does not include third-party prose,

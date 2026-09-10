@@ -1,88 +1,60 @@
-# Project Structure v2 Review - 2026-07-01
+# Project structure v2 — migration notes
 
-## Objective
+**English** · [Simplified Chinese](project-structure-v2-review-20260701.zh-CN.md)
 
-Stabilize the q-workflow new-project directory standard for document, deck, software, firmware, hardware, and external-based projects without making tiny projects too heavy.
+Historical design reference, 2026-07-01. For installation and package selection,
+use the [current quickstart](../../QUICKSTART.md).
 
-## External Evidence Checked
+## Purpose
 
-- GitHub repository practice: keep repository-level README and shared `.gitignore` rules.
-- Reproducible project practice: separate inputs, research/work, outputs/results, and environment/recovery notes.
-- Zephyr/RTOS practice: preserve workspace/application/native project layout.
-- KiCad/EDA practice: keep project, schematic, PCB, and related EDA files together.
-- Python packaging practice: preserve native `src/` or flat package layout inside the software subtree.
+A recoverable layout for documents, decks, software, firmware, hardware and
+external-source projects should remain lightweight for small tasks.
 
-## Expert Review
+The design follows repository-level README and shared ignore conventions,
+separates inputs, working material, outputs and environment notes, and preserves
+tool-native structures such as Zephyr applications, KiCad project files and
+Python packages.
 
-Doc Architect (文构) returned `pass_with_minor_revision`.
+## Layout and checks
 
-Required revisions:
+- Use numbered lifecycle folders from `00-project/` through `06-handoff/`,
+  with `90-archive/` and ignored `99-local-state/`.
+- Keep `skills/` and `.gitignore` at the root.
+- Use `00-project/` for project governance, not miscellaneous outputs.
+- Keep native tool layouts inside profile-specific `03-work/` subtrees.
+- Supported design profiles are `document-only`, `research-deck`,
+  `software-tool`, `firmware-board`, `hardware-design`, `external-based`,
+  and `workflow-or-skill`.
+- Structure audits check folders, ignore rules, project-local skill naming and
+  profile paths. Legacy root folders receive warnings during staged migration.
 
-- Add `.gitignore` as a standard root file because `99-local-state/` is declared ignored.
-- Define `00-project/` as project governance, not a miscellaneous output bucket.
-- Make `03-work/` self-explanatory with profile-specific subtrees.
-- Add explicit `external-based` placement rules for upstream material, patches, provenance, and sync notes.
-- State where small-project deferrals must be recorded.
+See the [technical structure reference](../../skills/q-workflow/references/project-structure.md)
+for executable workflow guidance.
 
-## Integrated Patch
+## Migration safeguards
 
-Patched `skills/q-workflow/references/project-structure.md`:
+Move existing projects in reviewed batches, not in one large reorganization.
+For small one-off work, use `--relaxed` audit mode and record deferred empty
+folders in the project README. Preserve native software, firmware and hardware
+layouts so the tools can still open the project.
 
-- Added numbered lifecycle root: `00-project/` through `06-handoff/`, `90-archive/`, `99-local-state/`.
-- Kept `skills/` as a root-level mechanism directory.
-- Added `.gitignore` as a durable root file.
-- Added work placement rules for software, firmware, hardware, decks, diagrams, scripts, and experiments.
-- Added profiles: `document-only`, `research-deck`, `software-tool`, `firmware-board`, `hardware-design`, `external-based`, `workflow-or-skill`.
-- Added tool-native preservation rule.
+Validate structure changes with the standard checker, encoding guard and
+realistic profile fixtures before applying them to existing work.
 
-Patched `skills/q-workflow/scripts/audit_project_structure.py`:
+## External folder intake
 
-- Checks numbered lifecycle folders.
-- Checks `.gitignore` for `99-local-state/`.
-- Checks project-local skill naming under root `skills/`.
-- Supports the new profile names and paths.
-- Warns on legacy root directories during staged migrations.
+Before adopting an external folder, check its origin or upstream, Git status,
+dirty and untracked files, privacy and license constraints, native root, and
+adoption mode.
 
-## Workflow Distiller (沉炼) Local Pass
+- Prefer a move or clone that preserves history when the folder becomes the
+  active source.
+- Use a copy snapshot only for a reviewed unversioned or dirty working copy,
+  and include a source manifest.
+- Use a submodule, subtree or manifest reference for upstream/vendor examples
+  when continued upstream synchronization matters.
+- Use link-only access only when tool or organization constraints require the
+  source to remain elsewhere; record the exact recovery path privately.
 
-Decision: stable enough to promote as the current default new-project structure standard.
-
-Rationale:
-
-- The rule is visible: a user can infer where code, hardware, PPT, diagrams, validation, and handoff material belong.
-- The rule is enforceable: the audit script checks root files, numbered folders, `.gitignore`, and profiles.
-- The rule is not overfitted: tool-native layouts remain intact inside `03-work/`.
-- Small tasks are protected: empty numbered folders may be omitted when the deferral is recorded.
-
-Residual risk:
-
-- Existing projects such as GMPPT should be migrated in reviewed batches, not moved all at once.
-- Very small one-off tasks should use `--relaxed` audit mode and a README structure note instead of forcing all folders.
-
-## Validation
-
-- `q_standard_check.py --root ... --self-test`: PASS.
-- `encoding_guard.py` on project-structure and audit script: PASS.
-- Positive fixture for `research-deck` profile: PASS.
-
-## External Folder Intake Addendum
-
-User-raised scenario: RTT-style work may start from a code folder that was
-previously debugged elsewhere and is provided as an absolute path.
-
-Rule added after review:
-
-- Do not blindly copy external folders into the project.
-- Run an intake gate first: original path/upstream, Git status, dirty/untracked
-  state, privacy/license, tool-native root, and chosen adoption mode.
-- Prefer move/clone with history when the folder becomes the active source.
-- Use copy-snapshot only for reviewed unversioned or dirty working copies, with
-  a source manifest.
-- Use submodule/subtree/manifest-reference for upstream/vendor examples when
-  continued upstream sync matters.
-- Use link-only only when tool/company constraints require the source to remain
-  outside the q-workflow root, and record the exact recovery path privately.
-
-This addendum addresses the double-copy ambiguity found in personal-end tests:
-a project is recoverable only when the source itself is inside the repo or the
-repo contains a precise manifest that reconstructs or locates the source.
+A project is recoverable when its source is in the repository, or a precise
+manifest can reconstruct or locate that source.

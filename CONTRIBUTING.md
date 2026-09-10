@@ -1,5 +1,7 @@
 # Contributing
 
+**English** | [Simplified Chinese](CONTRIBUTING.zh-CN.md)
+
 Before adding or updating bundled skills, follow
 [Public asset promotion](docs/PUBLIC_ASSET_POLICY.md). New and changed assets
 are review-required; installed locally does not mean approved for publication.

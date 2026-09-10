@@ -1,5 +1,7 @@
 # Variant Delta
 
+**English** · [Simplified Chinese](COMPANY_DELTA.zh-CN.md)
+
 This file records public-safe notes about intentional differences between this
 public starter and private or company variants.
 

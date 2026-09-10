@@ -1,5 +1,7 @@
 # Public asset promotion
 
+**English** · [Simplified Chinese](PUBLIC_ASSET_POLICY.zh-CN.md)
+
 Classify new assets at creation, not only immediately before a push.
 
 | Classification | Meaning | Publish? |
@@ -36,10 +38,8 @@ Ignore patterns are a convenience, not a security boundary: tracked files and
 arbitrary filenames still require inspection. Never use `git add .` against an
 unreviewed maintainer installation.
 
-## Current maintenance scope
+## Check the installation scope
 
-The current scope retains the workflow core, supported companions and public
-v1.1-beta regression fixes. Pixel-art, Canvas-game and HTML-interface skill
-packages are withdrawn pending validation; unfinished local skill experiments
-are not included. See [v1.2 scope](releases/q-workflow-v1.2.md). Historical
-maintenance notes describe their original revision, not current availability.
+Before installing, consult the skill list in the [current README](../README.md#whats-included)
+and the [release notes](releases/q-workflow-v1.2.md). Historical maintenance notes
+describe their original revision, not current availability.

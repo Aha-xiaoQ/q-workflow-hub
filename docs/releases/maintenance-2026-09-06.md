@@ -1,5 +1,7 @@
 # Skill maintenance — 2026-09-06
 
+**English** | [Simplified Chinese](maintenance-2026-09-06.zh-CN.md)
+
 For the current package, see the [v1.2 release notes](q-workflow-v1.2.md).
 
 ## Video intake changes

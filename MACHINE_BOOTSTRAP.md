@@ -1,5 +1,7 @@
 # Machine Bootstrap
 
+**English** · [Simplified Chinese](MACHINE_BOOTSTRAP.zh-CN.md)
+
 Use this when setting up q-workflow on a new machine. The bootstrap flow is
 written for Codex but can be followed by any coding agent that can read files,
 write files, run shell commands, and use Git.
@@ -107,7 +109,8 @@ After setup, verify:
   `FIRST_RUN_GUIDE.zh-CN.html`;
 - the private workflow folder contains `bootstrap\skills`;
 - the private workflow folder contains `bootstrap\skills\q-agent-roster`;
-- the selected Codex home contains `skills\q-workflow`;
+- the selected Codex home contains `skills\q-workflow`, unless runtime
+  skill installation was intentionally skipped;
 - the selected Codex home contains `skills\q-agent-roster`, unless runtime
   skill installation was intentionally skipped;
 - `skills\q-assistant-profile\SKILL.md` contains the expected Quick Resume

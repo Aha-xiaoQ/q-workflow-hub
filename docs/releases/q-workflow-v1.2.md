@@ -1,5 +1,7 @@
 # q-workflow v1.2
 
+**English** | [Simplified Chinese](q-workflow-v1.2.zh-CN.md)
+
 ## Changes
 
 - Adapt task procedures to the host's available model and tools.

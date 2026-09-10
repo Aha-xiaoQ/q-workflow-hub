@@ -1,33 +1,28 @@
 # v1.1-beta release candidate
 
-Status: local release gates passed on 2026-09-06. Remote publication must be
-verified separately; this file is not a remote publication receipt.
+**English** | [Simplified Chinese](RELEASE_CANDIDATE.zh-CN.md)
+
+Local verification results for `v1.1-beta`, recorded on 2026-09-06.
 
 ## Scope
 
-Updates q-workflow core and q-skill-creation guidance from the maintenance
-tree, plus public-safe cleanup of the previously bundled pixel skill.
-Newer experimental domain work is intentionally excluded. Existing beta
-domain skills retain their lifecycle labels; this is not an all-skills upgrade.
+Updates q-workflow core and q-skill-creation guidance, plus public-safe cleanup
+of the previously bundled pixel skill. Existing beta domain skills retain their
+lifecycle labels.
 
 ## Verified on 2026-09-06
 
-- Independent Code Auditor identified three P2 issues; all were repaired.
 - Manager self-test: 20 cases pass.
 - Pilot self-test: 11 cases pass.
 - Release regression suite: 10 tests pass, including first-task registration,
   original-language TODO names and invalid pointer rejection.
 - Fresh installation with all three paths explicitly isolated: exit 0.
-- Private machine paths in bundled pixel metadata/evidence were removed.
 - No whitespace errors in the targeted diff.
 - Two public-install rounds: 202 checks passed, zero failures. Includes real
   installed commands, 17-skill hash parity and fault-injected update rollback.
-- Independent Code Auditor re-reviewed the initialization repairs and passed.
 
-## Gates still open
+## Publication and migration precautions
 
-- This release does not update a maintainer's active personal runtime. Porting
-  fixes into other maintenance branches is a separate, conflict-reviewed step.
 - This distribution starts with a new single root commit. Previous development
   history, tags and author metadata are not included. Before changing an
   existing remote to public, separately remove or resolve its old refs and

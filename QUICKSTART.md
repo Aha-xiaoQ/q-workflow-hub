@@ -1,5 +1,7 @@
 # Quickstart
 
+**English** · [Simplified Chinese](QUICKSTART.zh-CN.md)
+
 > Install from `main`. Record `git rev-parse HEAD` so you can identify your
 > installed revision when updating or reporting a problem.
 
@@ -122,7 +124,7 @@ The direct installer writes `q-profile.json` and replaces the managed `q-*`
 skill folders at the selected Codex home. Keep unrelated/private work outside
 those managed folders and review the DryRun paths before continuing.
 
-Static intake fallback: open [setup-intake.html](setup-intake.html). Static mode
+Static intake fallback: open [setup-intake.html](setup-intake.html?lang=en). Static mode
 cannot access full filesystem paths automatically, but it can prepare the setup
 request for an agent.
 
@@ -192,6 +194,12 @@ A healthy setup should have:
 - `skills\q-agent-roster` under the selected Codex home when runtime install
   was not skipped;
 - `skills\q-assistant-profile\SKILL.md` with the expected Quick Resume marker.
+
+When updating, `sync-workflow-bootstrap.ps1` stages copies in a temporary
+directory, verifies recursive SHA-256 hashes, and switches the package with a
+backup. A failed switch restores the previous selected skill copies. A warning
+about cleanup of retired copies does not undo a completed new package: resolve
+the file lock and rerun the script; do not manually delete active skills.
 
 The current chat usually will not reload newly installed skills automatically.
 For the real new-user test, restart the agent or open a new agent session, then

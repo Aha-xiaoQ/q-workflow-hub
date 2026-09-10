@@ -171,6 +171,34 @@
       overflow-wrap: anywhere;
     }
 
+    .language-toggle {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .language-toggle button {
+      min-height: 36px;
+      padding: 7px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .language-toggle button[aria-pressed="true"] {
+      border-color: var(--teal);
+      background: var(--soft);
+      font-weight: 750;
+    }
+
+    .language-toggle button:focus-visible {
+      outline: 2px solid var(--blue);
+      outline-offset: 2px;
+    }
+
     .main {
       display: flex;
       flex-direction: column;
@@ -997,6 +1025,11 @@
         <div class="brand-title">小Q工作流<span>安装向导</span></div>
       </div>
 
+      <div class="language-toggle" role="group" aria-label="界面语言">
+        <button type="button" data-ui-language="en" lang="en" aria-pressed="false">English</button>
+        <button type="button" data-ui-language="zh" lang="zh-CN" aria-pressed="true">中文</button>
+      </div>
+
       <nav class="steps" aria-label="安装步骤">
         <button class="step" type="button" data-step="0" aria-current="true">
           <span class="step-index">1</span>
@@ -1017,7 +1050,7 @@
       </nav>
 
       <div class="sidebar-note">
-        这个页面只是本地格式化工具，不会主动发送任何数据。请不要在这里填写密钥、客户资料、私有 token 或其他敏感信息。
+        静态模式只在本页生成文本；本机安装仅在你点击安装后将信息交给本地安装向导。请不要填写密钥、客户资料或其他敏感信息。
       </div>
     </aside>
 
@@ -1050,8 +1083,8 @@
                   <input id="workflowLabel" value="小Q工作流">
                 </label>
                 <label class="field">
-                  生成语言
-                  <span class="field-hint">当前优先服务中国同事，默认生成中文安装提示词。</span>
+                  界面与生成语言
+                  <span class="field-hint">切换界面和安装提示词的语言；已填写的自定义内容保持不变。</span>
                   <select id="language">
                     <option value="zh">中文</option>
                     <option value="en">English</option>
@@ -1063,7 +1096,7 @@
                   <select id="agent">
                     <option>Codex</option>
                     <option>Claude Code</option>
-                    <option>其他可执行终端命令的编码 Agent</option>
+                    <option value="其他可执行终端命令的编码 Agent">其他可执行终端命令的编码 Agent</option>
                   </select>
                 </label>
               </div>
@@ -1201,7 +1234,7 @@
         </section>
 
         <div class="actions">
-          <div class="status-text" id="statusText">已在本地生成，不会发送或存储数据。</div>
+          <div class="status-text" id="statusText" role="status" aria-live="polite">已在本地生成，不会发送或存储数据。</div>
           <div class="button-row">
             <button type="button" class="ghost" id="prevStep">上一步</button>
             <button type="button" class="primary" id="nextStep">下一步</button>
@@ -1246,12 +1279,116 @@
       installLog: document.getElementById("installLog")
     };
 
-    const stepCopy = [
-      ["身份标识", "为工作流设置一个清晰的恢复标签，让新会话中的 Agent 能识别并恢复专属工作流。"],
-      ["本地路径", "公开 starter 保持可分享，私有状态和机器路径进入私有工作流资料夹。"],
-      ["安装偏好", "选择安装行为，并给安装 Agent 补充非敏感说明。"],
-      ["确认输出", "静态模式复制安装提示词；本机安装模式可直接安装。"]
-    ];
+    // Static text is translated in place: controls and their user-entered values
+    // are never recreated when the language changes.
+    const englishText = {
+      "小Q工作流安装向导": "Q Workflow Setup",
+      "小Q工作流": "Q Workflow",
+      "安装向导": "Setup wizard",
+      "界面语言": "Interface language",
+      "安装步骤": "Setup steps",
+      "身份标识": "Identity",
+      "名称、标签、语言": "Name, label, language",
+      "本地路径": "Local folders",
+      "工作区与私有资料夹": "Workspace and private folder",
+      "安装偏好": "Preferences",
+      "Git、远程仓库、备注": "Git, backup, notes",
+      "确认输出": "Review and continue",
+      "复制提示词安装": "Install or copy a request",
+      "静态模式只在本页生成文本；本机安装仅在你点击安装后将信息交给本地安装向导。请不要填写密钥、客户资料或其他敏感信息。": "Static mode generates text only on this page. Local installation sends your information to the local setup runner only when you click Install. Do not enter keys, customer data, or other sensitive information.",
+      "工作流身份": "Workflow identity",
+      "恢复触发词 / 显示名称": "Resume phrase / display name",
+      "也可以作为最短恢复提示词，例如直接输入“小Q”。": "Use this as your shortest resume prompt, for example “Xiao Q”.",
+      "工作流标签": "Workflow label",
+      "会显示在快速恢复回复的开头，帮助同事记住工作流名称。": "Appears at the start of Quick Resume replies so you can recognize your workflow.",
+      "界面与生成语言": "Interface and output language",
+      "切换界面和安装提示词的语言；已填写的自定义内容保持不变。": "Changes the interface and setup request language. Your custom entries stay unchanged.",
+      "中文": "Chinese",
+      "用于生成安装提示词和交接说明。": "Used in the setup request and handoff instructions.",
+      "其他可执行终端命令的编码 Agent": "Other coding agent with terminal access",
+      "工作流标签预设": "Workflow label presets",
+      "推荐。打开新会话时只要说“小Q”，Agent 就能识别这是小Q工作流。": "Recommended. Start a new session with “Xiao Q” to identify your Q Workflow.",
+      "适合希望使用仓库原名的同事。也可以直接在上方输入框自定义名称。": "Use the repository name, or enter a custom label in the field above.",
+      "恢复标识预览": "Resume marker preview",
+      "当用户只输入“小Q”这类短提示时，回复开头应该先出现这个标识。": "A short resume prompt such as “Xiao Q” should produce a reply that starts with this marker.",
+      "标签可以自定义，但推广给同事时建议保留清晰、可记忆的工作流名称。": "You can customize the label. Choose a clear, memorable name when sharing your workflow.",
+      "短场景测试会用恢复触发词作为提示词，并检查这个标识是否出现。": "The quick check uses your resume phrase and checks whether this marker appears.",
+      "本地工作区与私有工作流资料夹": "Workspace and private workflow folder",
+      "工作区根目录": "Workspace root",
+      "日常项目文件夹通常放在这里。": "The parent folder for your everyday projects.",
+      "选择文件夹": "Choose folder",
+      "私有 workflow hub": "Private workflow hub",
+      "默认跟随工作区根目录，生成到工作区下的 workflow-hub；保存项目索引、当前工作和个人 profile，应保持私有。": "Defaults to workflow-hub inside your workspace. It stores your project index, current work, and personal profile, and should stay private.",
+      "真实安装可留空，默认写入当前用户的 Codex home。闭环测试请填一个全新的临时目录，避免影响已有工作流。": "Leave blank to use your current Codex home. For an isolated setup test, choose a new temporary folder to protect your existing workflow.",
+      "备份到私有 Git 仓库（可选）": "Private Git backup repository (optional)",
+      "如果你已经有私有仓库用于同步个人工作流配置，可以填写；没有就留空。": "Enter an existing private repository for your workflow configuration, or leave this blank.",
+      "公开 starter 应该保持可分享；个人画像、私有状态、项目记忆和机器路径会进入生成的私有工作流资料夹。私有 Git 仓库只用于你自己备份和同步。 如果你是在复测安装体验，建议把工作区、私有工作流资料夹和 Codex home 都放进同一个全新的测试目录；测试完成后只清理这个测试目录即可。": "Keep the public starter shareable. Your profile, private state, project memory, and machine paths belong in the generated private workflow folder. A private Git repository is only for your own backup and sync. For an isolated setup test, place the workspace, workflow folder, and Codex home inside one new test folder; clean up only that test folder afterward.",
+      "给 Agent 的安装备注": "Setup notes for your agent",
+      "这里写偏好和注意事项，不要填写密钥或客户资料。": "Add preferences and instructions, not keys or customer data.",
+      "为私有工作流资料夹创建本地版本记录": "Track the private workflow folder with local Git",
+      "推荐开启。以后可以查看改动、回滚配置，也方便接入私有仓库备份。": "Recommended. Review changes, restore configurations, and connect a private backup repository later.",
+      "生成的命令仍然会走正常终端和 Agent 权限模型。运行前请先检查命令内容。": "Generated commands still follow your terminal and agent permissions. Review them before running.",
+      "安装摘要": "Setup summary",
+      "把这里作为新 Agent 会话的交接契约：先安装，再验证恢复标识。": "Give this to a new agent session: install first, then verify the resume marker.",
+      "恢复标识": "Resume marker",
+      "触发词": "Resume phrase",
+      "工作区": "Workspace",
+      "私有工作流资料夹": "Private workflow folder",
+      "下一步": "Next",
+      "点击底部按钮继续。": "Use the button below to continue.",
+      "备用：查看安装命令和短场景测试": "Alternative: installation command and quick check",
+      "PowerShell 安装命令": "PowerShell installation command",
+      "快速恢复短场景测试": "Quick Resume check",
+      "上一步": "Back"
+    };
+
+    const localizedTextNodes = [];
+    const textWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+    while (textWalker.nextNode()) {
+      const node = textWalker.currentNode;
+      if (node.parentElement.closest("script, style, textarea, [data-ui-language]")) continue;
+      const source = node.nodeValue.trim().replace(/\s+/g, " ");
+      if (Object.hasOwn(englishText, source)) localizedTextNodes.push({ node, source });
+    }
+    const localizedAttributes = [];
+    document.querySelectorAll("[aria-label], [title], [placeholder], [alt]").forEach((element) => {
+      ["aria-label", "title", "placeholder", "alt"].forEach((attribute) => {
+        const source = element.getAttribute(attribute);
+        if (Object.hasOwn(englishText, source)) localizedAttributes.push({ element, attribute, source });
+      });
+    });
+
+    const defaults = {
+      zh: {
+        userName: "小Q", workflowLabel: "小Q工作流",
+        preferences: fields.preferences.value
+      },
+      en: {
+        userName: "Xiao Q", workflowLabel: "Q Workflow",
+        preferences: "Please be concise. Before running commands, explain what will be created and what should stay private. After setup, use my display name for the first resume check and confirm that the reply starts with my workflow label."
+      }
+    };
+    const editedDefaults = new Set();
+    const labelPresets = Array.from(document.querySelectorAll("input[name='labelPreset']"));
+    let uiLanguage = "zh";
+    const tr = (zh, en) => uiLanguage === "zh" ? zh : en;
+    const defaultValue = (key) => defaults[uiLanguage][key];
+    const agentName = () => fields.agent.selectedOptions[0].textContent;
+
+    const stepCopy = {
+      zh: [
+        ["身份标识", "为工作流设置一个清晰的恢复标签，让新会话中的 Agent 能识别并恢复专属工作流。"],
+        ["本地路径", "公开 starter 保持可分享，私有状态和机器路径进入私有工作流资料夹。"],
+        ["安装偏好", "选择安装行为，并给安装 Agent 补充非敏感说明。"],
+        ["确认输出", "静态模式复制安装提示词；本机安装模式可直接安装。"]
+      ],
+      en: [
+        ["Identity", "Choose a clear resume label so a new agent session can recognize and restore your workflow."],
+        ["Local folders", "Keep the public starter shareable and your personal state and machine paths in a private workflow folder."],
+        ["Preferences", "Choose installation options and add non-sensitive notes for your agent."],
+        ["Review and continue", "Copy a setup request in static mode, or install directly with the local runner."]
+      ]
+    };
 
     const panels = Array.from(document.querySelectorAll("[data-panel]"));
     const steps = Array.from(document.querySelectorAll(".step"));
@@ -1262,12 +1399,47 @@
     let workflowHubManuallyChanged = false;
     let lastWorkspaceRoot = fields.workspaceRoot.value.trim();
 
+    function setLanguage(language) {
+      const next = language === "zh" || language === "zh-CN" ? "zh" : "en";
+      const prior = uiLanguage;
+      const presetSelected = labelPresets[0].checked;
+      uiLanguage = next;
+      fields.language.value = next;
+      document.documentElement.lang = next === "zh" ? "zh-CN" : "en";
+      document.title = tr("小Q工作流安装向导", "Q Workflow Setup");
+      localizedTextNodes.forEach(({ node, source }) => {
+        node.nodeValue = next === "zh" ? source : englishText[source];
+      });
+      localizedAttributes.forEach(({ element, attribute, source }) => {
+        element.setAttribute(attribute, next === "zh" ? source : englishText[source]);
+      });
+      for (const key of Object.keys(defaults.zh)) {
+        if (!editedDefaults.has(key) && fields[key].value === defaults[prior][key]) {
+          fields[key].value = defaults[next][key];
+        }
+      }
+      labelPresets[0].value = defaults[next].workflowLabel;
+      if (presetSelected && !editedDefaults.has("workflowLabel")) {
+        fields.workflowLabel.value = defaults[next].workflowLabel;
+      }
+      document.querySelectorAll("[data-ui-language]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.uiLanguage === next));
+      });
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("lang", document.documentElement.lang);
+        window.history.replaceState(null, "", url);
+      } catch { /* Some file viewers do not allow history updates. */ }
+      setStep(currentStep);
+      renderInstallLog();
+    }
+
     function psQuote(value) {
       return '"' + String(value || "").replace(/"/g, '`"') + '"';
     }
 
     function marker() {
-      const label = fields.workflowLabel.value.trim() || "小Q工作流";
+      const label = fields.workflowLabel.value.trim() || defaultValue("workflowLabel");
       const suffix = fields.language.value === "zh" ? "快速恢复" : "Quick Resume";
       return `【${label} | ${suffix}】`;
     }
@@ -1275,10 +1447,10 @@
     function buildCommand() {
       const parts = [
         "powershell -ExecutionPolicy Bypass -File .\\scripts\\init-user.ps1",
-        "  -UserName " + psQuote(fields.userName.value.trim() || "小Q"),
+        "  -UserName " + psQuote(fields.userName.value.trim() || defaultValue("userName")),
         "  -WorkspaceRoot " + psQuote(fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work"),
         "  -WorkflowHubPath " + psQuote(fields.workflowHubPath.value.trim() || "%USERPROFILE%\\AI_Work\\workflow-hub"),
-        "  -WorkflowLabel " + psQuote(fields.workflowLabel.value.trim() || "小Q工作流"),
+        "  -WorkflowLabel " + psQuote(fields.workflowLabel.value.trim() || defaultValue("workflowLabel")),
         "  -Language " + psQuote(fields.language.value || "zh")
       ];
 
@@ -1318,8 +1490,8 @@
     }
 
     function buildPrompt() {
-      const name = fields.userName.value.trim() || "小Q";
-      const label = fields.workflowLabel.value.trim() || "小Q工作流";
+      const name = fields.userName.value.trim() || defaultValue("userName");
+      const label = fields.workflowLabel.value.trim() || defaultValue("workflowLabel");
       const prefs = fields.preferences.value.trim();
       if (fields.language.value === "zh") {
         return [
@@ -1327,10 +1499,10 @@
           "https://github.com/Aha-xiaoQ/q-workflow-hub.git",
           "",
           "请用简单中文一步一步引导我。",
-          "请阅读 QUICKSTART.zh-CN.md、QUICKSTART.md、MACHINE_BOOTSTRAP.md 和 setup-intake.html。",
+          "请阅读 QUICKSTART.zh-CN.md、MACHINE_BOOTSTRAP.zh-CN.md 和 setup-intake.html?lang=zh-CN。",
           `我的显示名称是：${name}`,
           `工作流标签是：${label}`,
-          `我使用的 Agent 是：${fields.agent.value}`,
+          `我使用的 Agent 是：${agentName()}`,
           `工作区根目录是：${fields.workspaceRoot.value.trim()}`,
           `私有 workflow hub 路径是：${fields.workflowHubPath.value.trim()}`,
           fields.initializeGit.checked ? "请为私有工作流资料夹创建本地 Git 版本库，方便之后查看变化、回滚配置和接入私有仓库备份。" : "暂时不需要为私有工作流资料夹创建本地 Git 版本库。",
@@ -1338,7 +1510,7 @@
           "",
           "请先检查 Git 和编码 Agent 是否可用，再运行安装命令。",
           "执行命令前，请用用户能理解的语言说明会创建什么、哪些内容应该保持私有；不要让我自己判断 setup-runner.ps1 和 init-user.ps1 的区别。",
-          `安装完成后，请验证私有工作流资料夹已创建，并带我用“${name}”做第一次恢复测试，确认回复开头出现“【${label} | 快速恢复】”。`,
+          `安装完成后，请打开 FIRST_RUN_GUIDE.zh-CN.html，验证私有工作流资料夹已创建，并带我用“${name}”做第一次恢复测试，确认回复开头出现“【${label} | 快速恢复】”。`,
           "好了，请按上面的信息开始处理。",
           prefs ? "\n偏好：" + prefs : ""
         ].filter(Boolean).join("\n");
@@ -1349,10 +1521,10 @@
         "https://github.com/Aha-xiaoQ/q-workflow-hub.git",
         "",
         "Please guide me step by step in plain language.",
-        "Read QUICKSTART.md, MACHINE_BOOTSTRAP.md, and setup-intake.html.",
+        "Read QUICKSTART.md, MACHINE_BOOTSTRAP.md, and setup-intake.html?lang=en.",
         `Display name: ${name}`,
         `Workflow label: ${label}`,
-        `Agent: ${fields.agent.value}`,
+        `Agent: ${agentName()}`,
         `Workspace root: ${fields.workspaceRoot.value.trim()}`,
         `Private workflow hub path: ${fields.workflowHubPath.value.trim()}`,
         fields.initializeGit.checked ? "Create a local Git repository for the private workflow folder so changes can be reviewed, rolled back, and backed up later." : "Do not create a local Git repository for the private workflow folder for now.",
@@ -1360,29 +1532,29 @@
         "",
         "Check that Git and my chosen coding agent are available before installing.",
         "Before running commands, explain in user language what will be created and what should stay private; do not make me choose between setup-runner.ps1 and init-user.ps1 unless needed.",
-        "After setup, show me the first-run guide at FIRST_RUN_GUIDE.html, verify the private workflow folder exists, show me the daily resume prompt, and walk me through the first Quick Resume smoke test.",
+        `After setup, show me FIRST_RUN_GUIDE.html, verify the private workflow folder exists, and walk me through a first Quick Resume check using “${name}”. The reply should start with “【${label} | Quick Resume】”.`,
         "All set. Please start with the information above.",
         prefs ? "\nPreferences: " + prefs : ""
       ].filter(Boolean).join("\n");
     }
 
     function buildSmoke() {
-      const pointer = fields.userName.value.trim() || "小Q";
+      const pointer = fields.userName.value.trim() || defaultValue("userName");
       return [
-        "提示词：",
+        tr("提示词：", "Prompt:"),
         pointer,
         "",
-        "预期回复开头：",
+        tr("预期回复开头：", "Expected reply prefix:"),
         marker()
       ].join("\n");
     }
 
     function warnings() {
       const items = [];
-      if (!fields.userName.value.trim()) items.push("恢复触发词为空。");
-      if (!fields.workflowLabel.value.trim()) items.push("工作流标签为空。");
+      if (!fields.userName.value.trim()) items.push(tr("恢复触发词为空。", "Enter a resume phrase."));
+      if (!fields.workflowLabel.value.trim()) items.push(tr("工作流标签为空。", "Enter a workflow label."));
       if (/token|api[_ -]?key|secret/i.test(fields.preferences.value)) {
-        items.push("安装备注里可能包含敏感词。请不要在这里粘贴密钥或客户资料。");
+        items.push(tr("安装备注里可能包含敏感词。请不要在这里粘贴密钥或客户资料。", "Your setup notes may contain sensitive information. Do not paste keys or customer data here."));
       }
       return items;
     }
@@ -1405,12 +1577,12 @@
       currentStep = Math.max(0, Math.min(index, panels.length - 1));
       panels.forEach((panel, panelIndex) => panel.classList.toggle("active", panelIndex === currentStep));
       steps.forEach((step, stepIndex) => step.setAttribute("aria-current", String(stepIndex === currentStep)));
-      out.stepTitle.textContent = stepCopy[currentStep][0];
-      out.stepSubtitle.textContent = stepCopy[currentStep][1];
+      out.stepTitle.textContent = stepCopy[uiLanguage][currentStep][0];
+      out.stepSubtitle.textContent = stepCopy[uiLanguage][currentStep][1];
       prevButton.style.display = currentStep === 0 ? "none" : "inline-flex";
       nextButton.textContent = currentStep === panels.length - 1
-        ? (runnerMode ? "开始本机安装" : "复制安装提示词")
-        : "下一步";
+        ? (runnerMode ? tr("开始本机安装", "Install locally") : tr("复制安装提示词", "Copy setup request"))
+        : tr("下一步", "Next");
       update();
     }
 
@@ -1422,29 +1594,40 @@
       out.smoke.textContent = buildSmoke();
       out.prompt.classList.toggle("hidden", runnerMode && currentStep === panels.length - 1);
       out.installLog.classList.toggle("hidden", !runnerMode || currentStep !== panels.length - 1);
-      out.nextTitle.textContent = runnerMode ? "本机安装模式" : "静态模式";
+      out.nextTitle.textContent = runnerMode ? tr("本机安装模式", "Local install mode") : tr("静态模式", "Static mode");
+      out.modeBadge.textContent = out.nextTitle.textContent;
       out.nextText.textContent = runnerMode
-        ? "点击底部“开始本机安装”后，页面会显示安装日志。成功后请按页面提示重启或新开 Agent，并用你填写的显示名称做第一次恢复测试。"
-        : "点击底部“复制安装提示词”后，页面会复制一段安装请求。切到 Codex、Claude Code 或其他编码 Agent，粘贴并发送，或直接跟 Agent 说“好了”。";
+        ? tr("点击底部“开始本机安装”后，页面会显示安装日志。成功后请按页面提示重启或新开 Agent，并用你填写的显示名称做第一次恢复测试。", "Choose Install locally below to see the installation log. After setup, restart your agent or open a new session and use your display name for the first resume check.")
+        : tr("点击底部“复制安装提示词”后，页面会复制一段安装请求。切到 Codex、Claude Code 或其他编码 Agent，粘贴并发送，或直接跟 Agent 说“好了”。", "Choose Copy setup request below. Paste and send it in Codex, Claude Code, or another coding agent, or tell your agent you are ready.");
       out.marker.textContent = currentMarker;
       out.heroMarker.textContent = currentMarker;
       out.topMarker.textContent = currentMarker;
-      out.pointer.textContent = fields.userName.value.trim() || "小Q";
+      out.pointer.textContent = fields.userName.value.trim() || defaultValue("userName");
       out.workspace.textContent = fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work";
       out.hub.textContent = fields.workflowHubPath.value.trim() || "%USERPROFILE%\\AI_Work\\workflow-hub";
-      out.agent.textContent = fields.agent.value;
+      out.agent.textContent = agentName();
       const warningItems = warnings();
       out.warning.textContent = warningItems.join(" ");
       out.warning.classList.toggle("active", warningItems.length > 0);
       out.status.textContent = warningItems.length
-        ? "继续前请先处理提示项。"
-        : (runnerMode ? "本机安装模式：可以选择文件夹并直接安装。" : "静态模式：不会发送数据，可复制安装提示词。");
+        ? tr("继续前请先处理提示项。", "Resolve the warnings before continuing.")
+        : (runnerMode ? tr("本机安装模式：可以选择文件夹并直接安装。", "Local install mode: choose folders and install directly.") : tr("静态模式：不会发送数据，可复制安装提示词。", "Static mode: no data is sent. Copy the setup request to continue."));
     }
 
-    for (const field of Object.values(fields)) {
-      field.addEventListener("input", update);
-      field.addEventListener("change", update);
+    for (const [key, field] of Object.entries(fields)) {
+      if (key === "language") continue;
+      const onEdit = () => {
+        if (Object.hasOwn(defaults.zh, key)) editedDefaults.add(key);
+        update();
+      };
+      field.addEventListener("input", onEdit);
+      field.addEventListener("change", onEdit);
     }
+
+    fields.language.addEventListener("change", () => setLanguage(fields.language.value));
+    document.querySelectorAll("[data-ui-language]").forEach((button) => {
+      button.addEventListener("click", () => setLanguage(button.dataset.uiLanguage));
+    });
 
     fields.workspaceRoot.addEventListener("input", () => {
       syncWorkflowHubFromWorkspace();
@@ -1466,6 +1649,7 @@
     document.querySelectorAll("input[name='labelPreset']").forEach((input) => {
       input.addEventListener("change", () => {
         if (input.checked) {
+          editedDefaults.delete("workflowLabel");
           fields.workflowLabel.value = input.value;
           update();
         }
@@ -1498,14 +1682,14 @@
       const target = out.prompt;
       try {
         await navigator.clipboard.writeText(target.textContent);
-        out.status.textContent = "已准备好给 Agent 的安装请求。下一步：粘贴到 Agent 并发送，或跟 Agent 说“好了”。";
+        out.status.textContent = tr("已准备好给 Agent 的安装请求。下一步：粘贴到 Agent 并发送，或跟 Agent 说“好了”。", "Setup request copied. Paste and send it to your agent, or tell your agent you are ready.");
       } catch {
         const range = document.createRange();
         range.selectNodeContents(target);
         const selection = window.getSelection();
         selection.removeAllRanges();
         selection.addRange(range);
-        out.status.textContent = "浏览器限制了剪贴板，已选中安装请求，可手动复制给 Agent。";
+        out.status.textContent = tr("浏览器限制了剪贴板，已选中安装请求，可手动复制给 Agent。", "Clipboard access is unavailable. The setup request is selected so you can copy it manually.");
       }
     }
 
@@ -1515,11 +1699,11 @@
 
       if (runnerMode) {
         try {
-          out.status.textContent = "正在打开文件夹选择窗口...";
+          out.status.textContent = tr("正在打开文件夹选择窗口...", "Opening the folder chooser...");
           const response = await fetch("/api/choose-folder", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: "请选择文件夹" })
+            body: JSON.stringify({ title: tr("请选择文件夹", "Choose a folder") })
           });
           const result = await response.json();
           if (result.ok && result.path) {
@@ -1531,15 +1715,17 @@
               workflowHubManuallyChanged = field.value.trim() !== joinWorkflowHubPath(fields.workspaceRoot.value.trim());
             }
             update();
-            out.status.textContent = `已选择：${result.path}`;
+            out.status.textContent = tr(`已选择：${result.path}`, `Selected: ${result.path}`);
           } else if (!result.cancelled) {
-            out.status.textContent = result.error || "没有选择文件夹。";
+            out.status.textContent = result.error
+              ? tr(`无法选择文件夹：${result.error}`, `Could not choose a folder: ${result.error}`)
+              : tr("没有选择文件夹。", "No folder was selected.");
           } else {
-            out.status.textContent = "已取消选择文件夹。";
+            out.status.textContent = tr("已取消选择文件夹。", "Folder selection cancelled.");
           }
           return;
         } catch (error) {
-          out.status.textContent = `无法连接本地安装向导：${error.message}`;
+          out.status.textContent = tr(`无法连接本地安装向导：${error.message}`, `Cannot connect to the local setup runner: ${error.message}`);
         }
       }
 
@@ -1547,7 +1733,7 @@
         try {
           const handle = await window.showDirectoryPicker();
           const pasted = window.prompt(
-            `已选择文件夹“${handle.name}”。浏览器出于安全限制不能读取完整 Windows 路径。\n请从资源管理器地址栏复制完整路径，并粘贴到这里：`,
+            tr(`已选择文件夹“${handle.name}”。浏览器出于安全限制不能读取完整 Windows 路径。\n请从资源管理器地址栏复制完整路径，并粘贴到这里：`, `Selected “${handle.name}”. Browser security prevents reading the full Windows path.\nCopy the full path from File Explorer's address bar and paste it here:`),
             field.value || handle.name
           );
           if (pasted && pasted.trim()) {
@@ -1566,7 +1752,7 @@
         }
       }
 
-      const pasted = window.prompt("请粘贴文件夹完整路径，例如 C:\\Users\\你的名字\\AI_Work：", field.value || "");
+      const pasted = window.prompt(tr("请粘贴文件夹完整路径，例如 C:\\Users\\你的名字\\AI_Work：", "Paste the full folder path, for example C:\\Users\\YourName\\AI_Work:"), field.value || "");
       if (pasted && pasted.trim()) {
         field.value = pasted.trim();
         if (fieldId === "workspaceRoot") {
@@ -1581,8 +1767,8 @@
 
     function buildInstallPayload() {
       return {
-        userName: fields.userName.value.trim() || "小Q",
-        workflowLabel: fields.workflowLabel.value.trim() || "小Q工作流",
+        userName: fields.userName.value.trim() || defaultValue("userName"),
+        workflowLabel: fields.workflowLabel.value.trim() || defaultValue("workflowLabel"),
         language: fields.language.value,
         agent: fields.agent.value,
         workspaceRoot: fields.workspaceRoot.value.trim() || "%USERPROFILE%\\AI_Work",
@@ -1594,49 +1780,78 @@
       };
     }
 
+    let installation = null;
+
+    function renderInstallLog() {
+      if (!installation) return;
+      if (installation.phase === "running") {
+        out.installLog.textContent = tr("正在安装工作流...\n", "Installing your workflow...\n");
+        out.status.textContent = tr("正在运行本地安装脚本，请等待日志更新。", "Running the local installation script. Please wait for the log.");
+        return;
+      }
+      if (installation.phase === "failed") {
+        out.installLog.textContent = tr(`安装失败：${installation.error}\n`, `Installation failed: ${installation.error}\n`);
+        out.status.textContent = tr("安装失败，请查看日志或改用备用提示词。", "Installation failed. Review the log or use the setup request instead.");
+        return;
+      }
+      const { userName, workflowLabel, language } = installation.payload;
+      const guideFile = uiLanguage === "zh" ? "FIRST_RUN_GUIDE.zh-CN.html" : "FIRST_RUN_GUIDE.html";
+      const installedMarker = `【${workflowLabel} | ${language === "zh" ? "快速恢复" : "Quick Resume"}】`;
+      const nextSteps = tr([
+        "", "下一步：",
+        "1. 查看上面的安装输出，确认没有失败提示。",
+        `2. 打开私有工作流资料夹里的 ${guideFile}，先看首次入门说明。`,
+        "3. 重启当前 Agent，或打开一个新的 Agent 会话；当前对话通常不会自动重新加载刚安装的 skills。",
+        `4. 只输入“${userName}”做第一次恢复测试。`,
+        `5. 预期回复开头出现“${installedMarker}”。`,
+        "6. 如果使用了单独的 Codex home，请确认新会话使用的是该路径。",
+        "7. 如果没有出现恢复标识，把本页日志复制给 Agent，让它检查安装路径和 Codex home。"
+      ].join("\n"), [
+        "", "Next steps:",
+        "1. Review the installation output above for any failures.",
+        `2. Open ${guideFile} in your private workflow folder for the first-run guide.`,
+        "3. Restart your agent or open a new session. The current conversation usually will not reload newly installed skills automatically.",
+        `4. Enter only “${userName}” for your first resume check.`,
+        `5. The reply should start with “${installedMarker}”.`,
+        "6. If you chose a separate Codex home, make sure the new session uses that path.",
+        "7. If the marker is missing, copy this log to your agent and ask it to check the installation paths and Codex home."
+      ].join("\n"));
+      // Runner output is diagnostic evidence; preserve it verbatim in both locales.
+      out.installLog.textContent = (installation.output || tr("安装完成。", "Installation complete.")) + nextSteps;
+      out.status.textContent = tr(`安装完成。下一步：重启或新开 Agent，然后输入“${userName}”做恢复测试。`, `Installation complete. Restart your agent or open a new session, then enter “${userName}” to check resume.`);
+    }
+
     async function installWorkflow() {
+      if (installation && installation.phase === "running") return;
       update();
       const warningItems = warnings();
       if (warningItems.length) {
-        out.status.textContent = "请先处理提示项，再开始安装。";
+        out.status.textContent = tr("请先处理提示项，再开始安装。", "Resolve the warnings before installing.");
         return;
       }
 
       nextButton.disabled = true;
       prevButton.disabled = true;
       out.installLog.classList.remove("hidden");
-      const displayName = fields.userName.value.trim() || "小Q";
-      const workflowLabel = fields.workflowLabel.value.trim() || "小Q工作流";
-      const guideFile = fields.language.value === "zh" ? "FIRST_RUN_GUIDE.zh-CN.html" : "FIRST_RUN_GUIDE.html";
-      out.installLog.textContent = "正在安装工作流...\n";
-      out.status.textContent = "正在运行本地安装脚本，请等待日志更新。";
+      installation = { phase: "running", payload: buildInstallPayload() };
+      renderInstallLog();
       try {
         const response = await fetch("/api/install", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(buildInstallPayload())
+          body: JSON.stringify(installation.payload)
         });
         const result = await response.json();
         if (!response.ok || !result.ok) {
           throw new Error(result.error || `HTTP ${response.status}`);
         }
-        const nextSteps = [
-          "",
-          "下一步：",
-          "1. 查看上面的安装输出，确认没有失败提示。",
-          `2. 打开私有工作流资料夹里的 ${guideFile}，先看首次入门说明。`,
-          "3. 重启当前 Agent，或打开一个新的 Agent 会话；当前对话通常不会自动重新加载刚安装的 skills。",
-          `4. 只输入“${displayName}”做第一次恢复测试。`,
-          `5. 预期回复开头出现“【${workflowLabel} | ${fields.language.value === "zh" ? "快速恢复" : "Quick Resume"}】”。`,
-          "6. 如果这是闭环复测，请确认新会话使用的是本次填写的 Codex home，而不是你原来的真实 Codex home。",
-          "7. 如果没有出现恢复标识，把本页日志复制给 Agent，让它检查安装路径和 Codex home。"
-        ].join("\n");
-        out.installLog.textContent = (result.output || "安装完成。") + nextSteps;
-        out.status.textContent = `安装完成。下一步：重启或新开 Agent，然后输入“${displayName}”做恢复测试。`;
+        installation.phase = "complete";
+        installation.output = result.output;
       } catch (error) {
-        out.installLog.textContent += `安装失败：${error.message}\n`;
-        out.status.textContent = "安装失败，请查看日志或改用备用提示词。";
+        installation.phase = "failed";
+        installation.error = error.message;
       } finally {
+        renderInstallLog();
         nextButton.disabled = false;
         prevButton.disabled = false;
       }
@@ -1650,7 +1865,6 @@
       } catch {
         runnerMode = false;
       }
-      out.modeBadge.textContent = runnerMode ? "本机安装模式" : "静态模式";
       setStep(currentStep);
     }
 
@@ -1659,7 +1873,9 @@
       "#preferences": 2,
       "#review": panels.length - 1
     };
-    setStep(initialStepByHash[window.location.hash] || 0);
+    currentStep = initialStepByHash[window.location.hash] || 0;
+    const requestedLanguage = new URLSearchParams(window.location.search).get("lang");
+    setLanguage(requestedLanguage || "en");
     detectRunnerMode();
   </script>
 </body>

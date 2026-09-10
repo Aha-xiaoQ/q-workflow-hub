@@ -1,10 +1,21 @@
 # Changelog
 
+**English** | [Simplified Chinese](CHANGELOG.zh-CN.md)
+
 All notable changes to q-workflow-hub will be documented in this file.
 
 This project follows semantic versioning once stable release tags are created.
 
 ## Unreleased
+
+### Bilingual user documentation — 2026-09-11
+
+- Provide English and Simplified Chinese editions of all user guides, with
+  reciprocal language links and a task-oriented documentation index.
+- Localize the setup form, validation messages and generated prompts; preserve
+  customized values when switching languages.
+- Consolidate duplicate guide locations and add automated language-pair,
+  local-link and browser interaction checks.
 
 ### v1.2
 
@@ -38,7 +49,7 @@ Display version: `v1.1-beta`. See the release notes for scope and migration limi
 - Add bounded pilot state tracking with explicit probe-success checks.
 - Correct filtered task-list validation and terminal-state resume guards.
 - Extend skill lifecycle/evaluation guidance and regression coverage.
-- Remove machine-specific pixel-skill paths and private evidence references.
+- Improve portability of bundled skill metadata.
 - Install every registered bundled skill and initialize empty TODO display metadata.
 - Support first-task registration from an idle hub and preserve original TODO names.
 - Initialize a new runtime mirror using explicit paths, without replacing existing mirrors.

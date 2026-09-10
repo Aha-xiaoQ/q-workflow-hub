@@ -1,5 +1,7 @@
 # q-workflow v1.1-beta
 
+**English** | [Simplified Chinese](q-workflow-v1.1-beta.zh-CN.md)
+
 A Windows-first public starter for file-backed project recovery, explicit task
 state, reusable skills and review gates. It remains beta software.
 

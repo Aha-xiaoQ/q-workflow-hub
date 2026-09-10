@@ -1,5 +1,7 @@
 # Public Sync
 
+**English** · [Simplified Chinese](PUBLIC_SYNC.zh-CN.md)
+
 This repository should stay structurally similar to private or company variants
 so generic q-workflow improvements can move between them with a clear review
 path.
@@ -16,7 +18,7 @@ Keep these areas aligned unless a documented variant reason exists:
 - `scripts\init-user.ps1`
 - `templates\workflow-hub\`
 - `templates\project\`
-- `templates\skills\assistant-profile\`
+- `templates\skills\q-assistant-profile\`
 - generic skills such as q-workflow, research discovery, audio/video intake,
   diagram workflow, code lifecycle, project overview, PPT creation/review, and
   other explicitly included companion skills

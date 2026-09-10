@@ -1,5 +1,7 @@
 # q-workflow Principles
 
+**English** · [Simplified Chinese](PRINCIPLES.zh-CN.md)
+
 q-workflow exists to make agent-assisted project work reliable, friendly, and
 easy to resume. The workflow should improve through real use, but reliability
 comes first.

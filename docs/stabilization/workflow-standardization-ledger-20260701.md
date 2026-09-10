@@ -1,51 +1,36 @@
-# Workflow Standardization Stabilization Ledger
+# Workflow standardization — compatibility checklist
 
-Date: 2026-07-01
-Status: candidate, local gates and expert review passed
+**English** · [Simplified Chinese](workflow-standardization-ledger-20260701.zh-CN.md)
 
-## Current Freeze
+Historical candidate reference, 2026-07-01. Use the
+[current release notes](../releases/q-workflow-v1.2.md) for package status.
 
-Allowed:
+## Check before adopting a standard
 
-- define and test q-standard-contract;
-- fix output grammar and expert dispatch gates;
-- produce read-only expert review and integrate findings;
-- commit local checkpoints after validation.
+| Surface | Compatibility concern | Required check |
+| --- | --- | --- |
+| Project structure | Folder naming and migration impact | Review the structure reference before moving existing projects. |
+| Structure auditor | Excess warnings and small-task behavior | Review severity and run profile fixtures, including relaxed mode. |
+| Expert dispatch | Role-to-run mapping must be visible before delegation. | Standard checks and an actual expert-review scenario. |
+| Output status line | Route, action and state must not be mixed. | Standard checks and a transcript scenario. |
 
-Frozen until this loop passes:
+## Lessons for maintainers
 
-- GMPPT file moves;
-- PPT-specific checker severity refactor;
-- public/GitHub push;
-- broad mirror synchronization beyond changed skill/runtime surfaces;
-- declaring project-structure standard stable.
+- Pair prose rules with severity, checks and explicit blockers.
+- Keep route identifiers, expert roles and task states separate in examples.
+- Establish role-to-run mappings before delegation.
+- Define which warnings block delivery.
+- Do not treat draft standards as stable before their lifecycle checks pass.
 
-## Partial Work Inventory
+## Adoption checklist
 
-| Surface | State | Risk | Gate before use |
-|---|---|---|---|
-| `skills/q-workflow/references/project-structure.md` | draft/candidate | naming conflict found by expert review; not stable | revise after q-standard-contract is stable |
-| `skills/q-workflow/scripts/audit_project_structure.py` | draft/candidate | warning noise and small-task semantics need fixes | Code Auditor review + fixture tests |
-| `gmppt-study/docs/PROJECT_STRUCTURE.md` | draft | project overlay created before global standard stabilized | hold; revise after global standard |
-| `gmppt-study/scripts/audit_gmppt_structure.py` | draft | overreports ignored PNG exports | hold; revise after global standard |
-| q-agent expert dispatch protocol | candidate | previously failed to show stable role/card before spawn | q-standard-check + real expert review |
-| output status line | candidate | route/action/status fields were mixed | q-standard-check + transcript scenario |
+1. Run the standard checker's self-test.
+2. Run the checker against the affected q-workflow skill.
+3. Run the encoding guard on changed Markdown and Python files.
+4. Run `git diff --check` for affected repositories.
+5. Obtain independent documentation or workflow review; fix and recheck blockers.
+6. State any remaining limits and distinguish validation, synchronization,
+   migration and publishing. Each action needs its own scope and authorization.
 
-## Root Cause Summary
-
-- Rules existed as prose but not all had hardness levels, checks, or blockers.
-- Some examples mixed route ids, expert roles, and state fields.
-- Expert dispatch rules allowed or tolerated late mapping, causing platform nickname leakage.
-- Warning semantics were not reliably tied to handoff blocking.
-- Draft standards entered real task flow before lifecycle gates were complete.
-
-## Stabilization Exit Gate
-
-This loop can exit only when:
-
-1. `q-standard-check --self-test` passes.
-2. `q-standard-check --root <q-workflow skill>` passes.
-3. Encoding guard passes on changed Markdown/Python files.
-4. `git diff --check` passes for changed repositories.
-5. `Doc Architect (文构)` or `Workflow Distiller (沉炼)` review reports no blocking issue, or each blocking issue is fixed and rechecked. Completed: Doc Architect (文构) reported no blocker; Code Auditor (码鉴) reported blocker, fix applied, rereview passed.
-6. The final handoff names remaining frozen scopes and states that no push/migration happened.
+Review only the intended changes. Do not use a standards update as permission
+for unrelated file moves, broad mirror synchronization or public pushes.

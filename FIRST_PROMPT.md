@@ -1,5 +1,7 @@
 # First Prompt For A Coding Agent
 
+**English** · [Simplified Chinese](FIRST_PROMPT.zh-CN.md)
+
 Paste this into Codex, Claude Code, or another terminal-capable coding agent:
 
 ```text
@@ -47,4 +49,10 @@ To resume a specific project:
 
 ```text
 Continue <project name>. Use q-workflow.
+```
+
+You can also use your display name or project name to help the agent locate work:
+
+```text
+Continue <display name or project name>. Use q-workflow.
 ```

@@ -45,7 +45,7 @@ q-workflow 是一套基于文件与 Git 的编程智能体工作流。它把项�
 - **交接状态可核对。** 本地验证与远程发布分别记录，不把“本地通过”当成“已上线”。
 
 工作流优先适配 Codex 技能机制。其他能够读写文件、运行命令和使用 Git 的智能体，
-也可通过[手动引导](MACHINE_BOOTSTRAP.md)使用文件化流程；
+也可通过[手动引导](MACHINE_BOOTSTRAP.zh-CN.md)使用文件化流程；
 这不代表它们具有完全相同的集成效果。
 
 ## 快速开始
@@ -85,7 +85,7 @@ q-workflow 是一套基于文件与 Git 的编程智能体工作流。它把项�
 
 智能体先通过工作流中心定位项目，再读取项目文件来接续工作。
 安装时生成的本地 HTML 首次使用指南会解释这套结构。
-在各层之间移动资料前，请先查看[边界模型](docs/HUB_BOUNDARY_MODEL.md)。
+在各层之间移动资料前，请先查看[边界模型](docs/HUB_BOUNDARY_MODEL.zh-CN.md)。
 
 ## 个性化，跟着你走
 
@@ -158,25 +158,24 @@ q-workflow 是一套基于文件与 Git 的编程智能体工作流。它把项�
 | 首次安装 | [中文快速开始](QUICKSTART.zh-CN.md) |
 | 给智能体一份首轮会话说明 | [首次提示词](FIRST_PROMPT.zh-CN.md) |
 | 了解日常用法 | [安装后使用指南](AFTER_SETUP.zh-CN.md) |
-| 手动或通过文件引导安装 | [机器引导文档](MACHINE_BOOTSTRAP.md)（英文） |
-| 理解隐私边界 | [工作流中心边界模型](docs/HUB_BOUNDARY_MODEL.md)（英文） |
-| 了解版本变化和贡献者检查方法 | [v1.2 更新说明](docs/releases/q-workflow-v1.2.md)（英文） |
-| 了解版本变化 | [更新记录](CHANGELOG.md)（英文） |
+| 手动或通过文件引导安装 | [机器引导文档](MACHINE_BOOTSTRAP.zh-CN.md) |
+| 理解隐私边界 | [工作流中心边界模型](docs/HUB_BOUNDARY_MODEL.zh-CN.md) |
+| 了解版本变化和贡献者检查方法 | [v1.2 更新说明](docs/releases/q-workflow-v1.2.zh-CN.md) |
+| 了解版本变化 | [更新记录](CHANGELOG.zh-CN.md) |
 
-另有 [English README](README.md)。快速开始、首次提示词和安装后使用指南提供
-中英文版本；更深入的参考文档目前可能仅提供英文。
+面向用户的指南均提供中英文版本，可在每页顶部切换语言。更多内容见[完整文档导航](docs/README.zh-CN.md)。技能执行参考文件保留原语言。
 
 ## 参与贡献与获得帮助
 
 由[小Q](https://github.com/Aha-xiaoQ)维护。欢迎提交问题反馈、文档改进和可复现的工作流修复。
-发起 Pull Request 前，请阅读[贡献指南](CONTRIBUTING.md)（英文）。
+发起 Pull Request 前，请阅读[贡献指南](CONTRIBUTING.zh-CN.md)。
 
 普通问题请[提交 Issue](https://github.com/Aha-xiaoQ/q-workflow-hub/issues)。
-安全或隐私问题请遵循[安全说明](SECURITY.md)（英文）。
+安全或隐私问题请遵循[安全说明](SECURITY.zh-CN.md)。
 不要在公开反馈中包含凭据、私人路径或项目数据。
 
 ## 许可证
 
 工作流代码与文档采用 [Apache-2.0](LICENSE) 许可证。
-当前 Q 品牌图形适用[单独的使用说明](assets/README.md)（英文）。
-引用与署名信息请见[第三方说明](THIRD_PARTY_NOTICES.md)（英文）。
+当前 Q 品牌图形适用[单独的使用说明](assets/README.zh-CN.md)。
+引用与署名信息请见[第三方说明](THIRD_PARTY_NOTICES.zh-CN.md)。

@@ -1,5 +1,7 @@
 # Hub Boundary Model
 
+**English** · [Simplified Chinese](HUB_BOUNDARY_MODEL.zh-CN.md)
+
 Most users only need one private workflow hub repo.
 
 The public `q-workflow-hub` starter is the installer/source package. Your

@@ -1,5 +1,7 @@
 # 快速开始
 
+[English](QUICKSTART.md) · **简体中文**
+
 > 请从 `main` 安装，并记录 `git rev-parse HEAD` 的结果，
 > 以便更新或反馈问题时确认已安装的版本。
 
@@ -41,6 +43,7 @@ q-workflow 会给你的 Agent 工作加一层“恢复能力”：
 - 以后创建可恢复项目时用的项目模板。
 
 workflow hub 应保持私有。里面可能包含本地路径、项目名、工作项和个人偏好。
+需要备份或跨设备同步时，为它使用一个私人 Git 远程仓库即可。
 
 ## 推荐安装方式
 
@@ -52,10 +55,10 @@ https://github.com/Aha-xiaoQ/q-workflow-hub.git
 
 请用简单中文一步一步引导我。
 请克隆 main，检查当前发布范围，并在安装前记录准确的提交号。
-请把 QUICKSTART.zh-CN.md、QUICKSTART.md 和 MACHINE_BOOTSTRAP.md 作为安装依据。
+请把 QUICKSTART.zh-CN.md 和 MACHINE_BOOTSTRAP.zh-CN.md 作为安装依据。
 先说明 q-workflow 会创建什么、哪些内容应该保持私有。
 检查 Git 和我的编码 Agent 环境是否可用。
-只询问安装必需的信息，然后帮我安装 q-workflow。
+只询问安装必需的信息，然后帮我安装 q-workflow，生成中文安装和配置文件（直接运行脚本时使用 -Language zh）。
 安装完成后，请打开或概括 FIRST_RUN_GUIDE.zh-CN.html，验证是否成功，告诉我日常恢复
 提示词，并带我做第一次快速恢复测试。
 ```
@@ -113,7 +116,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\init-user.ps1 `
 直接安装会写入所选 Codex home 下的 `q-profile.json`，并替换其中受管理的
 `q-*` 技能目录。请把无关或私有工作放在这些受管理目录之外，并先核对 DryRun 路径。
 
-如果不能运行本地向导，也可以直接打开 [setup-intake.html](setup-intake.html)。静态模式
+如果不能运行本地向导，也可以直接打开 [setup-intake.html](setup-intake.html?lang=zh-CN)。静态模式
 不能自动读取完整文件系统路径，但可以整理安装信息，并生成给 Agent 的安装请求。
 
 ## 后续更新
@@ -154,6 +157,8 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-workflow-bootstrap.ps1 `
 
 更新不会自动删除安装目录中不属于当前包的技能。若要停用某个技能，请先保留自定义内容，
 再将该技能目录移到 runtime 和 bootstrap 的 `skills` 目录之外；不要删除无关源文件。
+
+同步后重启智能体，并再次进行快速恢复测试。
 
 ## 成功标准
 
@@ -218,7 +223,7 @@ q-workflow 项目。
 
 普通缺陷或建议请使用
 [问题追踪器](https://github.com/Aha-xiaoQ/q-workflow-hub/issues)。安全或隐私问题请按
-[SECURITY.md](SECURITY.md) 处理，不要在公开 issue 中粘贴密钥或私有路径。
+[安全说明](SECURITY.zh-CN.md) 处理，不要在公开 issue 中粘贴密钥或私有路径。
 
 安装后的日常用法见 [AFTER_SETUP.zh-CN.md](AFTER_SETUP.zh-CN.md)。它说明常用提示词、
 日常心智模型，以及 Agent 如何在合适的时候提醒你可用的工作流能力。

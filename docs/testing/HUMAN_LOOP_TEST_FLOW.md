@@ -1,5 +1,7 @@
 # Human-Loop Test Flow
 
+**English** · [Simplified Chinese](HUMAN_LOOP_TEST_FLOW.zh-CN.md)
+
 This document defines the reusable human-in-loop testing process for q-workflow.
 It prevents usability tests from depending on chat memory or ad hoc prompts.
 

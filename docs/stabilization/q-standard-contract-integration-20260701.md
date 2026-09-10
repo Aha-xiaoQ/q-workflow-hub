@@ -1,37 +1,36 @@
-# Q Standard Contract Integration Note
+# Standard checks — integration notes
 
-Date: 2026-07-01
-Trace: q-standard-stabilization-20260701
-Status: local candidate passed
+**English** · [Simplified Chinese](q-standard-contract-integration-20260701.zh-CN.md)
 
-## Scope
+Historical candidate reference, 2026-07-01. This note is not a stable release
+declaration; consult the [release guide](../releases/q-workflow-v1.2.md) for
+package selection.
 
-This loop addressed a workflow-level failure mode: standards existed as prose but were not reliably enforced as hard gates, expert dispatch cards, warning/blocker semantics, or regression tests.
+## Purpose
 
-## Accepted Findings
+Prose standards need checkable gates, clear warning/blocker severity and
+regression coverage before they can reliably guide project work.
 
-- Doc Architect (文构): no blocker; fixed lifecycle/token ambiguity by keeping the contract at candidate status and making real rules machine-checkable.
-- Code Auditor (码鉴): initial blocker that `q_standard_check.py` was too shallow; fixed with strict expert-card parsing, dependency blocker handling, status-line example scanning, UTF-8/mojibake checks, real rule block parsing, and required real rule IDs.
-- Code Auditor (码鉴) rereview: blocker closed; `blocking_stabilization: no`.
+## Check coverage
 
-## Validation
+The standard checker covers strict expert dispatch cards, dependency blockers,
+status-line examples, UTF-8 and mojibake, rule block parsing, and required rule
+identifiers. Role, route and task state must remain distinct.
 
-- PASS: `q_standard_check.py --root <q-workflow> --self-test`
-- PASS: `encoding_guard.py` on changed contract/checker/output files
-- PASS: `git diff --check`
+## Validation before adoption
 
-## Protocol Findings
+Run the checker on the affected q-workflow skill and its built-in fixtures:
 
-- Initial Doc Architect report retained `platform_agent: explorer/pending`; main-agent had shown run instance in chat but had not sent IDENTITY-UPDATE to that subagent. This is recorded as a protocol defect.
-- Later Code Auditor runs received IDENTITY-UPDATE and returned exact platform handles.
+```text
+q_standard_check.py --root <q-workflow> --self-test
+```
 
-## Frozen Scopes
+Also run `encoding_guard.py` on changed contract/checker/output files and
+`git diff --check`. Inspect failures and recheck after fixes.
 
-- GMPPT directory migration remains frozen.
-- PPT-specific validator severity refactor remains frozen.
-- GitHub/Bitbucket push remains approval-gated.
-- Project-structure standard remains candidate, not stable.
+## Synchronization and release
 
-## Next Gate
-
-Before using this as a stable workflow release, sync source/runtime/bootstrap/company surfaces deliberately and run the same `q-standard-check` gate after synchronization.
+Synchronize the intended source, runtime, bootstrap and maintained variant
+copies deliberately, then repeat the same checks. Passing local checks does
+not authorize publishing or unrelated project migrations. Keep candidate and
+stable release status separate.
