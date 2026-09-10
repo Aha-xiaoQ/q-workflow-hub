@@ -230,6 +230,14 @@ Required AGENTS/skill reads and task/event validation are not optional context.
 
 ## Evolution Guard
 
+At a material task's start, compare already available model/tool evidence and
+relevant workflow revisions with the last review, without a routine inventory
+or network check. A new signal, repeated friction or a useful milestone lesson
+should trigger `references/proactive-evolution.md`. Unchanged evidence and
+micro/answer-only tasks stay on the normal path. Review proactively; make only
+authorized, validated, recoverable changes. Record material review dispositions
+only when record-writing is authorized; unchanged entry checks create no record.
+
 When a platform capability overlaps local workflow behavior, do not delete the
 local rule immediately. Use `references/workflow-evolution.md` to decide
 whether to `use-native`, `wrap-native`, `keep-local`, `retire-local`, or

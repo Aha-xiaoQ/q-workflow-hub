@@ -16,6 +16,7 @@ recoverable, validated, and license-aware.
 |:---|:---|
 | Create a new skill | `workflows/create-skill.md` |
 | Update an existing skill | `workflows/update-skill.md` |
+| Proactive maintenance after model/tool changes, repeated friction or a reusable milestone lesson | q-workflow `references/proactive-evolution.md`, then `workflows/update-skill.md` for an authorized candidate; no model-name-based rewrite |
 | Rename or migrate a skill | `workflows/skill-naming-migration.md`; then update `references/naming-conventions.md` when the naming rule changed |
 | Audit naming drift, rename candidates, or split/merge signals across existing skills | Run `scripts/skill_naming_audit.py`; then classify with `references/naming-conventions.md` and `references/skill-composition-boundary.md`. Rename only when the migration gate is met. |
 | Review a skill for quality, reliability, or compliance | `workflows/review-skill.md` |

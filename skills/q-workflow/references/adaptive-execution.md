@@ -19,6 +19,10 @@ same as authorized. Discover narrowly, inspect returned schemas, then invoke.
 
 ## Autonomy Within Intent
 
+Model or tool changes can trigger a bounded workflow review through
+`proactive-evolution.md`; they do not prove that a rewrite is needed. Keep the
+cheap signal check separate from the review and from permission to activate it.
+
 For an explicit change request, fill routine reversible gaps and implement
 within its scope. Ask a focused question only if a missing choice materially
 changes the result or authorization is absent. Answer/diagnose stays read-only.

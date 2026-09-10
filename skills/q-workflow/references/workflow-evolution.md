@@ -135,6 +135,10 @@ orchestration note first and decide which ones are actually blocking.
 
 ## Self-Learning Control Loop
 
+For proactive entry checks, model identity evidence, bounded local maintenance
+and review deduplication, use [Proactive evolution](proactive-evolution.md).
+This loop refines files and procedures; it does not train or replace a model.
+
 Use learning as a bounded control loop, not an always-expanding memory:
 
 1. Capture a concrete miss, friction point, or new capability.
@@ -177,8 +181,12 @@ Run this reference when:
 ## Upgrade Procedure
 
 1. Frame the failure mode and the part of the workflow that may be obsolete.
-2. Use `q-research-discovery` to check official and high-signal sources.
-3. Use `q-skill-pattern-learning` to extract mechanisms, not surface wording.
+2. Check official and high-signal sources when external/current uncertainty
+   affects the decision; use `q-research-discovery` for substantial discovery.
+   A demonstrated local contradiction can use local evidence directly.
+3. Use `q-skill-pattern-learning` when comparison with other workflows is
+   needed for a substantial redesign. Extract mechanisms, not surface wording;
+   do not require research fan-out for every narrow, evidenced repair.
 4. Use `q-skill-creation` to place the smallest rule at the right layer.
 5. Update source, runtime, bootstrap, public, or private variants when
    applicable.

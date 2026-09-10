@@ -2,6 +2,12 @@
 
 Use when improving an existing skill.
 
+For proactive maintenance, first separate the observed signal, the candidate
+and permission to activate it using q-workflow's `references/proactive-evolution.md`.
+If unavailable, use the same bounded rule: evidence-led, authorized local patch,
+negative/transfer checks, prior and accepted revisions, and a revisit condition.
+Do not repeat an unchanged review or let this update recursively upgrade itself.
+
 ## Steps
 
 1. Run the pre-edit freshness gate for multi-surface or reusable skills: read `references/source-runtime-freshness.md`, list known canonical source/runtime/public/company/personal/user-cache surfaces, check dirty status, compare key files plus scripts, manifests, assets, and default path references, and choose the edit baseline before writing. Do not copy a stale source over a newer runtime or hub, and do not treat a user-local cache as canonical source without an explicit promotion step.

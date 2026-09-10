@@ -5,7 +5,7 @@
 <h1 align="center">q-workflow</h1>
 
 <p align="center">
-  Recover project context from files and Git, not just chat history.
+  A personal, recoverable workflow that learns from your work.
 </p>
 
 <p align="center">
@@ -23,8 +23,9 @@
 
 q-workflow is a file- and Git-based workflow layer for coding agents. It keeps
 project locations, active tasks, decisions and recovery notes in a private hub
-and your project repositories, so a new agent session has a starting point
-beyond the conversation.
+and your project repositories. Your collaboration preferences guide how the
+agent works, while validated lessons become reusable skills for later tasks.
+A new session can recover both project context and the methods you have refined.
 
 This repository, **q-workflow-hub**, is the public starter: installers,
 templates and reusable skills. Your generated workflow hub stays private.
@@ -42,6 +43,12 @@ checked.
   agent to the relevant files.
 - **Keep decisions with the work.** Tasks, environment notes and validation
   evidence live alongside the project.
+- **Make it yours.** Keep your preferred language, collaboration style and
+  project conventions in the appropriate personal or project files.
+- **Carry experience forward.** Turn useful corrections and proven methods into
+  focused skill updates, with checks and a recoverable previous version.
+- **Adapt as tools change.** Review outdated assumptions when relevant model or
+  tool evidence changes, instead of waiting for the same failure to recur.
 - **Separate reusable skills from private state.** Public templates can be
   shared without publishing your personal workflow hub.
 - **Make handoffs traceable.** Local validation and verified publication are
@@ -94,6 +101,51 @@ The agent uses the hub to locate a project, then reads that project's files to
 resume work. A generated first-run HTML guide explains the setup locally.
 See the [boundary model](docs/HUB_BOUNDARY_MODEL.md) before moving material
 between layers.
+
+## Personalization that stays with you
+
+The generated `q-assistant-profile` connects your agent to your private workflow
+hub. Keep collaboration preferences there, project-specific conventions with
+the project, and reusable methods in skills. You can inspect and revise these
+files as your needs change.
+
+For example, a preference for concise Chinese replies belongs in your personal
+profile; a repository's release checklist belongs with that project. Neither
+needs to become a rule imposed on everyone using the public starter.
+
+## Learning from work, adapting to change
+
+Useful experience follows a short loop:
+
+**Work → notice a lesson → draft an improvement → validate → apply and reuse.**
+
+A correction that prevents the same export mistake can become a validation
+check. A reliable setup method can become a reusable procedure. A native tool
+can replace an old workaround once it covers the same recovery needs.
+
+During material tasks, the agent checks already available signals for relevant
+model/tool changes or recurring workflow friction. It reviews the affected
+route, makes a tested local improvement when you have authorized maintenance,
+and records the outcome. Unchanged conditions reuse the last decision instead
+of repeating an audit. A different model name alone is not a reason to rewrite.
+
+This happens while the agent is working with q-workflow; it does not require
+you to request a retrospective every time. You control activation scope:
+local maintenance can be authorized in your private preferences, while releases
+and broader changes remain separate decisions. The workflow updates files and
+procedures, not model weights, and does not run in the background by itself.
+
+To enable scoped maintenance, ask the agent to record a preference in your
+private hub's `personal-state/ASSISTANT_OPERATING_PROFILE.md`, for example:
+
+> For the skills used by this project, you may make small, reversible local
+> improvements in their registered source and runtime folders after validation.
+> Preserve a rollback version. Ask before broader changes, installs or publishing.
+
+Name the project or skills you intend to cover. Say “pause workflow maintenance”
+to stop it; revise or remove the saved preference to revoke it for future sessions.
+See the [evolution procedure](skills/q-workflow/references/proactive-evolution.md)
+for triggers, validation and recovery.
 
 ## What's included
 
