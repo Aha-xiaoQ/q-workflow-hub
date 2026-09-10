@@ -1,4 +1,4 @@
 interface:
   display_name: "PDF Reading"
   short_description: "Read PDFs with quick, robust, or deep evidence-first extraction"
-  default_prompt: "Use $q-pdf-reading to triage this PDF and create an evidence-backed reading pack with the right quick, robust, or deep mode."
+  default_prompt: "Use $q-pdf-reading to answer from verified PDF pages with the lightest sufficient method; create a reading pack when reusable extraction is needed."

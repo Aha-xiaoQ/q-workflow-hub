@@ -30,4 +30,6 @@ After each meaningful work round:
 3. Update `TASKS.md` for backlog and completed items.
 4. Update `README.md` only for stable index-level information.
 5. Update `ENVIRONMENT.md` when tools, paths, dependencies, templates, hardware connections, or reproduction steps change.
-6. Commit and push.
+6. Preserve a meaningful scoped local checkpoint. Push only when explicitly
+   authorized for the current candidate and target under `sync-and-push-policy.md`;
+   otherwise record pending remote sync without blocking local completion.

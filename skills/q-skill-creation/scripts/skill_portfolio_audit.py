@@ -176,10 +176,10 @@ def line_ending_issue(data: bytes) -> str | None:
     has_crlf = b"\r\n" in data
     has_bare_lf = bool(re.search(rb"(?<!\r)\n", data))
     has_bare_cr = bool(re.search(rb"\r(?!\n)", data))
-    if has_crlf and has_bare_lf:
-        return "mixed-crlf-lf"
     if has_bare_cr:
         return "bare-cr"
+    if has_crlf and has_bare_lf:
+        return "mixed-crlf-lf"
     return None
 
 
@@ -227,7 +227,7 @@ def audit_skill(root_label: str, skill_md: Path) -> dict:
     if metrics["lines"] > 180:
         issues.append(("warning", "skill_md_large", f"SKILL.md first-read surface is large ({metrics['lines']} lines)"))
     if metrics["lines"] > 260:
-        issues.append(("blocker", "skill_md_too_large", f"SKILL.md is very large ({metrics['lines']} lines)"))
+        issues.append(("warning", "skill_md_too_large", f"Review loading cost ({metrics['lines']} lines); length alone is not a correctness failure"))
     if missing_required:
         issues.append(("blocker", "missing_referenced_file", f"{len(missing_required)} required referenced paths missing"))
     if "workflow" not in lower and "default" not in lower and "steps" not in lower:
@@ -240,8 +240,10 @@ def audit_skill(root_label: str, skill_md: Path) -> dict:
         issues.append(("warning", "hard_rule_without_check", "hard/required language appears without clear check or blocked outcome"))
     if len([p for p in VAGUE_PHRASES if p in lower]) >= 4:
         issues.append(("info", "many_soft_phrases", "many soft phrases; check whether rules are too loose"))
-    if line_ending_issue(data):
-        issues.append(("blocker", "mixed_line_endings", "SKILL.md has mixed or bare line endings"))
+    ending_issue = line_ending_issue(data)
+    if ending_issue:
+        severity = "blocker" if ending_issue == "bare-cr" else "warning"
+        issues.append((severity, "mixed_line_endings", f"SKILL.md line ending issue: {ending_issue}"))
     if data and not data.endswith(b"\n"):
         issues.append(("warning", "missing_final_newline", "SKILL.md lacks final newline"))
     for i, raw in enumerate(data.splitlines(), start=1):
@@ -286,11 +288,15 @@ def audit_skill(root_label: str, skill_md: Path) -> dict:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Audit q-workflow skill portfolio structure, contracts, references, and hygiene.")
-    parser.add_argument("--root", action="append", default=[], help="Override/add a root as label=path.")
+    parser.add_argument("--root", action="append", default=[], help="Isolated audit root as label=path; repeat for multiple roots.")
+    parser.add_argument("--only-roots", action="store_true", help="Audit only explicit --root values, without profile defaults.")
     parser.add_argument("--json-out", default="", help="Write full JSON report to this path.")
     parser.add_argument("--fail-on-blocker", action="store_true", help="Exit nonzero when blockers are found.")
     parser.add_argument("--markdown-out", default="", help="Write a compact Markdown report to this path.")
-    return parser.parse_args()
+    args = parser.parse_args()
+    if args.only_roots and not args.root:
+        parser.error("--only-roots requires at least one --root label=path")
+    return args
 
 
 def write_markdown(report: dict, path: Path) -> None:
@@ -301,7 +307,7 @@ def write_markdown(report: dict, path: Path) -> None:
         f"Blockers: {report['summary']['severity_counts'].get('blocker', 0)}",
         f"Warnings: {report['summary']['severity_counts'].get('warning', 0)}",
         "",
-        "## Root Scores",
+        "## Structural Heuristic Scores (not capability or quality measurements)",
         "",
     ]
     for root, score in report["summary"]["root_average_scores"].items():
@@ -343,7 +349,13 @@ def main() -> int:
         if "=" not in item:
             raise SystemExit("--root must be label=path")
         label, raw = item.split("=", 1)
-        roots[label] = Path(raw)
+        label, raw = label.strip(), raw.strip()
+        if not label or not raw:
+            raise SystemExit("--root requires a nonempty label and path")
+        root = Path(raw).expanduser()
+        if not root.is_dir():
+            raise SystemExit(f"explicit --root is not an existing directory: {root}")
+        roots[label] = root
 
     report = {
         "authority": {
@@ -387,6 +399,7 @@ def main() -> int:
             issue_counts[issue["code"]] += 1
             severity_counts[issue["severity"]] += 1
     report["summary"] = {
+        "score_meaning": "Structural heuristics only; not capability, semantic quality, full YAML validation, or behavioral coverage.",
         "skill_count": len(report["skills"]),
         "issue_counts": dict(issue_counts),
         "severity_counts": dict(severity_counts),

@@ -413,6 +413,21 @@ def check_skill_trigger(paths: dict[str, Path]) -> Check:
     return Check("skill-maintenance-trigger", "pass" if not missing else "fail", f"missing={missing}", "none" if not missing else "Make skill-maintenance intents discoverable in frontmatter.")
 
 
+def windows_powershell_test_env() -> dict[str, str]:
+    """Use native child-host module defaults without changing the parent."""
+    return {
+        key: value for key, value in os.environ.items()
+        if os.name != "nt" or key.casefold() != "psmodulepath"
+    }
+
+
+def injected_failure_reached(result: subprocess.CompletedProcess, marker: str) -> bool:
+    """An unrelated launch/import failure is not rollback evidence."""
+    return result.returncode != 0 and marker in (
+        (result.stdout or "") + "\n" + (result.stderr or "")
+    )
+
+
 def check_installer_transaction(paths: dict[str, Path]) -> list[Check]:
     installer = paths["personal_hub"] / "bootstrap" / "install-personal-skills.ps1"
     if not installer.is_file():
@@ -440,17 +455,18 @@ def check_installer_transaction(paths: dict[str, Path]) -> list[Check]:
         }
         (home / "q-profile.json").write_text(json.dumps(profile, ensure_ascii=False), encoding="utf-8")
         before = tree_hashes(skills)
-        env = os.environ.copy()
+        env = windows_powershell_test_env()
         env["Q_WORKFLOW_TEST_FAIL_AFTER_SKILL"] = "2"
         failed = subprocess.run(
             ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(installer), "-CodexHome", str(home)],
             text=True, capture_output=True, encoding="utf-8", errors="replace", timeout=120, env=env, check=False,
         )
         after = tree_hashes(skills)
-        rollback_ok = failed.returncode != 0 and before == after
+        rollback_reached = injected_failure_reached(failed, "Injected installer transaction failure after skill 2.")
+        rollback_ok = rollback_reached and before == after
         rollback_check = Check(
             "installer-package-rollback", "pass" if rollback_ok else "fail",
-            f"injected_rc={failed.returncode}; restored={before == after}",
+            f"injected_rc={failed.returncode}; injection_reached={rollback_reached}; restored={before == after}",
             "none" if rollback_ok else "Retain all backups until the final gate and roll back in reverse order.",
         )
         env.pop("Q_WORKFLOW_TEST_FAIL_AFTER_SKILL", None)
@@ -464,10 +480,11 @@ def check_installer_transaction(paths: dict[str, Path]) -> list[Check]:
             ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(installer), "-CodexHome", str(home)],
             text=True, capture_output=True, encoding="utf-8", errors="replace", timeout=120, env=env, check=False,
         )
-        state_rollback_ok = state_failed.returncode != 0 and before_state == tree_hashes(state_runtime)
+        state_reached = injected_failure_reached(state_failed, "Injected installer transaction failure after runtime-state sync.")
+        state_rollback_ok = state_reached and before_state == tree_hashes(state_runtime)
         state_rollback_check = Check(
             "installer-runtime-state-rollback", "pass" if state_rollback_ok else "fail",
-            f"injected_rc={state_failed.returncode}; restored={before_state == tree_hashes(state_runtime)}",
+            f"injected_rc={state_failed.returncode}; injection_reached={state_reached}; restored={before_state == tree_hashes(state_runtime)}",
             "none" if state_rollback_ok else "Include runtime personal state and manifest in installer rollback.",
         )
         env.pop("Q_WORKFLOW_TEST_FAIL_AFTER_STATE_SYNC", None)
@@ -493,8 +510,12 @@ def check_installer_transaction(paths: dict[str, Path]) -> list[Check]:
             preserve_ok = False
         preservation_check = Check(
             "installer-profile-preservation", "pass" if preserve_ok else "fail",
-            f"success_rc={succeeded.returncode}; unknown repository and nested fields preserved={preserve_ok}",
-            "none" if preserve_ok else "Merge managed fields into the existing repository registry.",
+            f"success_rc={succeeded.returncode}; unknown repository and nested fields preserved={preserve_ok}"
+            + (f"; installation_error={(succeeded.stderr or succeeded.stdout)[-1200:]}" if succeeded.returncode != 0 else ""),
+            "none" if preserve_ok else (
+                "Resolve the installation execution error before judging profile preservation."
+                if succeeded.returncode != 0 else "Merge managed fields into the existing repository registry."
+            ),
         )
         return [rollback_check, state_rollback_check, preservation_check]
 
@@ -589,16 +610,18 @@ def check_public_updater_transaction(paths: dict[str, Path]) -> Check:
             ["powershell", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(updater),
              "-WorkflowHubPath", str(hub), "-CodexHome", str(home), "-InstallRuntime",
              "-Skills", "q-workflow", "q-agent-roster", "-TestFailAfterSwitch", "2"],
-            text=True, capture_output=True, encoding="utf-8", errors="replace", timeout=120, check=False,
+            text=True, capture_output=True, encoding="utf-8", errors="replace", timeout=120,
+            env=windows_powershell_test_env(), check=False,
         )
         restored = (
             (bootstrap / "marker.txt").read_text(encoding="utf-8") == "bootstrap-before"
             and (runtime / "marker.txt").read_text(encoding="utf-8") == "runtime-before"
         )
-        ok = result.returncode != 0 and restored
+        injection_reached = injected_failure_reached(result, "Injected package transaction failure after switch 2.")
+        ok = injection_reached and restored
         return Check(
             "public-updater-rollback", "pass" if ok else "fail",
-            f"injected_rc={result.returncode}; restored={restored}",
+            f"injected_rc={result.returncode}; injection_reached={injection_reached}; restored={restored}",
             "none" if ok else "Stage and hash the whole package, then restore switched directories on failure.",
         )
 

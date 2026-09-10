@@ -19,14 +19,18 @@ Use minimal push by default. Local commits and remote pushes are separate
 decisions: commits can create recoverable checkpoints, but pushes should be
 rarer and usually confirmed by Xiao Q first.
 
-Push immediately when:
+Push only after the current candidate and target are explicitly authorized and
+the applicable freshness/publication checks pass. Preparing a release, a ready
+artifact, elapsed time, and recovery risk are reasons to propose a push, not
+authorization to perform one. In particular:
 
-- Xiao Q explicitly asks to push, upload, publish, back up, hand off, or
-  prepare a release.
-- A major deliverable, customer/demo artifact, release checkpoint, or
-  cross-machine handoff is ready.
-- A critical recovery pointer or workflow rule changed and losing the local
-  machine state would create real recovery risk.
+- Xiao Q explicitly asks to push, upload, or publish the current candidate to a
+  known target. For ambiguous backup/handoff requests, resolve the destination;
+  `prepare a release` authorizes preparation, not publication.
+- If a major deliverable or cross-machine handoff is ready, propose the scoped
+  push and preserve a local checkpoint while awaiting authorization.
+- If a critical recovery rule changed, preserve it locally and explain the
+  recovery risk when proposing remote backup; do not silently push.
 - Work has accumulated for roughly a day or a long focused session without a
   push; in this case, ask Xiao Q whether to push instead of pushing silently.
 
@@ -93,7 +97,7 @@ Before pushing:
 
 Use different push cadence for personal recovery state and promotion/share repos:
 
-- `q-personal-hub`: push more readily after meaningful recovery-state changes, completed closure-ledger repairs, active-work/TODO updates, or reports that future recovery depends on. This is the private state-of-truth hub.
+- `q-personal-hub`: propose backup more readily after meaningful recovery-state changes. This private state-of-truth hub still requires explicit authorization for the current remote push; record local-only state while pending.
 - Company-side promotion/share repositories, including `q-workflow-hub`, are
   no-push by default for routine sync, local reports, runtime-only fixes, or
   ordinary checkpoints. Push them only when Xiao Q explicitly requests a version
@@ -143,13 +147,13 @@ Prefer recoverable checkpoints over constant pushing:
 - Create or update the personal work item as soon as a task becomes concrete.
 - Use local commits for meaningful, recoverable checkpoints, especially before
   switching tasks or ending a long round.
-- Push after a key checkpoint, user-facing deliverable, or completed work round.
-  Do not push after every minor edit unless recovery risk is high.
+- Propose a push at a key checkpoint or completed work round when useful.
+  Neither completion nor recovery risk waives explicit push authorization.
 - Do not turn bookkeeping-only corrections into immediate pushes by default. If
   the user points out an incomplete test or wrong completion status, record the
   correction locally, restate the missing validation, and resume the work.
-  Batch the push with the next real tested checkpoint unless recovery risk is
-  high or the user explicitly asks for sync.
+  Batch the proposed push with the next tested checkpoint; a request to sync
+  still needs a clear candidate and destination.
 - If push is deferred or fails, record the pending sync state in the work item
   and final response.
 - If a new task interrupts unfinished work, update `PAUSED_WORK.md` before
@@ -207,8 +211,8 @@ When the user discovers a better workflow:
 3. Validate with the skill validation script if available.
 4. For small feedback loops, keep the first fix local: update the source copy
    and installed runtime copy, validate narrowly, and report pending starter,
-   mirror, or remote sync. Commit and push only when Xiao Q asks, when recovery
-   would otherwise be at risk, or at a planned sync checkpoint.
+   mirror, or remote sync. Preserve scoped local checkpoints as appropriate;
+   push only with explicit authorization for the candidate and destination.
 
 Keep this skill concise. Put reusable details in `references/` and reusable
 project file starters in `assets/templates/`.

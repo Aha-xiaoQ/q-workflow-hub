@@ -9,8 +9,10 @@ Use for a quality, reliability, lifecycle, or compliance review of a skill.
 
 - **Portfolio audit:** for broad skill-system reviews, run
   `scripts/skill_portfolio_audit.py` when available before subjective edits.
-  Treat blockers as closure issues; treat warnings as review queues that need
-  evidence before refactoring.
+  Treat reproducible required-path/encoding/contract failures as closure issues.
+  Line count, formatting variation, and keyword matches are review heuristics,
+  not capability or quality measurements; require behavioral evidence before
+  refactoring. Do not claim unvisited roots or untested behavior passed.
 - **Reference ownership:** inline paths must be classified as local skill files,
   cross-skill dependencies, hub/repository helpers, packaged assets, or optional
   tools. A missing local required path is a blocker; an optional or cross-skill

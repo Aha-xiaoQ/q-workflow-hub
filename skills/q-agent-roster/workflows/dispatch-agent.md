@@ -27,6 +27,10 @@ Use before spawning or simulating an expert pass.
      action, non-temp writes, or overlapping write scope is involved, ask first
      or deny.
 5. Decide mode:
+   Apply the ordinary-local-check exception in `auto-dispatch-policy.md` when
+   delegation is prohibited, unavailable, or lacks useful independent scope.
+   Never label a main-agent check independent or use it to pass an explicitly
+   independent domain/release gate.
    - Local specialist pass: use when no actual subagent is needed.
    - Subagent-as-tool: use when the main agent should stay in control and only
      needs a bounded result, summary, review, or artifact slice.
@@ -105,8 +109,8 @@ Use before spawning or simulating an expert pass.
   task labels only in mission/agent_slot, and use platform nicknames only as
   run instances.
 - Spawning reviewers with no source artifact.
-- Skipping an independent review on a nontrivial artifact because the main
-  agent already inspected its own output.
+- Claiming independent review from main-agent self-checks, or skipping an
+  explicitly required independent domain/release review because local tests passed.
 - Serializing independent source scans, cold install tests, or read-only
   validation work that could have run beside the main path.
 - Asking two experts the same broad question.

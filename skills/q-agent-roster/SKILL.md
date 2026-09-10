@@ -91,6 +91,14 @@ required inputs, fixed output, and anti-patterns.
 
 ## Delegation Rules
 
+- Distinguish a preferred independent review for ordinary local work from an
+  explicitly required independent domain/release gate. Host restrictions and
+  the user's no-agent request always govern dispatch. For ordinary local work,
+  if delegation is prohibited, unavailable, or has no bounded independent scope
+  alongside useful main-agent work, run and disclose a local check; do not call
+  it independent. This exception does not pass an explicit independent quality
+  gate or authorize publication; keep that specific claim pending.
+
 - Use actual subagents when Xiao Q explicitly asks for subagents, delegation, or
   parallel agent work, and also for automatic quality-risk review or parallel
   independent work when `auto-dispatch-policy.md` says the scope is bounded and
@@ -100,8 +108,9 @@ required inputs, fixed output, and anti-patterns.
   release candidate, do not ask Xiao Q for final human review until the
   relevant expert reviewer or real subagent has reviewed the candidate and the
   main agent has integrated or explicitly deferred each finding.
-- Do not push, publish, release, upload, or mark a candidate final after only
-  main-agent self-review. For GitHub-bound changes, the required order is:
+- Do not push, publish, release, upload, or claim an explicitly gated independent
+  acceptance after only main-agent self-review. Ordinary local completion may
+  use the disclosed exception above. For GitHub-bound changes, the required order is:
   produce candidate, run expert/subagent review, patch and validate, present the
   review summary to Xiao Q, wait for Xiao Q's explicit approval, then push.
 - Before or immediately after spawning a real platform subagent, tell Xiao Q the

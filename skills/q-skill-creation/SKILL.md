@@ -19,19 +19,31 @@ recoverable, validated, and license-aware.
 | Rename or migrate a skill | `workflows/skill-naming-migration.md`; then update `references/naming-conventions.md` when the naming rule changed |
 | Audit naming drift, rename candidates, or split/merge signals across existing skills | Run `scripts/skill_naming_audit.py`; then classify with `references/naming-conventions.md` and `references/skill-composition-boundary.md`. Rename only when the migration gate is met. |
 | Review a skill for quality, reliability, or compliance | `workflows/review-skill.md` |
-| Discuss skill standards, rule hardness, lifecycle, stable release, compatibility, naming, proactive creation, portfolio taxonomy, composition, merge/split, type/status/category fields, source/runtime freshness, or product principles | Read `references/quality-bar.md`, `references/rule-quality.md`, `references/rule-hardness-ladder.md`, `references/skill-creation-trigger.md`, `references/skill-composition-boundary.md`, `references/source-runtime-freshness.md`, `references/skill-lifecycle-standard.md`, `references/skill-taxonomy-schema.md`, and when naming is involved `references/naming-conventions.md` |
+| Define or repair a behavioral rule / its hardness | `references/rule-quality.md` and `references/rule-hardness-ladder.md` |
+| Lifecycle, compatibility, stable release, or major uplift | `references/skill-lifecycle-standard.md` |
+| Source/runtime freshness or installation drift | `references/source-runtime-freshness.md` |
+| New skill justification or merge/split | `references/skill-creation-trigger.md` or `references/skill-composition-boundary.md`, according to the decision |
+| Portfolio type/status/category fields | `references/skill-taxonomy-schema.md` |
+| General quality or naming principles | `references/quality-bar.md` or `references/naming-conventions.md`, according to the question |
 | Evaluate workflow or skill stability | Read `references/workflow-evaluation.md` first |
 | Audit the full skill portfolio for structure, standards, modularity, runtime/source consistency, or colleague readiness | Run `scripts/skill_portfolio_audit.py`; then use `workflows/review-skill.md`, `references/skill-taxonomy-schema.md`, and `references/skill-lifecycle-standard.md` to classify findings |
 | Borrow ideas from another skill/project | Read `references/license-check.md` first |
 
 If the user only says "make a skill", start with `workflows/create-skill.md`.
 
+Select only applicable references, then read each selected instruction in full.
+Use the current task, available capabilities, and observed failure modes to set
+effort; do not impose historical model limits or a fixed workflow on every task.
+Simplify a procedure only when its safety and quality outcomes remain covered.
+
 ## Non-Negotiables
 
 - Reliability comes first: record assumptions, outputs, validation, and handoff
   state in files.
-- Use option-style questions for high-impact choices. Offer 2-3 meaningful
-  options and mark a recommended default.
+- Ask about unresolved high-impact choices only when the answer materially
+  changes scope, risk, or output. Reuse explicit user decisions and sufficient
+  context; do not ask again merely because a checklist contains a question.
+  Follow the host's supported question format and permission rules.
 - Keep `SKILL.md` concise. Put mode-specific procedures in `workflows/` and
   reusable standards in `references/`.
 - Design skills as routers plus on-demand details: keep trigger/default/safety

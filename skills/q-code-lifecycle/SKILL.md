@@ -67,7 +67,7 @@ Before treating code as usable application/demo code:
 - Use branches only when parallel work or risky experiments need separation.
 - Use tags for externally shared demos, customer handoffs, or milestone snapshots.
 - Keep generated binaries out of Git unless they are small, intentionally shared deliverables, or needed for reproduction.
-- Keep credentials, license files, private keys, and machine-local secrets out of Git.
+- Keep credentials, activation/license keys, private keys, and machine-local secrets out of Git. Preserve required redistributable LICENSE and NOTICE files.
 - When large artifacts are required, document their source path and regeneration command.
 
 ## Source Runtime Remote Consistency Gate
@@ -80,6 +80,13 @@ remote branches from drifting apart.
 Strength: hard gate for skill/workflow pushes and reusable package handoff.
 
 Required lifecycle gate:
+
+Scope the gate to the claim: a local checkpoint needs a reviewed scoped diff;
+a local install or mirror refresh needs the affected source/runtime/template
+comparison; a remote release or colleague-rebuild claim additionally needs the
+approved remote and consumer-path evidence. Steps involving pushed source apply
+only to those remote claims. An offline local install may complete with remote
+state explicitly unproven. Public eligibility is not permission to push.
 
 1. Identify all in-scope surfaces before staging: canonical source, runtime
    install, bootstrap/template copy, packaged assets, generated user cache, all
@@ -97,8 +104,8 @@ Required lifecycle gate:
    path-, or license-restricted, treat the public GitHub mirror as an in-scope
    surface by default. If a change is intentionally private, record the exact
    exclusion reason and keep the public-safe counterpart, stub, or generated
-   mirror current. Do not claim sync, release, or colleague-ready while the
-   public-eligible subset differs from the local public source or GitHub tip.
+   mirror current locally. Record pending remote sync; do not claim remote sync,
+   public release, or remote-rebuild readiness until the approved remote matches.
 5. After commit and before push, verify the commit contains the intended files
    and no local-only runtime paths, private artifacts, generated scratch output,
    or stale template copies.
@@ -113,8 +120,9 @@ Required lifecycle gate:
 
 Blocks: saying `pushed`, `published`, `released`, `synced`, `mirrored`,
 `installed`, `runtime updated`, `template refreshed`, or `colleague-ready` for a
-skill/workflow package when source/runtime/template/remote drift is
-unclassified.
+skill/workflow package when drift on the surfaces required for that specific
+claim is unclassified. Say `locally installed; remote not verified` when that
+is exactly what was tested; remote publication is not a local-install prerequisite.
 
 Avoid: editing only `%USERPROFILE%\.codex\skills`, pushing only the source repo,
 or assuming Git/Bitbucket is correct without proving the runtime install can be
@@ -146,7 +154,9 @@ When this skill is used inside a q-workflow-managed project:
 - Update `TASKS.md` with debug checkpoints worth preserving.
 - Update `DECISIONS.md` for architectural or release-policy decisions.
 - Update `ENVIRONMENT.md` for toolchain, dependency, hardware, or reproduction changes.
-- Commit and push at the end of a completed work round.
+- Preserve a scoped local checkpoint at meaningful boundaries. Push only within
+  explicit authorization for the current target and candidate, following
+  q-workflow's sync-and-push policy; completion alone is not push authorization.
 
 ## References
 

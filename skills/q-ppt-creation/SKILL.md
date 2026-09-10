@@ -62,8 +62,11 @@ decisions in the target project repository.
   so future users can select them manually.
 - Keep the deck source editable. Use PowerPoint notes for speaker guidance and
   an external report for validation findings.
-- Do not put production notes, draft reminders, source caveats, or review
-  comments on visible slides unless the deck is explicitly for internal review.
+- Keep assistant production notes, draft reminders, and internal review comments
+  off audience-facing slides. Preserve reader-relevant source attribution,
+  scientific uncertainty, simulation/sample limits, version scope, and required
+  rights notices where readers can see them; speaker notes alone are insufficient
+  for a PDF handoff. Do not remove meaningful caveats as cosmetic cleanup.
 - Use concise slide titles and one primary idea per slide.
 - Prefer diagrams, simplified figures, and short tables over dense paragraphs.
 - Avoid default card tricks such as tiny number chips in large frames or left

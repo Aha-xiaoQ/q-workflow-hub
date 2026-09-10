@@ -4,16 +4,20 @@ Use this workflow for audio/video speech-to-text intake.
 
 ## Steps
 
-1. Check environment:
+1. Check the selected provider environment when it is unverified or failing;
+   reuse current validated setup evidence otherwise. Resolve script paths from
+   the installed skill root, regardless of the task's working directory:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py check-env
+   python "<skill-root>\scripts\q_audio_intake.py" check-env
    ```
 
-2. If this is the first run on a source, prepare audio without provider cost:
+2. If preprocessing is uncertain or explicitly requested, prepare audio without
+   provider cost. Skip this duplicate run when the selected transcription path
+   already has working preparation:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py transcribe `
+   python "<skill-root>\scripts\q_audio_intake.py" transcribe `
      --input "<source>" `
      --engine none
    ```
@@ -21,7 +25,7 @@ Use this workflow for audio/video speech-to-text intake.
 3. Transcribe with a selected provider:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py transcribe `
+   python "<skill-root>\scripts\q_audio_intake.py" transcribe `
      --input "<source>" `
      --engine openai
    ```
@@ -29,7 +33,7 @@ Use this workflow for audio/video speech-to-text intake.
    For local CPU or CUDA transcription with `faster-whisper`:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py transcribe `
+   python "<skill-root>\scripts\q_audio_intake.py" transcribe `
      --input "<source>" `
      --engine faster-whisper `
      --language zh `
@@ -42,7 +46,7 @@ Use this workflow for audio/video speech-to-text intake.
    reproducible:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py transcribe `
+   python "<skill-root>\scripts\q_audio_intake.py" transcribe `
      --input "<source>" `
      --engine whisper-cpp `
      --language zh `
@@ -53,14 +57,17 @@ Use this workflow for audio/video speech-to-text intake.
    For Bilibili or other sources that require login:
 
    ```powershell
-   python skills\q-audio-intake\scripts\q_audio_intake.py transcribe `
+   python "<skill-root>\scripts\q_audio_intake.py" transcribe `
      --input "<source>" `
      --cookies-file "<path-to-cookies.txt>" `
      --engine openai
    ```
 
 4. Read `metadata.json` first. If `transcript.txt` exists, use it for the
-   user's actual task and record any quality concerns.
+   user's actual task. Listen to representative/uncertain segments when
+   available, check consequential names/numbers, and mark unresolved passages.
+   Official subtitles are not a prerequisite for ordinary transcription;
+   closed-loop benchmarking is required for provider-quality/default claims.
 
 ## Failure Handling
 
@@ -69,7 +76,8 @@ Use this workflow for audio/video speech-to-text intake.
 - API key missing: configure the provider key locally; do not ask for keys in
   chat.
 - Provider network/region failure: record it as a provider availability issue
-  and try another configured provider.
+  and try another configured provider only within the same authorized data and
+  cost boundary. Do not silently move private audio from local to cloud processing.
 - `whisper.cpp` CLI or model missing: set `WHISPER_CPP_CLI` and
   `WHISPER_CPP_MODEL`, or pass `--whisper-cpp-cli` and `--whisper-cpp-model`.
 - Poor transcript quality: run the benchmark workflow before changing provider

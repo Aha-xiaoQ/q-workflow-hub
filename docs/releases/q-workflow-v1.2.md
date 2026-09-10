@@ -18,6 +18,29 @@ complete local skill collection or promote unfinished domain experiments.
 - Recover interrupted task-apply transactions through an explicit, hash-checked
   journal; block shared state writes until unresolved recovery is handled.
 
+## Skill-maintenance follow-up
+
+The maintained PDF, audio/video intake, presentation, code-lifecycle,
+skill-creation, roster and workflow skills now distinguish focused tasks from
+full extraction, benchmarking and release procedures. Required privacy,
+authorization, evidence and independent release-review checks remain in place.
+
+Portfolio size and ordinary LF/CRLF mixing are advisory findings; missing
+required references, metadata and bare carriage returns still block validation.
+Explicit `--root` values remain isolated from personal profile roots in this
+public distribution. `--only-roots` is accepted for compatibility and requires
+at least one root. Neither structural scores nor passing tests measure model
+intelligence or creative quality.
+
+Legacy installer rollback checks require the intended fault-injection marker
+as well as restored files. Their native Windows PowerShell test children use
+isolated module-search defaults; this does not change the parent environment
+or certify every mixed-host production installer launch.
+
+This follow-up does not restore withdrawn skill packages or add unpublished
+specialties. Existing public installation, recovery and authorization fixes
+are retained. No release tag is moved by this maintenance commit.
+
 ## Withdrawn from the public distribution
 
 The pixel-art, Canvas-game iteration and HTML-interface design skill packages
@@ -48,6 +71,8 @@ only explicitly scoped disposable installations.
 ```text
 python -B scripts/test_public_portability.py
 python -B scripts/test_public_audit_scope.py
+python -B skills/q-skill-creation/scripts/test_skill_portfolio_audit.py
+python -B skills/q-workflow/scripts/test_installer_environment.py
 python -B skills/q-video-intake/scripts/test_public_auth_boundaries.py
 python -B skills/q-workflow/scripts/test_release_v11_regressions.py
 python -B skills/q-workflow/scripts/test_execution_policy.py

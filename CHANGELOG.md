@@ -8,6 +8,12 @@ This project follows semantic versioning once stable release tags are created.
 
 ### v1.2 public scope
 
+- Apply proportionate skill routing: focused PDF/transcript work no longer
+  requires unrelated extraction packs or provider benchmarks; retain evidence,
+  privacy, authorization and independent release-review gates.
+- Treat audit length/ordinary mixed-newline findings as advisory, validate
+  explicit roots, and require proof that rollback fault injection was reached.
+- Preserve important audience-facing limitations and required license notices.
 - Add capability-aware core execution and project-specific release binding.
 - Isolate explicitly scoped portfolio audits; retain v1.1 safety regressions.
 - Withdraw pixel-art, Canvas-game and HTML-interface skill packages from the

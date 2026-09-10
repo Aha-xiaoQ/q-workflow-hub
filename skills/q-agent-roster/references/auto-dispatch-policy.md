@@ -6,6 +6,13 @@ subagent. The goal is predictable automation, not hidden parallelism.
 
 ## Decision Ladder
 
+These are dispatch defaults, not permission overrides. For ordinary local work,
+honor user/host delegation restrictions and require a useful bounded independent
+scope alongside main-agent work before spawning. When that is unavailable, a
+disclosed local check can complete ordinary local work, but it is not independent
+review. An explicit domain/release requirement for independent evidence remains
+pending until satisfied; this exception cannot waive that claim or publication.
+
 1. **Route first.** If Xiao Q names a specialist, reviewer, tester, or
    subagent, use `agent-registry.md` before ordinary execution.
 2. **Default to local pass only for tiny non-review work.** A local pass is
@@ -18,8 +25,9 @@ subagent. The goal is predictable automation, not hidden parallelism.
    validation, acceptance, release-readiness, expert checking, or any case where
    the main agent would otherwise review its own nontrivial work, use a real
    read-only subagent by default. Use local-pass only when the work is tiny and
-   deterministic, the platform delegation tool is unavailable, or the subagent
-   would cross a hard boundary that requires asking first; record the exception
+   deterministic, delegation is prohibited/unavailable, no useful independent
+   scope can run alongside main-agent work, or a hard boundary requires asking
+   first; record the exception
    in the dispatch card or integration note.
 4. **Use real subagents for explicit delegation or parallel efficiency.** A
    real platform subagent is directly eligible when Xiao Q says `子agent`,
@@ -90,15 +98,17 @@ active project or report hub. If the subagent can only return chat, the main
 agent must persist the usable report there, then cite that path in the
 integration note.
 
-If no real platform delegation tool is available, the artifact is tiny and
-deterministic, or a hard boundary requires asking first, run the same expert as
+If delegation is prohibited/unavailable, has no useful bounded independent scope,
+the artifact is tiny and deterministic, or a hard boundary requires asking first,
+run the same expert as
 `local-pass` only after stating the exception. For tiny deterministic copy-only
 fixes requested by Xiao Q, a formal expert pass is not required; record that the
 change was copy-only and validate the regenerated output with targeted checks.
-Do not close a nontrivial artifact, ask Xiao Q for final human review, push,
-publish, release, upload, or sync a public package when the required real
-reviewer/validator was skipped. If review is blocked or intentionally deferred,
-report the blocker/deferred reason and keep the candidate local/pending.
+For ordinary local work, the disclosed local-check exception permits local
+completion and user feedback, without an independent-review claim. When a domain
+or release gate explicitly requires a real reviewer/validator, do not claim that
+acceptance or push/publish/release/upload/sync the public package without it.
+Report the missing evidence and keep that candidate local/pending.
 
 ## Parallel Execution Triggers
 
@@ -141,7 +151,7 @@ handoffs, guardrails, tracing, stateful flows, and controlled validation.
 |---|---|---|---|---|
 | Independent fan-out over the same input | `several independent questions`, `compare from different angles`, `can parallel`, `fan-out/fan-in` | `Source Scout (寻源)` plus the relevant domain expert | real subagents only for disjoint questions; main integrates | no duplicate broad review; each worker needs evidence and stop condition |
 | Cold-context usability, install run, or human pilot | `new user`, `fresh environment`, `without chat history`, `installation specialist`, `promotion readiness`, `I try it as a new user`, `真实流程` | `Usability Validator (验用)` | real read-only or controlled sample subagent for isolated execution; local guided pilot when the user is acting as the test participant | temp workspace only; ask before credentials, profile changes, network-heavy installs, publish, or non-temp writes |
-| Self-review risk after generated artifact | generated HTML/PPT/report/code/skill, `handoff`, `public/team/customer-facing`, `close the loop` | artifact owner: `Pagewright (页匠)`, `Visual Arbiter (版衡)`, `Code Auditor (码鉴)`, `Doc Architect (文构)`, or `Workflow Distiller (沉炼)` | real read-only subagent for nontrivial review; local-pass only for tiny deterministic work or unavailable delegation | reviewer is read-only unless explicit repair ownership is assigned |
+| Self-review risk after generated artifact | generated HTML/PPT/report/code/skill, `handoff`, `public/team/customer-facing`, `close the loop` | artifact owner: `Pagewright (页匠)`, `Visual Arbiter (版衡)`, `Code Auditor (码鉴)`, `Doc Architect (文构)`, or `Workflow Distiller (沉炼)` | prefer real read-only review; apply the ordinary-local-check exception, never to independent domain/release acceptance | reviewer is read-only unless explicit repair ownership is assigned |
 | Current or niche research sidecar | `latest`, `current tools`, `compare platforms`, `source-backed`, `external examples`, `unknown ecosystem` | `Source Scout (寻源)` | explorer while main inspects local/project state | high-stakes or paid decisions require ask-before-spawn and source-quality constraints |
 | Sequential phase handoff | `research then build then review`, `stateful workflow`, `multi-stage`, `conditional branch`, `loop` | `Doc Architect (文构)` or `Workflow Distiller (沉炼)` as coordinator; phase owner by domain | phase handoff, not parallel by default | do not parallelize dependent phases; each phase publishes state, acceptance criteria, and next owner |
 | Guardrail or release-readiness review | `before sharing`, `public-ready`, `team-ready`, `customer handoff`, `policy/privacy/safety check` | `Usability Validator (验用)` for package readiness, `Workflow Distiller (沉炼)` for workflow policy, domain expert for artifact quality | read-only validator | no push, publish, upload, credential use, or classification expansion by subagent |
@@ -202,12 +212,12 @@ unless they touch credentials, broad user profile state, or destructive cleanup.
 | Trigger | Default expert | Default mode | Real subagent threshold | Ask before spawn |
 |---|---|---|---|---|
 | install/onboarding/package usability | `Usability Validator (验用)` | local pass for checklist or human-in-loop pilot; subagent for cold run | user says `安装专员`, `测试专员`, `子agent`, `新用户环境`, `我作为新用户试用`, or public/team readiness | credentials, real user profile, non-temp writes, publish |
-| code review, risky script, test failure | `Code Auditor (码鉴)` | real read-only subagent by default for review; local-pass only for tiny deterministic diffs | user says code expert/reviewer or diff is broad/risky | write fixes, overlapping files, destructive commands |
+| code review, risky script, test failure | `Code Auditor (码鉴)` | prefer real read-only review; apply the ordinary-local-check exception | user says code expert/reviewer or diff is broad/risky | write fixes, overlapping files, destructive commands |
 | HTML/UI/page/dashboard | `Pagewright (页匠)` | local pass for review; worker for assigned HTML build | user asks HTML expert or UI build/review is nontrivial | browser/network install, broad asset writes |
 | PPT/diagram/visual artifact | `Visual Arbiter (版衡)` | local visual pass | exported artifact exists and user asks expert review | editing deck/generator, private/customer deck |
 | research/current/niche direction | `Source Scout (寻源)` | explorer subagent when source scan can run independently | current info, multiple source roles, or user asks research expert | paid/high-stakes/legal/medical/financial decisions |
-| document/standard/report structure review | `Doc Architect (文构)` | real read-only subagent by default for nontrivial review; local-pass for tiny deterministic docs | long reusable doc or independent structure review | publishing, policy-sensitive wording |
-| repeated miss/workflow lesson or rule review | `Workflow Distiller (沉炼)` | real read-only subagent for review/critique; local-pass only for tiny deterministic sedimentation | repeated feedback, workflow miss, user asks sedimentation, or workflow-rule review | changing public/company mirrors or retiring skills |
+| document/standard/report structure review | `Doc Architect (文构)` | prefer real read-only review; apply the ordinary-local-check exception | long reusable doc or independent structure review | publishing, policy-sensitive wording |
+| repeated miss/workflow lesson or rule review | `Workflow Distiller (沉炼)` | prefer real read-only review; apply the ordinary-local-check exception | repeated feedback, workflow miss, user asks sedimentation, or workflow-rule review | changing public/company mirrors or retiring skills |
 
 ## Spawn Preview
 

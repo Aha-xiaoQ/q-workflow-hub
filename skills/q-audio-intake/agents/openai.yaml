@@ -1,4 +1,4 @@
 interface:
   display_name: "Q Audio Intake"
   short_description: "Audio transcription and STT benchmarking"
-  default_prompt: "Use $q-audio-intake to transcribe this audio or video source and benchmark the result against a reference transcript when available."
+  default_prompt: "Use $q-audio-intake to transcribe this source, verify uncertain speech, and mark unresolved passages; run closed-loop benchmarks for provider evaluation or default promotion."

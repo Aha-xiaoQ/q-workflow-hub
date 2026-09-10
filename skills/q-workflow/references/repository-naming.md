@@ -113,12 +113,17 @@ at the project root for quick recovery.
 
 ## Rename Sequence
 
-1. Confirm every affected repo is clean and pushed.
+1. Capture recoverable scoped state and classify dirty-file ownership in each
+   affected repo. Preserve unrelated changes; they do not by themselves block
+   a non-overlapping local rename. Apply remote freshness/push prerequisites
+   only to an explicitly authorized remote migration, not local-only work.
 2. Decide whether the old name is a compatibility alias, pending rename, or
    permanent exception.
-3. Rename the remote first only when the hosting service supports it and the
-   blast radius is understood.
-4. Update local `origin` URLs and verify `git remote -v`.
+3. For an explicitly authorized remote migration, rename the remote first only
+   when the hosting service supports it and the blast radius is understood;
+   honor a user-owned remote rename. Skip this step for local-only renames.
+4. Update local `origin` URLs only when the remote actually changed and verify
+   `git remote -v`; preserve the existing remote for local-only renames.
 5. Rename local folders only after confirming target paths do not already
    exist and stay inside the expected workspace root.
 6. Update registries, skill sync records, scripts, README/state/task files, and
@@ -130,7 +135,9 @@ at the project root for quick recovery.
    project outputs, or review notes unless the work item explicitly makes that
    part of the same checkpoint.
 9. Validate skills and scripts from the new paths.
-10. Commit and push all changed source repositories and the workflow hub when it is the user's state repo.
+10. Checkpoint only the reviewed rename changes in affected source/state repos.
+    Push only the explicitly authorized candidate and targets under
+    `sync-and-push-policy.md`; record other remote surfaces as pending.
 
 ## Validation Checklist
 

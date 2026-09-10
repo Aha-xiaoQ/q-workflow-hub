@@ -219,8 +219,9 @@ Expected routing:
   workflow-rule review or `Code Auditor (码鉴)` for code-risk review.
 - Use a real read-only subagent by default because this is review-class work and
   the main agent reviewing itself has weak independence.
-- Use local-pass only if the task is tiny/deterministic, platform delegation is
-  unavailable, or a hard boundary requires asking first; state the exception.
+- Use the disclosed ordinary-local-check exception when delegation is prohibited,
+  unavailable, has no useful bounded independent scope, or the task is tiny.
+  Do not let that exception pass an explicitly independent domain/release gate.
 - The dispatch card, report summary, integration note, and final handoff all
   show English alias plus Chinese codename, for example
   `Workflow Distiller (沉炼)`, and also include `Chinese name: 沉炼` in the card.

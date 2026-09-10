@@ -5,30 +5,42 @@ description: Triage, extract, verify, and read PDF documents with evidence-backe
 
 # Q PDF Reading
 
-Use this skill to turn PDFs into a reliable reading pack before asking an LLM
-to summarize or reuse the content. The default posture is evidence-first: keep
+Use this skill to read PDFs with evidence proportional to the task. Keep
 page anchors, preserve figures/tables when they matter, and validate extraction
 quality before trusting the text.
 
+## Effort Routing
+
+- Focused question or short readable PDF: inspect the relevant pages directly,
+  verify text/layout and cite pages. A reading pack, competing extractors, and
+  benchmark reports are not prerequisites for an accurate bounded answer.
+- Complex, high-risk, batch, or reusable extraction: use the robust workflow
+  below and the applicable parts of the validation checklist.
+- Evaluating/promoting an extraction method: use strategy comparisons and
+  closed-loop benchmarks. Do not turn ordinary document reading into a benchmark.
+
 ## Workflow
 
-1. **Triage first.** Run `scripts/pdf_triage.py` for a quick inventory or
+1. **Triage the relevant scope.** For a simple known PDF, inspect its page count
+   and requested pages directly. Run `scripts/pdf_triage.py` for an inventory or
    `scripts/pdf_strategy_compare.py` when the PDF type is unknown. The strategy
    comparison does a lightweight scan before full parsing.
 2. **Choose the lane by PDF type.**
    - Digital text PDF: extract text with page markers, then inspect layout risk.
-   - Scanned or image-heavy PDF: use OCR/layout extraction before summarizing.
+   - Scanned or image-heavy PDF: inspect page images; use OCR/layout extraction
+     when it improves coverage or reusable text is needed. Verify uncertain OCR.
    - Tables/forms: use table-aware extraction and preserve CSV/HTML/Markdown.
    - Schematics/CAD/diagrams: render page images and review visually; text alone
      is insufficient.
    - Slide-export PDFs: prefer original PPTX if available; otherwise extract
      text plus page screenshots.
-3. **Compare viable local strategies.** When more than one extractor is
-   available, compare PyMuPDF4LLM, PyMuPDF text extraction, and the standard
+3. **Compare strategies when evidence requires it.** For extraction anomalies,
+   high-risk disagreement, or method evaluation, compare viable extractors such
+   as PyMuPDF4LLM, PyMuPDF text extraction, and the standard
    library fallback. Keep strategy outputs under `strategies/`, write
    `strategy_comparison.md`, and copy the selected output to
    `extracted_text.md`.
-4. **Create a reading pack.** Store outputs in a dedicated folder:
+4. **Create a reading pack when reusable artifacts are needed.** Store applicable outputs in a dedicated folder:
    `source_freeze.json`, `triage_report.md`, `extracted_text.md`,
    `page_inventory.csv`, `figures/`, `tables/`, and `reading_notes.md` as
    applicable.
@@ -49,10 +61,10 @@ quality before trusting the text.
    regions exist; this probe does not replace full table cell extraction.
 5. **Validate before using.** Check page count, encoding, sample pages, heading
    order, table/figure references, and whether extracted text matches rendered
-   pages. Use `scripts/pdf_confidence_fusion.py` to produce
+   pages. For OCR-heavy/high-risk reusable extraction, use `scripts/pdf_confidence_fusion.py` to produce
    `confidence_report.md` with source agreement, OCR low-confidence lines, and
    single-source domain tokens.
-   For repeated validation, use `scripts/pdf_benchmark_runner.py` with a
+   For extraction-method evaluation, use `scripts/pdf_benchmark_runner.py` with a
    manifest that declares sample PDFs, expected PDF type, minimum confidence,
    required artifacts, and table/OCR/layout expectations.
    Use `scripts/pdf_benchmark_adapter.py` to convert local folders, FUNSD-style
@@ -61,11 +73,13 @@ quality before trusting the text.
    cite page numbers or figure/table anchors. If evidence is missing, say so and
    inspect the rendered page or source file instead of guessing.
 
-When a same-content Markdown, DOCX, or other sidecar exists, treat it as a
-gold/reference source for closed-loop testing. For Markdown sidecars, run
+When evaluating extraction quality, a verified same-content Markdown, DOCX, or
+other sidecar can serve as a reference for closed-loop testing. For Markdown sidecars, run
 `scripts/sidecar_gold_test.py` to score source discovery, lane selection, asset
 discovery, and content-map coverage. Run `scripts/reading_quality_test.py` to
-score PDF-only extracted text against the reference after extraction.
+score PDF-only extracted text against the reference after extraction. Ordinary
+reading may use the matching sidecar after checking relevant PDF page anchors;
+the existence of a sidecar does not itself require benchmark runs.
 
 ## Tool Choice
 
