@@ -4,7 +4,8 @@ Use when current work exposes a changed model/tool environment, stale workflow
 assumptions, repeated friction, or a reusable lesson. This is an agent-executed
 procedure during work, not a background service or a model-training mechanism.
 
-- Trigger: a material task boundary or new evidence during authorized work.
+- Trigger: a key milestone with a validated lesson or a confirmed task-relevant
+  event during authorized work; ordinary task entry alone is not an upgrade trigger.
 - Goal: improve the relevant workflow before the user has to repeat a correction.
 - Strength / hardness: strong default to inspect meaningful signals; procedure
   for a candidate change. Authorization, privacy and validation gates still apply.
@@ -14,6 +15,14 @@ procedure during work, not a background service or a model-training mechanism.
   deduplication and recovery functions; retain the regression cases.
 
 ## 1. Notice a signal without turning work into an audit
+
+Stability comes first. Passive notice is not an upgrade: ordinary work gains no
+routine maintenance detour. Evaluate optional improvements only at the trigger
+above and activate them at a safe checkpoint, after compatibility and regression
+checks. If benefit or compatibility is uncertain, retain the validated working
+route. A suspected opportunity can wait; required task validation cannot.
+An observed safety, authorization or correctness failure still requires stopping
+the affected action or an authorized safe repair, not waiting for a milestone.
 
 At material-task entry, use facts already exposed by the current host and the
 relevant skill files being loaded. Compare the last applicable review if it is
