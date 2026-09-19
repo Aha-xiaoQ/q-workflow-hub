@@ -16,38 +16,30 @@ English aliases and Chinese codenames must match the JSON registry exactly.
 
 ## Default Flow
 
-1. Classify the task and success criteria.
-2. For every material task, run `scripts/task_role_plan.py --task-class <class>`
-   before work enters `active`. The emitted primary owner is a work role, not
-   merely a late reviewer; the main agent remains integration owner. `tiny` is
-   the only deterministic exemption.
-3. Select one primary expert and optional reviewers from
-   `references/agent-registry.md`. If no existing role owns a recurring or
-   high-value task class, read `workflows/create-expert.md` before proposing a
-   new expert.
-4. Use `references/auto-dispatch-policy.md` to choose local pass, real
-   platform subagent, ask-before-spawn, or deny.
-5. When a real subagent is justified, read `references/model-routing.md` before
-   choosing its model and reasoning effort. This adapts child-agent capacity;
-   it never claims to switch the already-running main model.
-6. Read `workflows/dispatch-agent.md` before actual delegation or parallel
-   subagent work.
-7. Use `references/output-protocol.md` for Xiao Q-visible state, status, done,
-   blocked, and handoff cards; use `references/handoff-protocol.md` for all
-   agent prompts, reports, and integration notes.
-8. For review, correction, or repeated failure, use
-   `workflows/multi-agent-review-loop.md`.
-9. For system-level scheduling, priority, or MCU-style bus/arbitration design,
-   use `references/orchestration-model.md`.
-10. For context isolation, tool/action limits, or guardrails, read
-   `references/context-guardrails.md`.
-11. Before changing agent packet fields, trace fields, or multi-agent protocol
-   semantics, read `references/agent-protocol-design.md`.
-12. Before calling a new or changed workflow stable, check
-   `references/quality-gates.md`.
-13. For forward tests or smoke tests, use `references/validation-scenarios.md`.
-14. For new expert admission, use `workflows/create-expert.md` and keep the
-   role `candidate` until validation proves it should become `pilot` or `stable`.
+1. Classify the task and success criteria. For material work, run
+   `scripts/task_role_plan.py --task-class <class>` before `active`.
+   The primary role owns the work; a role plan does not require one agent per
+   role. Tiny deterministic edits need no formal expert pass.
+2. Select the stable role from `references/agent-registry.md`; choose local
+   or independent review using `references/auto-dispatch-policy.md`.
+3. For actual delegation, read `workflows/dispatch-agent.md` and the handoff
+   protocol once. Send only relevant paths, scope, authority, acceptance and
+   return requirements. Inherit the current model/effort; load
+   `references/model-routing.md` only when considering an explicit override.
+4. Announce the stable role and bounded mission before spawning. Backfill the
+   returned run identity, then continue useful independent main-agent work.
+5. Integrate findings and validate affected changes. Use
+   `workflows/multi-agent-review-loop.md` for a failed or disputed review,
+   not as a second checklist after every successful pass.
+6. Preserve one durable review/integration record for material work. Before a
+   stable/promotion claim, apply `references/quality-gates.md` and required
+   domain review. Do not infer stability from a normal successful task.
+
+Load specialized procedures only for their decision: `workflows/create-expert.md`
+for a new expert; `references/agent-protocol-design.md` for packet semantics;
+`references/orchestration-model.md` for scheduling architecture;
+`references/output-protocol.md` for user-facing cards;
+`references/validation-scenarios.md` for roster regression testing.
 
 ## Activation Guard
 
@@ -115,15 +107,16 @@ required inputs, fixed output, and anti-patterns.
   review summary, then push when the user's existing authorization covers that
   candidate and target. Ask only for missing or materially expanded authorization;
   a review checklist never cancels a direct instruction to complete and push.
-- Before or immediately after spawning a real platform subagent, tell Xiao Q the
+- Before spawning a real platform subagent, tell Xiao Q the
   visible mapping with the standard dispatch card from
   `references/auto-dispatch-policy.md`. Separate `Expert role` from `Run instance`:
   `Expert role` is the stable q-workflow contract, while `Run instance` is only the
   platform type/nickname/id for this run. This keeps the loop auditable and
   prevents the platform nickname from looking like a second expert name. When announcing an expert, show both the English alias and Chinese codename so the role is memorable and still protocol-stable.
-- Do not spawn multiple agents to inspect the same unresolved question. Split by
-  ownership: research, visual review, code review, documentation, or workflow
-  synthesis.
+- Do not spawn multiple agents for the same unresolved question. A role plan
+  assigns responsibilities, not a minimum number of agents. Reuse the same
+  reviewer for scoped fixes; add another only for distinct required evidence.
+  Prefer a minimal context packet over full-history forks when it suffices.
 - Give each expert a bounded task, source-of-truth files, context packet,
   allowed actions, acceptance criteria, output format, next-owner expectation,
   and the lightest protocol profile that preserves traceability.
@@ -166,13 +159,10 @@ quality misses, or a new reusable rule.
 
 ## Expert Self-Improvement
 
-Every material expert pass should solve the current task and, with low overhead,
-check whether the task produced a reusable expert delta. Use
-`references/expert-self-improvement.md` when the run involved research,
-subagents, repeated feedback, nontrivial skill/workflow changes, or a new review
-method. The default answer can be `no durable update`; promote only
-validated lessons to expert profiles, workflow rules, validation scenarios, or
-source registries.
+Capture an expert delta only when a repeated failure or a validated new method
+justifies it. Use `references/expert-self-improvement.md` then; merely using an
+agent does not trigger another learning/research cycle. Otherwise record
+`no durable update` in the existing integration note.
 
 When Xiao Q challenges whether experts improved, reports repeated misses, or
 asks how expert capability should grow, treat external calibration as required

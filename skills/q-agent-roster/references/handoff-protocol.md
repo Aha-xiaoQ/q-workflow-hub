@@ -71,7 +71,7 @@ acceptance_criteria: <observable pass/fail checks>
 stop_condition: <when to stop, including time/round/blocked thresholds>
 constraints: <style, safety, time, output language, budget>
 capability_check: <needed tools/data/access; known unavailable items; fallback>
-capacity_decision: <none for local-pass, otherwise model-routing score/signals/main boundary/actual model/effort/cost posture/unchanged action authority/evidence/stop condition>
+capacity_decision: <none for local-pass; otherwise inherited model/effort, unchanged authority, evidence and stop condition; add model-routing score/signals/cost assessment only for an override>
 error_policy: <how to report blocked/partial/cancelled states>
 improvement_target: <tiny expert capability this task can exercise, or none>
 output_cap: <max sources/findings/words or file-output expectation>
@@ -142,10 +142,11 @@ Output target rules:
 - Prefer project-local `reports/agents/<trace_id>/<expert>-<method>.md` when a
   project has a reports area; otherwise return the explicit path chosen by the
   main agent.
-- For public/team/customer-facing artifact reviews, the main agent must ensure
-  a durable report exists under that standard path before final handoff. If a
-  real subagent returns chat-only, persist the report text and mark it as
-  parent-persisted in the integration note.
+- For public/team/customer-facing artifact reviews, preserve a durable report
+  before handoff. A bounded report and integration may be sections of the
+  existing work item, retaining identity, evidence and finding dispositions.
+  Use the standard separate report path for bulky evidence or an explicit
+  domain/release requirement. Mark chat reports as parent-persisted.
 - Final chat should carry status, top findings, `report_path`,
   `artifact_manifest`, validation summary, and next owner.
 

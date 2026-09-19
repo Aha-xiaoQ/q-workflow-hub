@@ -84,11 +84,10 @@ Simplify a procedure only when its safety and quality outcomes remain covered.
 - Capture lessons at the correct layer: reusable skill behavior in public
   skills, project facts in project state, and personal collaboration preferences
   in the user's assistant profile or personal hub.
-- When a user asks to update a rule, lesson, workflow, or skill behavior, audit
-  all related surfaces before closing: source skill, runtime skill, personal
-  bootstrap copy, company variant, adjacent skills that share the behavior, and
-  durable handoff notes. Update every applicable surface or record why a
-  surface was intentionally skipped.
+- Scope propagation to the changed rule's owners, consumers and known mirrors.
+  Compare touched files before and after edits; preserve intentional variants.
+  Update applicable surfaces or record exclusions in one work-item checkpoint.
+  Do not inventory the entire hub or rerun unrelated domain tests for a patch.
 - Do not copy third-party code, prompts, schemas, text, or assets unless license
   compatibility and attribution are explicit.
 - Treat locally installed skills as test/runtime copies. If a skill becomes

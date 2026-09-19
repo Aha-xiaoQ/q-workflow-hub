@@ -32,7 +32,7 @@ lives in the user's private hub.
 | Standards, rule hardness, output grammar, blocker semantics, lifecycle gates, or expert auto gates | `references/q-standard-contract.md` |
 | Workflow identity, skill-fit, portfolio, or distinctiveness | `references/workflow-identity.md` |
 | Chinese text, UTF-8, mojibake, terminal display corruption, `Get-Content` garbled output, encoding issue, or PowerShell display corruption | `references/encoding-safety.md` |
-| Context budget, large files, or workflow split | `references/full-guide.md` `Context Efficiency` section |
+| Context budget, large files, or excessive process | `references/adaptive-execution.md` `Bounded Context And Work` |
 | Recovery after compact/session failure | `references/full-guide.md` `Platform Session Failure Recovery` section |
 | A previously used custom workbench/tool is mentioned, forgotten, or needs continuation | `references/recovery-routing.md` `Reusable Tool Continuity Gate`, then the owning domain skill |
 | Workflow hub, work items, or lesson capture | `references/full-guide.md` `Personal Cross-Project State` and `Lesson Capture` sections |
@@ -63,9 +63,10 @@ lives in the user's private hub.
 - Missing profile authority, malformed state, an unregistered exact command,
   or a stale foundational runtime is a blocked result. Do not fall back to an
   unrelated path or silently reinterpret the command.
-- A stable/synced/install-ready claim requires
-  `workflow_stability_suite.py --rounds 2 --check-only --strict --stdout` to
-  pass. Foundational failures return non-zero even when `--strict` is omitted.
+- Whole-workflow stable/install-ready or foundational repair claims require
+  `workflow_stability_suite.py --rounds 2 --check-only --strict --stdout`.
+  Touched-file mirror equality alone uses targeted hashes; it does not claim
+  whole-workflow readiness. Choose other checks via `references/testing-standard.md`.
 - Use `scripts/q_workflow_manager.py status` as the quick read-only entry and
   `doctor --full` as the unified deep gate. Task mutation is a separate
   plan/apply transaction and requires explicit `--yes`.
@@ -100,12 +101,10 @@ lives in the user's private hub.
 - Prefer one primary skill plus one or two sidecar skills for complex work.
   Avoid skill fan-out unless an orchestration note explains why each skill is
   needed.
-- Use q-workflow as a composed-work advantage, not only a skill launcher: for high-value,
-  release, migration, public/team handoff, workflow-rule, PPT/storytelling, or
-  repeated-defect tasks, proactively combine targeted research, expert review,
-  executable validation, text hygiene, lifecycle gates, and skill sedimentation.
-  Keep exact TODO, status, quick help, and tiny local edits on the micro path unless
-  they claim readiness, touch release surfaces, or expose a recurring defect.
+- Compose only the checks required by changed surfaces and intended claims.
+  A task label alone does not activate research, expert fan-out, a full audit,
+  or sedimentation. Keep exact commands and tiny edits on the micro path;
+  preserve explicit domain, safety and release gates.
 - For learning, training, design, visual creation, translation, and tool-path
   selection, do not promote imagined mechanisms into methods. Keep source
   roles, direct material inspection, contextual comparison, and hypotheses
@@ -139,10 +138,9 @@ lives in the user's private hub.
 - Before saying a work round is complete, run the bounded closure-ledger check:
   active focus, work item, matching TODOs, validation evidence, runtime mirrors,
   and residual risk must be reconciled or explicitly deferred.
-- After a major node, repeated feedback loop, or user-confirmed improvement,
-  run a consolidation pass: summarize the loop, research adjacent evidence
-  when useful, validate the lessons, and update the right workflow/skill/state
-  layer.
+- Consolidate at a meaningful handoff or after a repeated failure. One compact
+  work-item checkpoint can hold decisions, review findings and validation
+  receipts. Do not start another skill-update loop merely because a task ended.
 - Do not store project-specific facts, customer/private data, credentials, or
   personal active-work details in public reusable skills.
 
@@ -154,32 +152,13 @@ Use this default flow for normal implementation work:
 route -> plan -> edit -> validate -> review -> checkpoint
 ```
 
-### Phase B User-Visible Output Preflight
+### Phase B Output
 
-Before sending every Phase B progress, validation, blocker, or handoff update,
-run the smallest output preflight: its first non-empty line MUST be
-`小Q工作流 / <registered q-skill-id> / <Chinese current action>`. This applies
-to commentary and final handoffs alike; a tool call, validation result, or
-subagent result does not waive it. Use
-`scripts/phase_b_output_preflight.py --self-test` to validate the grammar
-implementation and use its text-file mode for replay fixtures. This preflight
-does not replace the required next-options block for substantial handoffs.
-
-Visible workflow state has a continuity latch. Once an active material task
-enters Phase B, every later user-visible assistant message on that task must
-keep the slash status line, including short answers, apologies, explanations,
-and tool-free follow-ups. The latch ends only when the task is explicitly
-closed, paused, switched, or returned to Phase A. A new user correction does
-not reset it. Omitting the line is a workflow-state-loss defect: restore it on
-the next response and verify the durable pointer before more execution.
-
-The latch is executable state, not prose only. Managed pointers must expose
-`visibility_latch: phase-b-required` for `active`, `validating`, or `blocked`
-tasks and `visibility_latch: not-required` otherwise. Status, task listing, and
-base audit fail closed when the field is missing or contradicts `work_state`.
-Before a Phase B handoff, run `phase_b_output_preflight.py --text-file <reply>
---active-work <authoritative ACTIVE_WORK.md>` so the response and durable latch
-are checked together.
+For a managed `visibility_latch: phase-b-required`, begin every user-visible
+message with `小Q工作流 / <registered q-skill-id> / <Chinese current action>`.
+The latch ends only on explicit close, pause, switch, or return to Phase A.
+Read [Phase B preflight](references/phase-b-output.md) before first Phase B
+output; retain its handoff validation and task/event binding requirements.
 
 Keep each stage proportional:
 
@@ -209,6 +188,10 @@ Use progressive context loading:
 | Project | Normal project work | Read targeted project state and relevant files |
 | Deep | Overlapping/unclear dirty ownership, stale authority, contradictory, public, destructive, or cross-profile state | Inspect relevant diffs, decisions, handoff notes, and sources |
 | Full | Broad audit or legacy detail | Read `references/full-guide.md` only after a reason is clear |
+
+Load applicable instructions once; reuse them while unchanged. Keep tool output
+bounded to findings and necessary evidence. Do not reopen full reports or
+transcripts to restate status. See `references/adaptive-execution.md` for details.
 
 Stop reading when the next action is clear and low risk. Inspect dirty changes
 in the touched scope first; unrelated dirty files do not require a whole-repo

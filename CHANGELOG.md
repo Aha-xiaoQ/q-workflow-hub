@@ -6,6 +6,8 @@ Major changes to q-workflow-hub. See the linked release notes for upgrade detail
 
 ## Unreleased
 
+- Reduced repeated skill loading and review bookkeeping; scoped validation to
+  changed behavior while retaining release and recovery checks.
 - Streamlined skill execution, authorization handling and task validation.
 - Improved English and Simplified Chinese onboarding and documentation.
 - Improved task recovery, media intake and installation reliability.

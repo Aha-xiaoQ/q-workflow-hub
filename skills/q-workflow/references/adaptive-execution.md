@@ -68,6 +68,47 @@ Keep three verdicts separate: deterministic contract tests, real host behavior,
 and cross-task quality/cost improvement. Only matched representative runs can
 establish the last; this candidate does not claim a measured Astra speedup.
 
+## Bounded Context And Work
+
+Use these strong defaults for normal execution; explicit user, host, safety,
+domain and release requirements still govern. They are not additional runners.
+
+- **Load once, then by decision.** Read applicable instructions completely and
+  retain them while unchanged. Load an additional reference only for a named
+  decision or risk. A cross-reference is not an instruction to read an entire
+  skill portfolio. Do not reload a completed task's history for a new question.
+- **Bound output before running.** Query the relevant paths/fields first;
+  return summaries, counts, failures and evidence paths. Keep verbose test logs
+  in the existing workbench. If output truncates, narrow the query rather than
+  increasing the cap blindly. Inspect complete selected instructions/diffs.
+- **Check the changed surface.** Editorial changes get readback, links/encoding
+  and diff checks as applicable. Tools and behavior changes get the relevant
+  tests; hardware parameters and release artifacts retain their domain gates.
+  A Git push alone does not assert a new installation or stable release.
+- **Reuse valid evidence.** Bind checks to input revision and environment.
+  Rerun affected checks after changes or failure; do not repeat passed suites
+  because a new progress message or local commit was produced. Fetch again when
+  remote evidence may have changed before a push.
+- **Bound delegation.** A role plan assigns responsibility, not a minimum agent
+  count. Use a minimal source packet instead of full-history forks when it
+  suffices. Reuse a reviewer for fixes to its concern; add reviewers only for
+  distinct evidence needs. Preserve explicitly independent reviews and host
+  delegation restrictions.
+- **Checkpoint once per useful boundary.** Update the existing work item with
+  scope, decisions, current evidence, pending operations and next action. Review
+  and integration sections may share that record; retain required trace and
+  finding dispositions. Do not create parallel diaries or per-turn reports.
+  Required task/event state transitions still use the installed manager.
+- **Stop at acceptance.** After requested work, applicable checks and authorized
+  delivery are complete, hand off using the required output contract. Do not
+  add optional improvement loops or extra menus without a useful decision.
+  Never silently change models,
+  account settings, hooks or context limits to reduce consumption.
+
+These changes reduce avoidable work; byte/line reductions and scenario checks
+are not proof of a measured token or quota saving. Measure that separately on
+comparable completed tasks, including cached input and child-agent overhead.
+
 ## Optional Policy Probe
 
 Run the commands below from the `q-workflow` skill directory (the directory

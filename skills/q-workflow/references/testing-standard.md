@@ -14,7 +14,7 @@ sufficient test tier without turning tiny tasks into release drills.
 | T0 micro | exact TODO/status/help, direct command output, tiny wording answer | no broad scan; state any skipped validation only when useful | protocol-heavy completion |
 | T1 local change | one repo, scoped file/script/doc edit | targeted readback, parser/compile/checker when applicable, `git diff --check`, encoding guard for localized text | local handoff for the changed artifact |
 | T2 skill or workflow rule | reusable skill, output grammar, validator, source/runtime mirror, bootstrap copy | source/runtime/bootstrap or source/runtime/standalone checks, `q_standard_check.py --self-test`, task-specific script validation, hash/readback evidence | claiming mirrors are synced or rule is candidate |
-| T3 rebuild and clone | GitHub/internal Git remote update, new machine, no-personal-hub, resolver/path ambiguity | fresh clone or isolated temp install, remote/HEAD evidence, resolver identity check, dependency/toolchain check, public/private scan when applicable | saying the remote can rebuild current behavior |
+| T3 rebuild and clone | remote rebuild claim, installation/bootstrap/resolver changes, new machine, no-personal-hub, resolver/path ambiguity | fresh clone or isolated temp install, remote/HEAD evidence, resolver identity check, dependency/toolchain check, public/private scan when applicable | saying the remote can rebuild current behavior |
 | T4 promotion or release | team/public/customer/promotion-ready, colleague handoff | release_readiness, stability suite, variant/public scan, expert review, explicit signoff, push/reclone evidence | team-ready/public-ready/stable-release labels |
 
 
@@ -30,7 +30,7 @@ Level mapping:
 - `smoke`: T2 quick sanity for small workflow/skill changes.
 - `core`: T2/T3 default after personal pull, runtime refresh, or ordinary
   workflow rule updates.
-- `full`: T3 before push/reclone claims, remote rebuild verification, or Xiao Q
+- `full`: T3 before rebuild/reclone claims, remote rebuild verification, or Xiao Q
   endpoint testing.
 - `release`: T4 for colleague, promotion, public, or stable-release readiness.
 
@@ -72,9 +72,11 @@ these decision boundaries, not model intelligence or actual task completion.
 - Select the tier by changed surface and intended claim. Risk determines depth
   within that surface: even a high-risk application change does not need workflow
   self-tests or bootstrap comparisons unless those surfaces are affected.
-- Start at the tier matching the changed surface; do not run a higher tier for a
-  tiny task unless the user asks or the result will be published, pushed, or
-  reused as a workflow rule.
+- Start at the tier matching the changed surface and intended claim. A scoped
+  repository push requires reviewed diffs, authorization, public-safety checks
+  when applicable, and fetched remote evidence; it does not alone trigger a
+  fresh installation or T4 promotion. Reusable rules require T2; bootstrap or
+  install behavior requires T3; explicit stable/team release requires T4.
 - Reassess the affected tier when a test finds remote freshness, source/runtime
   drift, missing dependency, path ambiguity, public/private risk, or a repeated
   defect. Repair and rerun that scope first; escalate only if the intended claim

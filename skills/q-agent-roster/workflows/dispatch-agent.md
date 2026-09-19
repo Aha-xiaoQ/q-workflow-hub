@@ -42,10 +42,10 @@ Use before spawning or simulating an expert pass.
      risk, or supplies separate evidence.
    - Parallel subagents: use only for disjoint scopes with named owners and
      return contracts.
-   For every real subagent, then apply `references/model-routing.md`. Record
-   the intensity score, signals, main-model boundary, actual child `model`,
-   actual `reasoning_effort`, expected evidence, and stop condition. Do not add
-   a child merely to obtain a stronger model.
+   Inherit the current model and effort by default and record that decision.
+   Read `references/model-routing.md` only when considering an explicit
+   override; then record its capacity assessment. Always name expected
+   evidence and a stop condition. Do not spawn for model selection alone.
 6. Build the context packet from `references/context-guardrails.md`: include
    source-of-truth, current state, owned scope, no-edit zones, constraints, and
    return contract; exclude broad chat history and irrelevant files.

@@ -92,11 +92,11 @@ responsive/diagram issues, and `Usability Validator (验用)` owns first-user co
 criteria, failure recovery, and trust/privacy. The main agent integrates both
 reports before asking Xiao Q for subjective review.
 
-For any nontrivial user-visible artifact, the expert output must be durable
-before handoff. Prefer `reports/agents/<trace_id>/<expert>-<method>.md` in the
-active project or report hub. If the subagent can only return chat, the main
-agent must persist the usable report there, then cite that path in the
-integration note.
+For a nontrivial artifact, preserve review evidence before handoff. A bounded
+review and its integration may share the existing work item, with expert/run
+identity, findings, dispositions and validation links. Use a separate
+`reports/agents/<trace_id>/<expert>-<method>.md` only for bulky evidence or an
+explicit release protocol that requires it. Do not create duplicate reports.
 
 If delegation is prohibited/unavailable, has no useful bounded independent scope,
 the artifact is tiny and deterministic, or a hard boundary requires asking first,
@@ -134,7 +134,9 @@ Good parallel candidates:
 
 Concurrency defaults:
 
-- use at most one reviewer and one validator by default;
+- one reviewer and one validator are upper defaults, not minimum headcounts;
+- add a second agent only for distinct required evidence; reuse an existing
+  reviewer for scoped follow-up and retain independent domain/release gates;
 - use at most two real platform subagents in parallel unless Xiao Q explicitly
   asks for broader parallel work;
 - do not spawn another agent for the same unresolved scope until the first
@@ -191,7 +193,8 @@ Required order:
 
 1. Create the local candidate.
 2. Run the mapped expert review or real subagent review.
-3. Persist the expert report under the standard report path.
+3. Persist the expert report and integration in the existing work item, or use
+   the standard separate path when evidence size or the release protocol needs it.
 4. Patch and validate locally.
 5. Write an integration note that maps findings to fixes, deferrals, and
    remaining risks.
