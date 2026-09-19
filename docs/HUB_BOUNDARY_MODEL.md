@@ -9,9 +9,8 @@ private workflow hub is the daily state repo or folder that stores project
 routing and recovery state. Project repositories keep project-specific source
 and durable memory.
 
-Company/internal, personal, or multi-profile deployments are advanced
-maintainer variants. Do not make new users choose between personal and company
-endpoints during normal setup.
+One workflow hub is sufficient for most users. Configure additional variants
+only when needed.
 
 ## 1. Private Workflow Hub
 

@@ -2,7 +2,7 @@
 
 [English](PUBLIC_SYNC.md) · **简体中文**
 
-本仓库应与私人或公司变体维持相近结构，让通用 q-workflow 改进能通过明确的审核流程在各版本间迁移。
+本仓库应与维护中的变体维持相近结构，让通用 q-workflow 改进能通过明确的审核流程在各版本间迁移。
 
 ## 共享结构
 
@@ -21,30 +21,30 @@
 
 ## 命名映射
 
-| 公开版 | 私人或公司变体 |
+| 公开版 | 维护中的变体 |
 | --- | --- |
 | `q-workflow-hub` | 变体专属工作流中心仓库 |
 | `q-workflow` | 必要时使用变体专属 q-workflow 包名 |
 | 私人工作流中心 | 用户自己的私人状态仓库，不属于公开起步包 |
-| 通用技能 | 通用技能与私人或公司专属技能 |
+| 通用技能 | 通用技能与专用技能 |
 
 ## 同步方向
 
-公开版进入私人或公司变体：
+公开版进入维护中的变体：
 
 - 起步包结构；
 - 快速恢复和恢复评估规则；
 - 技能创建与验证方法；
 - 通用模板和入门体验改进。
 
-私人或公司变体进入公开版：
+维护中的变体进入公开版：
 
 - 仅允许去除敏感信息后的通用工作流经验；
 - 不得包含私人路径、内部主机、项目名、客户资料、当前工作、项目注册表、项目状态、截图、凭据或私人产物。
 
 ## 审核规则
 
-将私人或公司经验移入公开仓库前，先改写为通用行为，再扫描目标仓库中的私人标记。
+将可复用经验移入公开仓库前，先改写为通用行为，再扫描目标仓库中的私人标记。
 
 ## 推送就绪检查
 
@@ -57,7 +57,7 @@
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-variant-sync.ps1 `
   -PublicRoot <public-q-workflow-hub-root> `
-  -CompanyRoot <private-or-company-q-workflow-hub-root> `
+  -CompanyRoot <variant-root> `
   -OutputDirectory <review-report-directory>
 ```
 

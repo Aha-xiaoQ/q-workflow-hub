@@ -42,43 +42,43 @@ powershell -ExecutionPolicy Bypass -File .\scripts\scan-public.ps1 -ForbiddenTer
 如果修改了安装脚本，还应在临时目录中进行一次干净的预演验证。
 生成的私人工作流中心不应提交到本仓库。
 
-如果更改需要与组织／公司版本共享，在声明同步完成之前，请运行版本差异审计：
+如果更改需要与维护中的变体共享，在声明同步完成之前，请运行版本差异审计：
 
 ```powershell
 python .\scripts\audit-variant-parity.py `
   --public-root <public-starter-root> `
-  --company-root <company-starter-root> `
+  --company-root <variant-root> `
   --output <review-report.md>
 ```
 
 将每一项报告的差异归类为：已同步、有意保留的版本专属差异、可安全公开的待办工作，
-或仅限公司／私人使用且禁止同步到公开版本的内容。
+或仅限受限使用且禁止同步到公开版本的内容。
 
 ## 推送就绪检查
 
-推送任何已同步的公开／公司版本候选内容前，先刷新远程状态。
+推送任何已同步的公开／私人版本候选内容前，先刷新远程状态。
 若工具可用，运行 `scripts\validate-push-readiness.ps1 -RepoRoot <repo>`。
 该检查会抓取并清理过期远程引用，检查上游分支的领先／落后状态，默认拒绝有未提交更改的工作区，
 并在本地分支落后或发生分叉时失败。若抓取受阻，请记录验证缺口，不要盲目推送。
 
 ## 标准版本同步检查
 
-如果更改需要与组织／公司版本共享，在声明同步完成之前，请使用标准版本同步检查：
+如果更改需要与维护中的变体共享，在声明同步完成之前，请使用标准版本同步检查：
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-variant-sync.ps1 `
   -PublicRoot <public-starter-root> `
-  -CompanyRoot <company-starter-root> `
+  -CompanyRoot <variant-root> `
   -OutputDirectory <review-report-directory>
 ```
 
-该检查会执行公开／公司版本扫描、`git diff --check`、PowerShell 解析、Python 编译检查、
+该检查会执行公开／私人版本扫描、`git diff --check`、PowerShell 解析、Python 编译检查、
 版本差异审计，并生成分类草案。如需手动执行审计和分类：
 
 ```powershell
 python .\scripts\audit-variant-parity.py `
   --public-root <public-starter-root> `
-  --company-root <company-starter-root> `
+  --company-root <variant-root> `
   --output <audit-report.md>
 
 python .\scripts\classify-variant-parity.py <audit-report.md> `
@@ -86,7 +86,7 @@ python .\scripts\classify-variant-parity.py <audit-report.md> `
 ```
 
 将每一项报告的差异归类为：已同步、有意保留的版本专属差异、可安全公开的待办工作，
-或仅限公司／私人使用且禁止同步到公开版本的内容。
+或仅限受限使用且禁止同步到公开版本的内容。
 
 对于非简单的同步工作，推送前应按顺序进行专家审查：由 `Workflow Distiller` 检查分类与持久规则，
 由 `Code Auditor` 检查脚本、路径和差异的安全性；若修改了安装、新手引导或随包技能，
@@ -109,3 +109,8 @@ python .\scripts\classify-variant-parity.py <audit-report.md> `
 - 将项目事实保存在项目仓库。
 - 优先提交范围小、便于审查的更改。
 - 用户可见行为发生变化时，更新 `CHANGELOG.md`。
+
+## 更新说明
+
+每个版本的更新日志只保留少量面向用户的主要变化。升级步骤、兼容性和已知限制
+写在对应发布说明中。内部维护经历、执行回执和未公开项目细节不应进入公开文档。

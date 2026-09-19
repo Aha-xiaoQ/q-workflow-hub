@@ -171,19 +171,14 @@ that may need one short clarification when multiple intents match.
   runtime copy, then record any starter/public/remote sync as pending.
 - `sync-rules` should start with a status/diff summary and a pending-sync list;
   do not push unless Xiao Q explicitly asks.
-- `push bit` / `推送bit` means the relevant internal Git remote for the current
-  locked repo only; it never overrides company promotion/share repo no-push
-  defaults. Promotion/share repos require explicit version update, stable
-  release, or major update candidate wording for the named repo/version.
-  variant/private repository after normal local status, diff, and validation
-  checks.
-- `push git` / `推送git` means GitHub/public sync only. Do not create Bitbucket
-  or internal Git candidates from this wording. Use the approved staging
-  repository, apply only sanitized generic workflow changes, run the
-  public-safe scan gates, and ask for final confirmation before pushing.
-- `publish`, `upload`, and `push` must run the relevant scan, diff, status,
-  and remote checks first. Treat broad `push` as current active repository
-  only; ask before multi-repo or public/GitHub pushes.
+- `push bit` / `推送bit` targets only the identified repository on the named
+  hosting service. It does not authorize other repositories or mirrors.
+- `push git` / `推送git` targets the identified GitHub repository. Review the
+  intended diff and run applicable publication checks before pushing.
+- `publish`, `upload`, and `push` use the established active target and existing
+  scope-specific authorization. Resolve ambiguous targets or expanded scope
+  before writing; do not ask again for an already authorized action.
+
 
 
 ## Loop Permission Contract

@@ -76,16 +76,6 @@ bootstrap and optional runtime installation.
 - The new manager commands are additive; task writes still require an explicit
   plan followed by apply with `--yes`.
 
-## Validation evidence
-
-Local verification completed two strict full-doctor rounds with 76 checks and
-zero failures. Checks included:
-
-- registry validation and strict core-surface inspection;
-- manager, task-state, lifecycle, q-standard, and output-preflight self-tests;
-- the two-round strict stability suite and two-round full doctor;
-- public/private scan, UTF-8 guard, Python compilation, and `git diff --check`.
-
 ## Known limitations
 
 - A forced process termination between multi-file switches can leave a partial

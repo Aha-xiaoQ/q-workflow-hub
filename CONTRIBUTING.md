@@ -45,45 +45,45 @@ powershell -ExecutionPolicy Bypass -File .\scripts\scan-public.ps1 -ForbiddenTer
 Also verify any changed setup scripts with a clean dry run in a temporary
 folder. The generated private workflow hub should not be committed to this repository.
 
-When a change is shared with an organization/company variant, run the variant
+When a change is shared with a maintained variant, run the variant
 parity audit before calling the sync complete:
 
 ```powershell
 python .\scripts\audit-variant-parity.py `
   --public-root <public-starter-root> `
-  --company-root <company-starter-root> `
+  --company-root <variant-root> `
   --output <review-report.md>
 ```
 
 Classify every reported difference as synchronized, intentionally
-variant-specific, public-safe pending work, or company-only/private and blocked
+variant-specific, public-safe pending work, or restricted and blocked
 from public sync.
 
 
 ## Push Readiness Gate
 
-Before pushing any synced public/company candidate, refresh the remote state first. Run `scripts\validate-push-readiness.ps1 -RepoRoot <repo>` when available. The gate fetches with prune, checks the upstream ahead/behind state, refuses dirty worktrees by default, and fails when the local branch is behind or diverged. If fetch is blocked, record the validation gap and do not push blindly.
+Before pushing any synced public/private candidate, refresh the remote state first. Run `scripts\validate-push-readiness.ps1 -RepoRoot <repo>` when available. The gate fetches with prune, checks the upstream ahead/behind state, refuses dirty worktrees by default, and fails when the local branch is behind or diverged. If fetch is blocked, record the validation gap and do not push blindly.
 
 ## Standard Variant Sync Gate
 
-When a change is shared with an organization/company variant, use the standard
+When a change is shared with a maintained variant, use the standard
 variant-sync gate before calling the sync complete:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-variant-sync.ps1 `
   -PublicRoot <public-starter-root> `
-  -CompanyRoot <company-starter-root> `
+  -CompanyRoot <variant-root> `
   -OutputDirectory <review-report-directory>
 ```
 
-The gate runs public/company scans, `git diff --check`, PowerShell parsing,
+The gate runs public/private scans, `git diff --check`, PowerShell parsing,
 Python compile checks, the parity audit, and a classification draft. To run the
 audit and classifier manually:
 
 ```powershell
 python .\scripts\audit-variant-parity.py `
   --public-root <public-starter-root> `
-  --company-root <company-starter-root> `
+  --company-root <variant-root> `
   --output <audit-report.md>
 
 python .\scripts\classify-variant-parity.py <audit-report.md> `
@@ -91,7 +91,7 @@ python .\scripts\classify-variant-parity.py <audit-report.md> `
 ```
 
 Classify every reported difference as synchronized, intentionally
-variant-specific, public-safe pending work, or company-only/private and blocked
+variant-specific, public-safe pending work, or restricted and blocked
 from public sync.
 
 For nontrivial sync rounds, use the expert review sequence before pushing:
@@ -118,3 +118,10 @@ Before integrating ideas from another project:
 - Keep project facts in project repositories.
 - Prefer small, reviewable changes.
 - Update `CHANGELOG.md` for user-visible behavior changes.
+
+## Release notes
+
+Keep changelog entries to a few high-level user-facing changes per version.
+Use release pages for necessary upgrade steps, compatibility and known limitations.
+Keep internal maintenance history, run receipts and unpublished project details
+out of public documentation.

@@ -113,14 +113,11 @@ readback, fixture, or ledger entry that a fresh session can replay. Substantial
 format-fix handoffs may be checked with `q_standard_check.py --format-replay <file>` and must state `defect_class`, `fix`, `evidence`, `ledger`,
 `surfaces_checked`, and `skipped_surfaces` so another agent can replay the gate.
 
-## Regression Lessons From 2026-07-01
+## Common Validation Failures
 
-- Fresh GitHub clone passed clone/encoding/resolver but failed behavior until
-  local `validate_experiments.py` and `scan-public.ps1` fixes are pushed and
-  recloned.
-- Fresh internal Git remote workflow clone proved access but exposed remote-stale
-  validators; company personal hub clone timed out and left only `.git`, so it
-  is not a pass.
+- A clone that times out, contains only `.git`, or fails the required behavior
+  checks is incomplete. Repair the cause and repeat the affected checks before
+  claiming rebuildability.
 - `quick_validate.py` may fail under the default Python when PyYAML is missing;
   use the known local Python or add a fallback before treating the skill as bad.
 - Public scanners must not self-report denylist terms inside scanner definitions.

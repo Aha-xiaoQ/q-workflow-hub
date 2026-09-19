@@ -3,7 +3,7 @@
 **English** · [Simplified Chinese](COMPANY_DELTA.zh-CN.md)
 
 This file records public-safe notes about intentional differences between this
-public starter and private or company variants.
+public starter and maintained variants.
 
 ## Public Starter Boundary
 
@@ -20,16 +20,10 @@ must not include:
 
 ## Variant Additions
 
-Private or company variants may add skills, templates, validation scripts, or
+Maintained variants may add skills, templates, validation scripts, or
 brand assets that are not appropriate for the public starter. Those additions
 should remain in the variant repository unless the underlying lesson is
 rewritten as a generic, public-safe capability.
-
-## Retirement Notes
-
-Legacy collection repositories should not be used as active public sync sources.
-Promote stable generic content into `q-workflow-hub`, and keep private/company
-state in the private workflow hub or an internal company variant.
 
 ## Machine-Readable Variant Map
 

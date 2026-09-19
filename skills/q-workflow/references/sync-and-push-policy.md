@@ -53,13 +53,9 @@ task.
 
 Push requests are platform- and repo-scoped by the user's words.
 
-- `GitHub`, `push GitHub`, or `upload to GitHub` means GitHub remotes only. It
-  MUST NOT create Bitbucket/internal Git candidates, company promotion repo
-  candidates, or broad source/runtime sync work.
-- `Bitbucket` or `internal Git` means only the explicitly resolved internal
-  repo. It still MUST NOT include company promotion/share repos unless Xiao Q
-  explicitly names a version update, stable release, or major update candidate
-  for that repo/version in the same current instruction.
+- A named hosting platform limits the target to the explicitly identified
+  repository on that platform. Do not include other repositories, distribution
+  mirrors or runtime synchronization unless requested.
 - Generic `push`, `upload`, or `sync` applies only to the already locked active
   repo. If more than one repo could qualify, stop and ask for the target.
 - Workflow-rule or skill-maintenance opportunities discovered while handling a
@@ -105,7 +101,6 @@ Use different push cadence for personal recovery state and promotion/share repos
   and push the scoped public package authorizes that action after validation;
   it does not authorize private skills, personal state or other repositories.
 - Do not push every personal note, experiment, local report, or runtime-only fix into the promotion hub. Record a pending promotion note instead, then promote after sanitization, validation, and a stable feature boundary.
-- `legacy variant skill collection` is retired compatibility/history after local source migration, and remote deletion has been verified. Do not use it as an active skill source, release target, fetch target, or push target.
 
 Remote repository renames are user-owned operations. If Xiao Q says he will rename a remote, do not call hosting-service rename APIs or change remote names speculatively. After he confirms the remote rename, update local `origin` URLs, registries, and recovery docs, then run status and validation gates.
 ## q-workflow Three-Copy Sync
@@ -113,14 +108,14 @@ Remote repository renames are user-owned operations. If Xiao Q says he will rena
 `q-workflow` normally exists in three maintained places:
 
 - standalone maintenance repo: `<standalone-q-workflow>`
-- starter bundled copy: `<company-starter-root>\skills\q-workflow`
+- starter bundled copy: `<starter-root>\skills\q-workflow`
 - runtime installed copy: `%USERPROFILE%\.codex\skills\q-workflow`
 
 Use this order for workflow-rule changes:
 
 1. Edit the intended source copy first. For system-level workflow rules, prefer the standalone repo, then sync the starter bundled copy. For starter packaging or onboarding-only changes, edit the starter copy and record whether the standalone repo is intentionally unchanged.
 2. Compare standalone versus starter for changed files before claiming completion. If they differ, classify each difference as synchronized, starter-only, standalone-only, or pending-sync.
-3. Refresh the runtime copy only from the validated source or starter copy, never from `legacy variant skill collection`.
+3. Refresh the runtime copy only from the validated source or starter copy.
 4. Validate the edited copies with the available skill validation script or targeted script compile/check commands.
 5. Record any intentional unsynced state in `SKILL_SYNC.md`, the active work item, or TODO before closing.
 

@@ -2,7 +2,7 @@
 
 **English** · [Simplified Chinese](PUBLIC_SYNC.zh-CN.md)
 
-This repository should stay structurally similar to private or company variants
+This repository should stay structurally similar to maintained variants
 so generic q-workflow improvements can move between them with a clear review
 path.
 
@@ -25,23 +25,23 @@ Keep these areas aligned unless a documented variant reason exists:
 
 ## Naming Map
 
-| Public | Private or company variant |
+| Public | Maintained variant |
 |:---|:---|
 | `q-workflow-hub` | variant-specific hub repository |
 | `q-workflow` | variant-specific q-workflow package name when needed |
 | private workflow hub | user-owned private state repository; not part of the public starter release |
-| generic skills | generic skills plus private/company-only skills |
+| generic skills | generic skills plus restricted skills |
 
 ## Sync Direction
 
-Public to private/company variants:
+Public to maintained variants:
 
 - starter structure
 - Quick Resume and recovery evaluation rules
 - skill creation and validation patterns
 - generic templates and onboarding improvements
 
-Private/company variants to public:
+Maintained variants to public:
 
 - only sanitized generic workflow lessons
 - no private paths, internal hosts, project names, customer material, active
@@ -50,7 +50,7 @@ Private/company variants to public:
 
 ## Review Rule
 
-Before moving a private/company lesson to the public repo, rewrite it as
+Before moving a reusable lesson to the public repo, rewrite it as
 generic behavior and scan the target repository for private markers.
 
 ## Push Readiness Gate
@@ -70,7 +70,7 @@ from either starter:
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File .\scripts\validate-variant-sync.ps1 `
   -PublicRoot <public-q-workflow-hub-root> `
-  -CompanyRoot <private-or-company-q-workflow-hub-root> `
+  -CompanyRoot <variant-root> `
   -OutputDirectory <review-report-directory>
 ```
 
