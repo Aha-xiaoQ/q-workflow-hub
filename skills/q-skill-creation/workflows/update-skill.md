@@ -1,49 +1,66 @@
 # Update Skill
 
-Use when improving an existing skill.
+Choose the lane by semantic effect before loading downstream standards.
+User authorization, host instructions and explicit domain gates always apply.
 
-For proactive maintenance, first separate the observed signal, the candidate
-and permission to activate it using q-workflow's `references/proactive-evolution.md`.
-If unavailable, use the same bounded rule: evidence-led, authorized local patch,
-negative/transfer checks, prior and accepted revisions, and a revisit condition.
-Do not repeat an unchanged review or let this update recursively upgrade itself.
+## Editorial Lane
 
-## Steps
+Use only when permissions, defaults, triggers, routing, gate applicability and
+required evidence are unchanged: typos, broken links, explanatory wording or
+deterministic metadata repair. Moving a rule is not editorial unless its
+activation and reachability demonstrably stay unchanged.
 
-1. Choose the source baseline with `references/source-runtime-freshness.md`.
-   Inspect touched files, known mirrors and relevant dirty changes. Preserve
-   unrelated edits and intentional variants; do not inventory every repository.
-2. Read the owning `SKILL.md` and selected behavior instructions completely.
-   Reuse unchanged instructions already read. Inspect metadata/default prompts
-   only if their triggers or scope are affected.
-3. Classify the update with `references/skill-lifecycle-standard.md`: patch,
-   minor or major. Choose checks by changed surface and intended claim; a push
-   alone does not mean stable promotion or a fresh-install claim.
-4. For reusable rules, use `references/rule-quality.md` and
-   `references/rule-hardness-ladder.md`. Name the observed failure, owner layer,
-   trigger, expected action and regression scenario. Reuse relevant calibration
-   evidence; research further only for unresolved or changeable facts.
-5. Apply the lifecycle standard's pre/post review and absorption gates when
-   triggered. Use one bounded reviewer per concern; add a reviewer only for
-   distinct required evidence. Tiny wording/link/metadata fixes use its explicit
-   lightweight exception. Do not redefine an independent gate as self-review.
-6. Implement the smallest coherent change. Reuse the user's authorization and
-   infer routine reversible details; ask only for a consequential missing choice
-   or expanded authority. Native-capability replacement additionally follows
-   q-workflow's evolution guard; no speculative model-name-driven rewrite.
-7. Check owners/consumers of the changed behavior, including referenced rules,
-   validators and known source/runtime/bootstrap or public/company counterparts.
-   `Related` means those affected paths, not the whole portfolio. Add or change
-   metadata, agents/default prompts and inventories only where the update needs it.
-8. Validate the changed path and one realistic scenario for behavior changes.
-   Preserve hard-gate negative checks, applicable encoding/link checks and
-   source/runtime hash verification. A focused documentation update need not
-   run unrelated builds, cold-start trials or a full portfolio audit. Repeat
-   checks only when a change or new concern invalidates their evidence.
-9. Record compatibility, review finding dispositions, validation and mirror
-   exceptions in one existing work item or release note. Reference raw receipts
-   rather than duplicating them. Do not start another sedimentation cycle merely
-   to close this update; park unrelated opportunities.
-10. Complete the scoped authorized commit/push after its review, public-safety
-    and remote-freshness checks. Report what was edited, validated, installed
-    and pushed separately. Stable/team/rebuild claims retain their own gates.
+1. Read the owning entry and affected file. Reuse instructions already loaded.
+2. Compare touched files against known source/runtime/bootstrap mirrors and
+   inspect relevant dirty changes. Apply the same scoped source-authority and
+   no-overwrite rules as the freshness reference; load that reference if drift,
+   a new surface, sync ambiguity or release risk needs resolution.
+3. Make the correction; validate readback/diff, links/encoding/metadata as
+   affected; propagate to applicable mirrors and compare hashes.
+4. Record a compact result in the existing work item. No new expert, external
+   research, lifecycle survey, portfolio audit or full installation test solely
+   for this lane. Existing material task/event records still close correctly.
+5. If push was authorized, perform its reviewed-diff, public-safety and fetched
+   remote checks. A push does not automatically make this a stable release.
+
+## Behavior Lane
+
+For instructions, routing, default execution or validator behavior:
+
+1. Read `references/source-runtime-freshness.md`, choose the validated baseline
+   and preserve intentional variants/unrelated edits.
+2. Classify patch/minor/major using `references/skill-lifecycle-standard.md`.
+   For rule design load `references/rule-quality.md` and
+   `references/rule-hardness-ladder.md`; define failure, trigger, owner, strength,
+   action and scenario. Reuse relevant current evidence; research only unknown
+   or changeable facts.
+3. Apply high-impact pre/post expert review and lesson-absorption gates when
+   triggered. Use one bounded reviewer per concern; keep required independence.
+4. Implement the smallest coherent change. Inspect affected rule owners,
+   consumers, known mirrors and validators, not all adjacent skills.
+5. Test the changed path and a contrasting scenario. For a removed or narrowed
+   gate, demonstrate that its protected risk still takes the stronger route.
+   Preserve source/runtime hashes and applicable metadata/encoding/link checks.
+6. Integrate findings once; repeat only invalidated checks. Record compatibility,
+   evidence and skipped surfaces in the existing checkpoint. Finish the scoped
+   authorized delivery; do not recursively improve the workflow to close it.
+
+## Release, Migration Or Foundation Lane
+
+Before stable/team/portable claims, lifecycle changes, skill retirement,
+public/private boundary changes or foundation replacement, load the lifecycle
+standard and applicable release/migration/evolution contracts. Preserve required
+isolated validation, independent review, remote evidence and explicit authority.
+Do not substitute editorial checks for those claims. A source-only change does
+not prove installed behavior or a running service.
+
+## Measurements And Stop Rule
+
+For context-cost work compare entry size, selected references and tool-result
+volume. Use bounded existing logs, not a new always-on monitor. Separate cached
+input, uncached input, output and child overhead when data permits; mark missing
+fields and partial samples. Compare equivalent tasks before claiming savings.
+
+Stop when the requested change, applicable evidence and authorized delivery are
+complete. Preserve one recoverable checkpoint; do not create a new diary,
+broad audit or learning loop merely because the update finished.

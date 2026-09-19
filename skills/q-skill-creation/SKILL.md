@@ -7,100 +7,63 @@ metadata:
 
 # Q Skill Creation
 
-Use this skill to make skills that fit q-workflow: reliable, friendly,
-recoverable, validated, and license-aware.
+Create and maintain reusable skills with clear routing, validated behavior and
+recoverable source. Prefer updating the owning skill over adding another.
 
-## Intent Routing
+## Route By Intent
 
-| User intent | Workflow |
-|:---|:---|
-| Create a new skill | `workflows/create-skill.md` |
-| Update an existing skill | `workflows/update-skill.md` |
-| Proactive maintenance after model/tool changes, repeated friction or a reusable milestone lesson | q-workflow `references/proactive-evolution.md`, then `workflows/update-skill.md` for an authorized candidate; no model-name-based rewrite |
-| Rename or migrate a skill | `workflows/skill-naming-migration.md`; then update `references/naming-conventions.md` when the naming rule changed |
-| Audit naming drift, rename candidates, or split/merge signals across existing skills | Run `scripts/skill_naming_audit.py`; then classify with `references/naming-conventions.md` and `references/skill-composition-boundary.md`. Rename only when the migration gate is met. |
-| Review a skill for quality, reliability, or compliance | `workflows/review-skill.md` |
-| Audit model constraints, plugin conflicts, or capability adaptation | `references/capability-review.md` and targeted owner files |
-| Define or repair a behavioral rule / its hardness | `references/rule-quality.md` and `references/rule-hardness-ladder.md` |
-| Lifecycle, compatibility, stable release, or major uplift | `references/skill-lifecycle-standard.md` |
-| Source/runtime freshness or installation drift | `references/source-runtime-freshness.md` |
-| New skill justification or merge/split | `references/skill-creation-trigger.md` or `references/skill-composition-boundary.md`, according to the decision |
-| Portfolio type/status/category fields | `references/skill-taxonomy-schema.md` |
-| General quality or naming principles | `references/quality-bar.md` or `references/naming-conventions.md`, according to the question |
-| Evaluate workflow or skill stability | Read `references/workflow-evaluation.md` first |
-| Audit the full skill portfolio for structure, standards, modularity, runtime/source consistency, or colleague readiness | Run `scripts/skill_portfolio_audit.py`; then use `workflows/review-skill.md`, `references/skill-taxonomy-schema.md`, and `references/skill-lifecycle-standard.md` to classify findings |
-| Borrow ideas from another skill/project | Read `references/license-check.md` first |
+| Intent | Read next |
+|---|---|
+| Update an existing skill | `workflows/update-skill.md`; choose editorial, behavior or release lane first |
+| Create a skill | `workflows/create-skill.md` before scaffolding; follow its discovery/approval gate |
+| Rename/migrate | `workflows/skill-naming-migration.md` |
+| Review | `workflows/review-skill.md` |
+| Source/runtime drift | `references/source-runtime-freshness.md` |
+| Stable release, lifecycle/compatibility or legacy uplift | `references/skill-lifecycle-standard.md` |
+| Define/change a behavioral gate | `references/rule-quality.md` and `references/rule-hardness-ladder.md` |
+| Merge/split or justify a new skill | `references/skill-composition-boundary.md` or `references/skill-creation-trigger.md` |
+| Portfolio metadata | `references/skill-taxonomy-schema.md` |
+| Full portfolio/naming audit | `scripts/skill_portfolio_audit.py` or `scripts/skill_naming_audit.py`, then applicable review/naming reference |
+| Workflow stability evaluation | `references/workflow-evaluation.md` |
+| Capability/plugin conflicts | `references/capability-review.md` |
+| Borrow external material | `references/license-check.md` before reuse |
+| General quality/naming | `references/quality-bar.md` or `references/naming-conventions.md` |
 
-If the user only says "make a skill", start with `workflows/create-skill.md`.
+Select only the row required by the decision; do not traverse all linked
+references. Read selected instructions fully and reuse them while unchanged.
+An editorial patch does not activate every lifecycle or portfolio procedure.
 
-Select only applicable references, then read each selected instruction in full.
-Use the current task, available capabilities, and observed failure modes to set
-effort; do not impose historical model limits or a fixed workflow on every task.
-Simplify a procedure only when its safety and quality outcomes remain covered.
+## Common Boundaries
 
-## Non-Negotiables
+- Preserve user intent and existing authorization. A checklist is not a reason
+  to ask again; clarify only consequential missing choices or expanded scope.
+  Proposal-only requests do not authorize implementation.
+- Keep entry files as concise routers. Put detailed procedures in workflows
+  and specialist standards in references. Do not solve instruction bloat by
+  moving it to a reference that every task must still read.
+- Before editing/syncing multi-surface skills, compare touched files and known
+  mirrors, classify drift and choose a validated baseline. Preserve unrelated
+  work and intentional variants. Runtime is an installed copy, not sole source.
+- Behavior rules need a trigger, owner, expected action, strength and validation
+  scenario. High-impact routing, lifecycle, permission or gate changes retain
+  the lifecycle standard's pre/post independent review. Editorial relocation
+  is behavioral when it changes activation or required evidence.
+- Source/runtime/public/company checks cover affected owners and consumers.
+  Update applicable surfaces or record the reason for exclusion. Do not run a
+  whole-hub inventory to correct a link.
+- Keep reusable mechanisms public-safe; project facts stay in project state,
+  personal preferences in personal state. Third-party text/code/assets require
+  compatible licensing and attribution.
+- Validate the actual change before readiness claims. Do not promote to stable
+  from metadata checks alone. Model names do not justify automatic rewrites.
 
-- Reliability comes first: record assumptions, outputs, validation, and handoff
-  state in files.
-- Ask about unresolved high-impact choices only when the answer materially
-  changes scope, risk, or output. Reuse explicit user decisions and sufficient
-  context; do not ask again merely because a checklist contains a question.
-  Follow the host's supported question format and permission rules.
-- Keep `SKILL.md` concise. Put mode-specific procedures in `workflows/` and
-  reusable standards in `references/`.
-- Design skills as routers plus on-demand details: keep trigger/default/safety
-  pointers in `SKILL.md`; move long procedures, examples, edge cases, and
-  scoring rubrics to `workflows/` or `references/`.
-- New top-level skill creation must follow the `workflows/create-skill.md`
-  Discovery And Approval Gate before scaffolding files: prior-art learning,
-  targeted research when needed, a compact plan and proportional pre-review.
-  Reuse the user's creation authorization; ask only for consequential missing
-  decisions or additional scope. Proposal-only requests remain proposals.
-- Before proactively creating a new top-level skill, use
-  `references/skill-creation-trigger.md`: prefer the smallest durable layer
-  that will reliably fire, and update existing skills before adding a new one.
-- Before editing or syncing multi-surface skills, use
-  `references/source-runtime-freshness.md` to choose the correct baseline,
-  classify canonical source/runtime/public/company/user-cache surfaces, and
-  prevent stale source/runtime/hub copies or mojibake from propagating.
-- Before merging or splitting skills, use
-  `references/skill-composition-boundary.md`: prefer composition for pipeline
-  and review-gate relationships, merge only duplicate ownership, and split when
-  triggers, risks, outputs, or context cost diverge.
-- For nontrivial or mature rules, record activation/risk fields (`Trigger`,
-  `Tier`, `Risk`, `Reference`) and measure context cost after major splits.
-- For skill portfolio standardization, use `references/skill-taxonomy-schema.md` before adding new type/category/status fields. Prefer catalog or inventory metadata over unsupported frontmatter until tooling validates the schema.
-- For stable releases or legacy-skill uplift, use `references/skill-lifecycle-standard.md` before editing. Classify the change as patch/minor/major, preserve compatibility, and require evidence before marking a skill stable.
-- Write behavioral rules with explicit trigger, goal, strength, loading layer,
-  expected action, and anti-pattern. Avoid vague preferences that do not fire
-  and rigid scripts that make the assistant mechanical.
-- For rules that affect handoff, release, public/private boundary, source/runtime
-  sync, generated artifact quality, or repeated user-found misses, use
-  `references/rule-hardness-ladder.md` to classify the rule as a principle,
-  preference, strong default, procedure, hard gate, or executable gate before
-  promoting it.
-- Test workflow changes with small scenarios and score them before relying on
-  them for real work. Use real task feedback as later evaluation rounds.
-- Capture lessons at the correct layer: reusable skill behavior in public
-  skills, project facts in project state, and personal collaboration preferences
-  in the user's assistant profile or personal hub.
-- Scope propagation to the changed rule's owners, consumers and known mirrors.
-  Compare touched files before and after edits; preserve intentional variants.
-  Update applicable surfaces or record exclusions in one work-item checkpoint.
-  Do not inventory the entire hub or rerun unrelated domain tests for a patch.
-- Do not copy third-party code, prompts, schemas, text, or assets unless license
-  compatibility and attribution are explicit.
-- Treat locally installed skills as test/runtime copies. If a skill becomes
-  commonly used, give it a durable source repository or record source,
-  installation, license, and migration details in the user's skill inventory.
-- Validate the skill before marking it ready.
+## Deliver Only What Changed
 
-## Default Deliverables
+Preserve existing layout; add workflows/references/assets only when the task
+needs them. Update `agents/openai.yaml` when triggers/default prompts change.
+Record compatibility, review dispositions, validation and mirror status once
+in the existing work item or changelog, linking raw evidence.
 
-- `SKILL.md` with clear trigger description and concise routing.
-- `agents/openai.yaml` with user-facing display metadata.
-- `workflows/` files for multi-step procedures.
-- `references/` files for policy, license, schemas, or longer guidance.
-- Context-cost note when the skill is large or refactored: line count,
-  estimated tokens, and which scenarios should load each reference.
-- Personal work-item and project changelog updates when the skill changes.
+For a context refactor, compare entry size and actual route loading; label
+bytes/lines as size measurements, not measured token savings. Check a routine
+scenario and a higher-risk scenario so the lighter path cannot bypass a gate.
