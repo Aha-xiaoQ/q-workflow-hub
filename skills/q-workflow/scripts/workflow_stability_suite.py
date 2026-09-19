@@ -61,17 +61,14 @@ def read_json(path: Path) -> dict[str, Any]:
     return payload
 
 
-DETAIL_SECTION_PREFIXES = ("当前状态：", "下一步：", "证据：", "完成条件：")
-
-
 def normalize_detail_layout(value: Any) -> str:
-    """Join only the known Chinese detail sections; preserve other boundaries."""
+    """Ignore clause wrapping after Chinese punctuation; preserve other boundaries."""
     lines = [line.strip() for line in str(value).splitlines() if line.strip()]
     if not lines:
         return ""
     normalized = lines[0]
     for line in lines[1:]:
-        if normalized.endswith(("。", "！", "？", "；")) and line.startswith(DETAIL_SECTION_PREFIXES):
+        if normalized.endswith(("。", "！", "？", "；")):
             normalized += line
         else:
             normalized += "\n" + line
