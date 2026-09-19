@@ -94,7 +94,7 @@ pass should produce a visual issue report, not silently rewrite the deck.
     not give `Pass` until the sample proves the component/grid contract.
 20. Report issues by slide number, issue type, object/location clue, severity,
     and recommended fix.
-21. Edit the deck only after the issue report is understood.
+21. Review-only requests produce findings without edits. When repair is authorized, understand the issue and fix it, then render and review the affected output; no extra approval is needed for an in-scope correction.
 
 For translated decks, include language-specific review before any Pass verdict: visible slide text, PowerPoint Notes, generated diagrams, screenshots, and bitmap figures must match the target language or have slide-specific accepted exceptions. An English deck with Chinese Notes or meaningful Chinese text baked into images is blocked even if exported PNG geometry passes.
 For English decks, also review title wrapping visually: large titles, section titles, agenda labels, and short headings must not inherit source-language line breaks or wrap when they can reasonably fit on one line. Treat avoidable English title wrapping as a blocker, not a cosmetic preference.

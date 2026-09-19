@@ -112,7 +112,9 @@ required inputs, fixed output, and anti-patterns.
   acceptance after only main-agent self-review. Ordinary local completion may
   use the disclosed exception above. For GitHub-bound changes, the required order is:
   produce candidate, run expert/subagent review, patch and validate, present the
-  review summary to Xiao Q, wait for Xiao Q's explicit approval, then push.
+  review summary, then push when the user's existing authorization covers that
+  candidate and target. Ask only for missing or materially expanded authorization;
+  a review checklist never cancels a direct instruction to complete and push.
 - Before or immediately after spawning a real platform subagent, tell Xiao Q the
   visible mapping with the standard dispatch card from
   `references/auto-dispatch-policy.md`. Separate `Expert role` from `Run instance`:

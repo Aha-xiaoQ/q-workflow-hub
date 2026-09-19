@@ -56,8 +56,10 @@ decisions in the target project repository.
   agent-generated style creation. Manual selection is the fast path: preview
   and pick a concrete template/style candidate from a user-provided or packaged
   library. Agent-generated style is the slower path: collect concrete
-  requirements, create a representative sample, validate it, and wait for
-  approval before full-deck generation. Approved generated styles should be
+  requirements, create and validate a representative sample, then continue the
+  authorized deck when the brief resolves the visual direction. Ask only for a
+  consequential unresolved style decision or an explicitly requested sample
+  approval. Validated generated styles should be
   saved with previews, source notes, layout contracts, and validation evidence
   so future users can select them manually.
 - Keep the deck source editable. Use PowerPoint notes for speaker guidance and

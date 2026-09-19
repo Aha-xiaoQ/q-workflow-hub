@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Classify Codex context pressure and optionally write a compact entry packet."""
+"""Advisory context telemetry; never changes model limits or native compaction."""
 
 from __future__ import annotations
 
@@ -94,8 +94,8 @@ def _classify(data: dict[str, Any], max_safe: float, critical: float) -> dict[st
     action_by_level = {
         "ok": "Continue with targeted reads; avoid loading large files unless decision-critical.",
         "watch": "Checkpoint before broad work; keep dynamic outputs in files and pass paths forward. For workflow-rule, release, or handoff work, suggest workflow-health / 体检 before expanding further.",
-        "throttle": "Finish validation/checkpoint first; split the next task and avoid broad scans. For workflow-rule, release, or handoff work, suggest workflow-health / 体检 before expanding further.",
-        "critical": "Do not start new broad work; write a task packet and resume from durable state unless the remaining step is tiny. Run workflow-health / 体检 before more workflow expansion.",
+        "throttle": "Prefer targeted reads and a checkpoint at the next meaningful boundary. Continue authorized work; do not split tasks or run health suites solely because of this advisory level.",
+        "critical": "Checkpoint material state and let native compaction handle context. Continue the authorized task with targeted reads; this telemetry is advisory, not a stop or model-limit override.",
     }
     return {
         "level": level,

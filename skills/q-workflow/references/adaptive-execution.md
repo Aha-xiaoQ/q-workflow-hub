@@ -32,6 +32,16 @@ not restart completed work or continue an explicitly revoked action.
 
 ## Native Execution, Local Authority
 
+- Batch independent reads or tool calls when the host supports it; await their
+  results before dependent actions. Do not serialize independent work merely
+  because an older workflow was written as a numbered list.
+- Use async execution and mid-turn steering only through capabilities actually
+  exposed by the host. Preserve operation IDs and completed work when a user
+  correction arrives. An API feature is not a desktop configuration instruction.
+- Keep native compaction and session recovery; do not invent context limits,
+  reasoning ceilings or configuration flags from a model name. Task-shaped
+  context loading is an efficiency choice, not a limit on model reasoning.
+
 - Use native child agents only for an independently useful scope while the
   main agent has useful work, and only where platform/skill policy allows it.
   Keep ownership disjoint; required independent review must not become self-review.

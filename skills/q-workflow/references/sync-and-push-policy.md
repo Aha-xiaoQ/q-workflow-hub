@@ -10,7 +10,7 @@ permissions, end-of-round workflow, and generic-skill synchronization.
 | Local status/diff/validation | Quick | allow | Run targeted local commands. |
 | Local commit checkpoint | Project | allow when meaningful | Review diff and commit scoped changes. |
 | Push/upload/publish | Project/Deep | ask | Fetch first, verify remote freshness, summarize target, branch, commits, reason, then ask or push if explicitly approved. |
-| Public/GitHub sync | Deep | ask + scan | Fetch first, verify remote freshness, run public-safe scan, then final confirmation. |
+| Public/GitHub sync | Deep | authorize + scan | Fetch, verify freshness, scan the exact candidate, then use existing scope-specific authorization or ask if missing. |
 | Destructive cleanup or credential changes | Deep | ask/deny | Ask explicitly; never infer from fuzzy commands. |
 
 ## Sync And Push Policy
@@ -84,13 +84,15 @@ Before pushing:
 - If fetch is blocked by network, credentials, or proxy setup, do not push blindly. Report the remote-freshness gap and ask whether to retry through the approved route.
 - Summarize the target repo(s), branch, last relevant commit(s), ahead/behind result, and reason for
   pushing.
-- Ask Xiao Q for confirmation unless they already gave an explicit push command
-  for that exact target in the current turn.
-- For `q-workflow-hub`, explicit approval must name both the repo and version, for example: push q-workflow-hub v1.0 test. A generic push, sync, publish, or release request is not enough for this repo.
+- Ask only when scope-specific push authorization for the candidate and target
+  is missing or revoked. Authorization persists across turns in the same task;
+  elapsed time or a new briefing does not invalidate it.
+- Resolve the intended repository and candidate from the current request and registered context. Do not demand a version number or exact command phrase when the user already authorized this scoped update and push. Ask if multiple destinations remain genuinely plausible.
 - Do not infer broad multi-repo push from generic words such as `push`, `同步`,
   or `上传`; ask if the target is unclear.
-- Never push public/GitHub targets without the public-safe scan and final
-  confirmation required by the cross-profile policy.
+- Never push public/GitHub targets without the public-safe scan and valid
+  scope-specific authorization. Existing explicit authorization satisfies the
+  permission requirement; a newer cancellation or exclusion still takes precedence.
 
 
 ## Personal Hub Versus Promotion Hub
@@ -98,11 +100,10 @@ Before pushing:
 Use different push cadence for personal recovery state and promotion/share repos:
 
 - `q-personal-hub`: propose backup more readily after meaningful recovery-state changes. This private state-of-truth hub still requires explicit authorization for the current remote push; record local-only state while pending.
-- Company-side promotion/share repositories, including `q-workflow-hub`, are
-  no-push by default for routine sync, local reports, runtime-only fixes, or
-  ordinary checkpoints. Push them only when Xiao Q explicitly requests a version
-  update, stable release, or major update candidate. For `q-workflow-hub`, the
-  approval must name the target version number.
+- Promotion/share repositories are no-push by default for routine local notes,
+  runtime-only fixes and ordinary checkpoints. An explicit instruction to update
+  and push the scoped public package authorizes that action after validation;
+  it does not authorize private skills, personal state or other repositories.
 - Do not push every personal note, experiment, local report, or runtime-only fix into the promotion hub. Record a pending promotion note instead, then promote after sanitization, validation, and a stable feature boundary.
 - `legacy variant skill collection` is retired compatibility/history after local source migration, and remote deletion has been verified. Do not use it as an active skill source, release target, fetch target, or push target.
 

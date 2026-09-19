@@ -72,6 +72,12 @@ lives in the user's private hub.
 
 ## Core Principles
 
+- Apply skills within the user's intent and current host instructions. Reuse
+  existing authorization, infer routine reversible choices, and continue until
+  the requested outcome is complete. A checklist is not a reason to ask again.
+  When a real missing decision blocks an action, explain the exact boundary and
+  continue useful independent work. Domain correctness and privacy still apply.
+
 - Before drafting, exporting, or approving externally delivered text, verify
   its actual audience. Remove assistant or
   commissioner process narration; preserve reader-useful instructions, limits,
@@ -220,9 +226,10 @@ Required AGENTS/skill reads and task/event validation are not optional context.
   An answer or diagnosis request does not authorize implementation. A newer
   no-push/cancel instruction invalidates earlier approval for that action;
   model capability never expands authorization.
-- Record local checkpoints freely when useful, but push/publish/public sync only
-  after Xiao Q explicitly approves the current candidate. Release/handoff need
-  or critical recovery risk is a reason to ask, not a reason to push silently.
+- Record local checkpoints when useful. Push/publish/public sync requires
+  scope-specific user authorization, which may already be present in the task
+  request. Complete authorized actions after review and validation; release need
+  or recovery risk alone does not authorize publication.
 - Use UTF-8 for Markdown, skill, prompt, and workflow files. Do not copy
   mojibake back into durable files.
 - Treat third-party skills and public examples as idea references unless

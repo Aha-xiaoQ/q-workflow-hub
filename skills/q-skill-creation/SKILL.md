@@ -20,6 +20,7 @@ recoverable, validated, and license-aware.
 | Rename or migrate a skill | `workflows/skill-naming-migration.md`; then update `references/naming-conventions.md` when the naming rule changed |
 | Audit naming drift, rename candidates, or split/merge signals across existing skills | Run `scripts/skill_naming_audit.py`; then classify with `references/naming-conventions.md` and `references/skill-composition-boundary.md`. Rename only when the migration gate is met. |
 | Review a skill for quality, reliability, or compliance | `workflows/review-skill.md` |
+| Audit model constraints, plugin conflicts, or capability adaptation | `references/capability-review.md` and targeted owner files |
 | Define or repair a behavioral rule / its hardness | `references/rule-quality.md` and `references/rule-hardness-ladder.md` |
 | Lifecycle, compatibility, stable release, or major uplift | `references/skill-lifecycle-standard.md` |
 | Source/runtime freshness or installation drift | `references/source-runtime-freshness.md` |
@@ -52,8 +53,9 @@ Simplify a procedure only when its safety and quality outcomes remain covered.
   scoring rubrics to `workflows/` or `references/`.
 - New top-level skill creation must follow the `workflows/create-skill.md`
   Discovery And Approval Gate before scaffolding files: prior-art learning,
-  targeted research, plan, expert pre-review, and explicit user approval unless
-  a narrow waiver is recorded.
+  targeted research when needed, a compact plan and proportional pre-review.
+  Reuse the user's creation authorization; ask only for consequential missing
+  decisions or additional scope. Proposal-only requests remain proposals.
 - Before proactively creating a new top-level skill, use
   `references/skill-creation-trigger.md`: prefer the smallest durable layer
   that will reliably fire, and update existing skills before adding a new one.

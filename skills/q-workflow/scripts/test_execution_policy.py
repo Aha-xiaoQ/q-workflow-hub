@@ -73,6 +73,23 @@ class ExecutionPolicyTests(unittest.TestCase):
         for claim, tier in [("local", "T1"), ("mirror", "T2"), ("remote-rebuild", "T3"), ("release", "T4")]:
             self.assertEqual(advise(scenario(claim=claim))["test_tier"], tier)
 
+    def test_local_risk_does_not_invent_workflow_mirrors(self):
+        for risk in ("material", "high"):
+            r = advise(scenario(risk=risk))
+            self.assertEqual(r["test_tier"], "T1")
+            self.assertEqual(r["next_action"], "implement-in-scope")
+            self.assertEqual(advise(scenario(risk=risk, claim="mirror"))["test_tier"], "T2")
+
+    def test_authorized_release_keeps_review_without_reapproval(self):
+        facts = scenario(claim="release", evidence="pass", review_required=True)
+        self.assertEqual(advise(facts)["next_action"], "complete-independent-review")
+        facts["review_required"] = False
+        result = advise(facts)
+        self.assertEqual(result["next_action"], "handoff-with-evidence")
+        self.assertFalse(result["grants_authority"])
+        facts["authority"] = "denied"
+        self.assertEqual(advise(facts)["next_action"], "stop-out-of-scope")
+
     def test_delegation_requires_all_four_conditions(self):
         for values in itertools.product((False, True), repeat=4):
             f = scenario(**dict(zip(("independent_work", "useful_main_work", "delegation_permitted", "delegation_available"), values)))

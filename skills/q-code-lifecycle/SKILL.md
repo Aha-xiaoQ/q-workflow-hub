@@ -99,13 +99,13 @@ state explicitly unproven. Public eligibility is not permission to push.
    paths and the comparison result.
 4. If runtime is newer than source, backfill source first. Do not push an older
    source just because the repository is clean.
-4a. Public-Eligible Sync Rule: when a reusable workflow, skill, prompt, process,
-   or collaboration rule is not company-, customer-, credential-, hardware-,
-   path-, or license-restricted, treat the public GitHub mirror as an in-scope
-   surface by default. If a change is intentionally private, record the exact
-   exclusion reason and keep the public-safe counterpart, stub, or generated
-   mirror current locally. Record pending remote sync; do not claim remote sync,
-   public release, or remote-rebuild readiness until the approved remote matches.
+4a. Public scope follows the user's instructions and the maintained publication
+   inventory. Absence of sensitive keywords does not make a personal skill
+   public. Export only explicitly included packages/files; preserve private,
+   withdrawn and unclassified skills locally. Apply generic fixes to an existing
+   public counterpart by reviewed hunks, never by copying a private source tree.
+   Record intentional variant differences and verify the exact outgoing tree
+   and commit range before claiming remote sync or rebuild readiness.
 5. After commit and before push, verify the commit contains the intended files
    and no local-only runtime paths, private artifacts, generated scratch output,
    or stale template copies.

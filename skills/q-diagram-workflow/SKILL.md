@@ -18,8 +18,9 @@ If the user provides a manually corrected PPTX or annotated figure, treat that
 as the target design source. Adopt it as the authoritative editable source,
 export the release image from it, compare it with the agent-generated version,
 record reusable design deltas, and avoid reimplementing the drawing from
-scratch unless asked. If the deltas are reusable, update this skill or its
-references before closing the task.
+scratch unless asked. Record useful deltas in the owning task. Update this skill
+or its references only when reusable workflow maintenance is authorized; an
+artifact repair alone does not authorize global policy changes.
 
 When the task is explicitly a training loop with a 100-point exemplar, also read
 `references/exemplar-scoring-loop.md`. Preserve intermediate versions so the

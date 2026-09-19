@@ -65,12 +65,11 @@ Rules:
   append the corresponding `RECOVERY_EVENTS.md` event, and refresh the runtime
   mirror. If this cannot be completed, set or report a non-synced pointer state
   so the next Quick Resume must run a bounded stale-pointer audit.
-- A promoted user manual, PPT/deck, report, handoff, or artifact pointer only
-  authorizes the next fixed Resume Briefing target. It is not execution
-  approval. On the next `continue/resume/到哪了` turn, lock the named branch,
-  output the fixed status card, and stop before artifact-body inspection,
-  edits, builds, validation, flash/hardware, commits, pushes, or broad scans
-  until Xiao Q explicitly approves Phase B.
+- An artifact pointer identifies state; it does not grant permission. Validate
+  the matching task and latest user intent. A request to continue identified
+  unfinished work resumes its existing authorized scope; a status-only question
+  remains read-only. Ask only for an ambiguous target or missing authority,
+  preserving all current no-push, hardware and private-data boundaries.
 - Skills remain authoritative for reusable behavior.
 - Prefer one work-item file per task so multiple AI agents do not repeatedly
   edit the same file.

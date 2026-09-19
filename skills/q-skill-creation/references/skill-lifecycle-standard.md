@@ -165,17 +165,17 @@ Do not promote a long report into `SKILL.md`. Extract the mechanism, not the his
 
 ## New Skill Creation Preflight
 
-New top-level skill creation is a lifecycle change, not just a file scaffold. Before creating or scaffolding files for a new top-level skill, follow the `workflows/create-skill.md` Discovery And Approval Gate:
+New top-level skill creation is a lifecycle change, not just a file scaffold. Apply the selected lane from `workflows/create-skill.md` to the steps below: its conditional research/review and quick-lane skips also govern this checklist. Do not reinstate skipped checks merely because they appear in this reference.
 
 1. justify why a new skill is the correct durable layer;
 2. run `q-skill-pattern-learning` to learn mechanisms from internal/external skills or record a narrow waiver;
 3. run `q-research-discovery` / Source Scout for official docs, current facts, public examples, tools, APIs, install paths, or uncertain best practices;
 4. draft the plan before implementation;
-5. run expert pre-review with Workflow Distiller as the default owner and additional experts by domain;
+5. run expert pre-review when the selected lane or high-impact change requires it, with Workflow Distiller as the default owner;
 6. present the plan and expert findings to the user;
-7. wait for explicit user approval before scaffolding, unless the current thread contains an explicit approval/preflight waiver.
+7. proceed when the user already requested creation; ask before scaffolding only for a consequential missing decision, expanded scope, or a proposal-only request.
 
-Patch-level typo, link, or deterministic metadata repairs may skip this preflight when behavior and routing are unchanged. Tiny local-only helpers may skip research only when they do not create reusable skill behavior; record the scope and skip reason. Do not use "local-only" or "do it now" as a blanket bypass.
+Patch-level typo, link, or deterministic metadata repairs may skip this preflight when behavior and routing are unchanged. Tiny local-only helpers use the quick lane; simple instruction-only candidates use proportional review. Record the lane and reason. Local-only status never waives privacy, license, factual integrity or an explicitly requested review.
 
 Validation for this gate includes readback/diff check, metadata validation, source/runtime/public/company sync check or deferred reason, public/private scan when variants are touched, encoding guard when localized text is edited, and one realistic `make a skill` scenario proving the gate fires before scaffolding.
 
@@ -206,11 +206,12 @@ Validation for this gate includes readback/diff check, metadata validation, sour
 Preflight is a gate, not an invitation to load every related skill. Classify the
 new-skill request as `quick`, `standard`, or `release` before downstream loading:
 
-- `quick`: behavior and routing are unchanged; skip learning/research/expert
-  ceremony and run targeted validation only.
-- `standard`: default candidate/pilot path; use compact prior-art and research
-  briefs, one bounded Workflow Distiller review, and ask the user before
-  scaffolding.
+- `quick`: typo/link/metadata fixes or explicitly local throwaway helpers; skip
+  learning/research/expert ceremony and run targeted validation only. New reusable
+  instruction-only skills use the proportional standard lane.
+- `standard`: default candidate/pilot path; use compact prior-art and relevant
+  research, with bounded review when warranted. Existing creation authorization
+  permits scaffolding; ask only for material missing decisions or scope changes.
 - `release`: stable/public/team/high-risk path; run fuller research, expert
   review, sync, compatibility, and release gates.
 

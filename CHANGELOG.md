@@ -8,6 +8,16 @@ This project follows semantic versioning once stable release tags are created.
 
 ## Unreleased
 
+### Capability-aware execution — 2026-09-19
+
+- Continue authorized work after recovery and review without redundant approval;
+  preserve read-only requests, revocations and publication boundaries.
+- Select validation by affected surface, make context-pressure advice non-blocking,
+  and adapt tool use to capabilities exposed by the host.
+- Keep skill creation, learning and presentation workflows proportional to the
+  request. Public synchronization now follows an explicit package scope.
+
+
 ### Bilingual user documentation — 2026-09-11
 
 - Provide English and Simplified Chinese editions of all user guides, with

@@ -172,8 +172,11 @@ Do not auto-spawn real subagents for:
 - vague strategy work without a bounded output contract;
 - tasks where Xiao Q explicitly asked for no agents or a single-threaded path.
 
-Use `ask-before-spawn` when a reviewer or validator would need privileged
-commands, network access, non-temp writes, or user profile changes.
+Use `ask-before-spawn` when a reviewer or validator needs authority not already
+granted: privileged operations, private-data exposure, profile changes or writes
+outside its assigned scope. Public research and writes to an authorized owned
+workspace do not require another question merely because they use the network
+or are outside a temporary directory. Host delegation restrictions still apply.
 
 ## Review Before Human Review And Publish
 
@@ -194,16 +197,19 @@ Required order:
    remaining risks.
 6. Present a compact review summary, remaining risks, and exact preview path to
    Xiao Q.
-7. Wait for Xiao Q's explicit approval before any push, publish, release,
-   upload, or public package sync.
+7. Verify the user's current authorization covers the reviewed candidate and
+   destination, then complete the authorized push or publication. Ask only if
+   that authorization is missing, revoked or materially exceeded.
 
 If Xiao Q points out that an expert review, report path, or integration step
 was skipped, treat it as a workflow defect. Run the missing review, integrate
 or defer each finding explicitly, update the relevant expert/process rule, and
 record the lesson before closing the task.
 
-`push`, `publish`, `release`, external upload, and GitHub-bound sync are always
-approval-gated even when local validation passes. Local durable logging and
+`push`, `publish`, `release`, external upload, and GitHub-bound sync require
+scope-specific authorization even when local validation passes. An explicit
+instruction to perform that action is authorization; do not require a second
+approval merely because the candidate has now passed review. Local durable logging and
 local skill/runtime updates are encouraged and do not need separate approval
 unless they touch credentials, broad user profile state, or destructive cleanup.
 

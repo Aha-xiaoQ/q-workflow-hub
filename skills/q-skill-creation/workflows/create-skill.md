@@ -16,8 +16,8 @@ Choose the lightest lane before loading downstream skills or experts:
   risk appears.
 - `standard`: default for a new reusable candidate/pilot skill. Run compact
   prior-art learning, targeted research only when the trigger requires current
-  or external evidence, one bounded expert pre-review, then stop and ask for
-  user approval.
+  or external evidence, and one bounded expert pre-review when routing or
+  lifecycle risks justify it. Proceed under existing creation authorization.
 - `release`: public/team/stable/high-risk skill work. Use fuller learning,
   research, real expert/subagent review, compatibility checks, and release
   readiness evidence.
@@ -33,29 +33,35 @@ Chain stop rules:
 - Downstream skills used during this gate must not call `q-skill-creation` to
   create or update another skill in the same chain. Record a follow-up instead,
   unless the user explicitly approves a new work item.
-- Stop after the plan plus expert findings are ready. Do not scaffold files,
-  expand the research chain, or spawn additional experts before user approval.
+- For a proposal-only request, stop after the plan and findings. For authorized
+  creation, build the reversible candidate after this compact preflight; do not
+  expand the research chain or wait for redundant approval.
+
+Apply the steps below according to the selected lane. Reuse already available
+examples and evidence; the numbered list does not reinstate checks the lane
+explicitly skips. A local instruction-only skill does not need external research
+or an independent review unless its behavior introduces a concrete risk.
 
 1. **Confirm creation trigger.** Use `references/skill-creation-trigger.md` to decide whether to create a new skill, update an existing skill, or use a smaller durable layer. Default to proposing/evaluating rather than silently creating unless the user already authorized skill creation or sedimentation. Record why a new top-level skill is justified.
-2. **Understand usage.** Collect 2-3 concrete example prompts, target users, success criteria, and what is out of scope.
+2. **Understand usage.** Use the supplied request as the first example and infer routine users, success criteria and scope. Add examples only when ambiguity or broader routing needs them; do not require an interview.
 3. **Learn from prior art.** Use `q-skill-pattern-learning` for internal/external skill and workflow pattern learning before designing the new skill. Extract mechanisms, rejected patterns, and license posture; do not copy third-party text, prompts, code, schemas, or assets without explicit compatibility and attribution.
 4. **Research source roles.** Use `q-research-discovery` / Source Scout when the skill touches official platform behavior, current or niche ecosystems, public examples, external tools, APIs, install paths, or uncertain best practices. Record source roles, key findings, and whether research was skipped because the user declined, networking was unavailable, or the task was explicitly offline.
 5. **Draft the plan.** Before file creation, write a compact plan covering goal, trigger, scope, candidate name, ownership class, structure, validation, source/runtime/bootstrap sync, public/company boundary if relevant, compatibility, and residual risks. A Xiao Q/q-workflow-owned reusable skill must use the `q-<domain>-<job>` family; external mirrors and project-local skills require an explicit ownership exception instead of silently dropping the prefix.
-6. **Run expert pre-review.** Use Workflow Distiller by default for lifecycle, routing, taxonomy, compatibility, or durable-rule changes. Add Source Scout for research-heavy skills, Code Auditor for scripts or validation tools, and the relevant domain expert for PPT, HTML, diagram, hardware, PDF, audio/video, or other specialized skills.
-7. **Ask for user approval.** Present the plan plus accepted/deferred expert findings to the user and wait for explicit approval before creating or scaffolding files.
-8. **Proceed only after approval.** After approval, implement the smallest viable skill structure, validate, run post-review when high-impact, and record handoff evidence.
+6. **Run proportional pre-review.** When a high-impact lifecycle, routing, taxonomy, compatibility or durable-rule change requires independent review, use Workflow Distiller by default. Add Source Scout for research-heavy skills, Code Auditor for scripts or validation tools, and the relevant domain expert for PPT, HTML, diagram, hardware, PDF, audio/video, or other specialized skills.
+7. **Check scope authorization.** Reuse an explicit request to create the skill. Ask only if a missing decision materially changes the result, the proposed scope exceeds that request, or the user requested a proposal first. Present a concrete plan and findings before any necessary question.
+8. **Implement within authorization.** Build the smallest viable skill, validate, run post-review when high-impact, and record handoff evidence. Publication remains a separate action requiring its own scope-specific authorization.
 
 Waivers are narrow:
 
 - Patch-level typo, obvious link, or deterministic metadata repairs may skip this gate only when skill behavior and routing are unchanged.
 - Tiny local-only helpers may skip research only when no new reusable skill behavior is created; record scope and skip reason.
-- Immediate implementation may skip the approval wait only when the user explicitly says to skip preflight/approval, or when the user has already approved a concrete plan in the current thread.
+- Existing creation authorization satisfies the permission check without a waiver. A new question is needed only for an unresolved consequential choice or expanded scope; safety, license and publication checks still apply.
 
 ## Implementation Steps
 
 1. **Choose the shape and pass the name gate.** Decide the skill name, trigger description, workflows, references, scripts, assets, and whether the skill is q-owned, external, or project-local. Before scaffolding a q-owned skill, run `python scripts/skill_naming_audit.py --candidate-name <name> --candidate-kind q-owned`; a missing `q-` prefix blocks creation. External mirrors and project-local skills must use their matching candidate kind and record why the q-owned rule does not apply.
 2. **Choose initial lifecycle state.** Read `references/skill-lifecycle-standard.md` and record whether the skill starts as `candidate`, `pilot`, or `stable`. New skills default to `candidate` or `pilot`. Do not mark a new skill `stable` unless the full Stable Release Bar is satisfied with evidence, including source/runtime sync, compatibility notes, realistic scenarios, and required expert review.
-3. **Frame option-style choices.** When the skill could reasonably go in multiple directions, turn requirements into 2-3 explicit options before implementing. Each option should state the use case, tradeoff, likely files, validation path, and recommended default. Do not ask questions discoverable from files.
+3. **Resolve material choices.** Offer options only when an unresolved tradeoff materially changes the result. Infer routine reversible structure from the request and existing conventions; do not ask questions discoverable from files.
 4. **Check third-party material.** If references are involved, use `references/license-check.md` before copying or adapting material. Prefer learning mechanisms over copying text, prompts, code, schemas, or assets.
 5. **Implement the skill structure.** Keep `SKILL.md` short and route detailed procedures into `workflows/` or `references/`. Use `references/skill-taxonomy-schema.md` for portfolio metadata rather than adding unsupported frontmatter fields.
 6. **Add UI metadata.** Create `agents/openai.yaml` with display name, short description, and default prompt using the current interface metadata convention.
@@ -74,7 +80,7 @@ Waivers are narrow:
 - Creation trigger is justified using `references/skill-creation-trigger.md`.
 - Prior-art learning was run with `q-skill-pattern-learning`, or an explicit waiver/skip reason is recorded.
 - Research was run with `q-research-discovery` / Source Scout when official docs, current facts, public examples, tools, APIs, install paths, or uncertain best practices are involved.
-- Plan, expert pre-review, and user approval happened before scaffolding, or the current-thread waiver is explicit.
+- A proportional plan/pre-review and scope authorization check preceded scaffolding; existing user instructions count as authorization.
 - Description includes clear trigger language.
 - `SKILL.md` is concise and does not duplicate long reference content.
 - Lifecycle state and compatibility posture are recorded using `references/skill-lifecycle-standard.md`.

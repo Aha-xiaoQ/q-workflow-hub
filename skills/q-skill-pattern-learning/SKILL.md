@@ -27,8 +27,9 @@ real work, and only then promote durable workflow changes.
 
 - Do not start by patching q-workflow. Start with the learning question,
   Xiao Q's theme, and the failure mode the learning system should reduce.
-- Separate framework design, source research, real learning rounds, and final
-  skill stabilization. Do not collapse all four into one pass.
+- Distinguish source observation, adaptation, testing and stabilization in the
+  evidence. A bounded study may complete them in one pass; generalized framework
+  improvement needs transfer evidence across tasks.
 - Separate surface features from mechanisms. Names, folder shapes, or prompt
   wording are surface; routing logic, validation contracts, artifact strategy,
   and feedback loops are mechanisms.
@@ -74,11 +75,13 @@ caller; the caller owns the plan, expert review, and user approval.
    and known risks before searching.
 2. **Research**: find related skills, agent workflow docs, and adjacent learning
    frameworks; record source role, license posture, and useful mechanism.
-3. **Synthesize**: update the candidate q-skill-pattern-learning design without
-   copying third-party text, code, prompts, schemas, or assets.
-4. **Pilot**: run 2-3 real learning rounds on different skill types.
-5. **Validate**: score each round with `references/learning-rubric.md`; keep
-   misses as regression scenarios.
+3. **Synthesize**: map findings to the user-requested target or report without
+   copying third-party material. Change this learning framework only when that
+   change is itself in scope.
+4. **Pilot**: for a bounded lesson, exercise one different realistic scenario.
+   Use multiple skill types only for generalized framework or stabilization claims.
+5. **Validate**: use `references/learning-rubric.md` for comparative or promotion
+   claims; a bounded study needs concise behavioral evidence and known gaps.
 6. **Stabilize**: only promote rules that survive repeated real use; keep rare
    cases in references or examples.
 
@@ -91,7 +94,7 @@ Each learning pass should produce a compact record:
   studied or actually copied.
 - `Mechanisms`: 2-5 transferable mechanisms, each tied to a failure mode.
 - `Adaptation`: target skill/workflow layer and the smallest proposed change.
-- `Validation`: 3-5 scenarios that would prove the lesson generalized.
+- `Validation`: a targeted transfer scenario; broader cases for generalization claims.
 - `Evidence`: generated artifact, review report, diff, score, or real-task
   comparison.
 - `Decision`: promote, keep experimental, defer, or reject.

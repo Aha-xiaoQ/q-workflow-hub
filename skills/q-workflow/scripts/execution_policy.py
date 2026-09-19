@@ -42,8 +42,8 @@ def advise(facts: dict[str, Any]) -> dict[str, Any]:
         return {**base, "status": "needs-context", "errors": errors}
 
     tier = {"local": "T1", "mirror": "T2", "remote-rebuild": "T3", "release": "T4"}[facts["claim"]]
-    if facts["risk"] in {"material", "high"} and tier == "T1":
-        tier = "T2"
+    # Risk changes test depth within the affected surface, not the surface itself.
+    # A high-risk application fix does not acquire workflow/bootstrap mirrors.
     if facts["intent"] in {"answer", "diagnose"} and facts["claim"] == "local" and facts["risk"] == "low":
         tier = "T0"
     delegation = "main"

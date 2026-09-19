@@ -9,7 +9,7 @@ summary; this file carries the full procedure.
 | Trigger | Tier | Risk | Action |
 |---|---|---|---|
 | `xiaoQ`, `小Q`, `resume`, `continue` | Quick | allow | Read routing state and one targeted Git status. |
-| Named project or named artifact resume | Project | allow Phase-A reads only | Read bounded routing/project state, lock the target, output the fixed Resume Briefing, and stop before artifact-body inspection, edits, validation, build, flash, commits, pushes, or broad scans. |
+| Named project or named artifact resume | Project | within current authorization | Validate bounded task state, lock the target and continue authorized unfinished work. Status-only or ambiguous requests stop at a concise briefing. |
 | Dirty, stale, contradictory, or agent-touched state | Deep | ask before risky actions | Inspect diffs and handoff notes before editing. |
 | Platform compact/session failure | Deep | ask before commit/push | Reconstruct state before validation or expensive work. |
 | High context pressure, token-heavy session, or before broad recovery after compaction | Project | allow read-only token scan and local checkpoint write | Run `scripts/context_governor.py --format text`; if `throttle` or `critical`, write a task packet before continuing. |
@@ -209,14 +209,13 @@ Anti-pattern: treating every new user message as replacing the old task without 
 
 ## Resume Briefing Before Execution
 
-For `continue Xiao Q` after a recorded point, time gap, hardware pause, or
-session recovery, the first user-visible response is a briefing, not execution.
-Its job is to help Xiao Q quickly remember the previous progress and decide
-whether to proceed.
+After a recorded point or session recovery, briefly state the validated target,
+unfinished step and current boundaries. Continue when the user requests execution
+of an identified authorized task. A status question or unresolved target needs
+only the briefing; a hardware pause retains its bench-readiness requirements.
 
-Use this fixed field order. If a field is unknown or not checked in Phase A,
-write `unknown`, `not checked`, or `not applicable`; do not silently fill it by
-starting execution.
+The following fields are a reference for substantial or ambiguous recovery, not
+a mandatory questionnaire for every continuation. Mark unknown evidence honestly.
 
 ```text
 RESUME BRIEFING / 继续前状态汇报
@@ -228,19 +227,19 @@ Current status: <last completed step + current unfinished point>
 Dirty/risk state: <clean/dirty/unknown + known pollution/unvalidated boundary>
 Allowed Phase-A reads used: <files/commands>
 Recommended first action: <read-only/edit/build/validate + exact scope>
-Execution boundary: Waiting for explicit approval before artifact-body inspection, repo content inspection beyond Phase-A state, edits, build, validation, flash, hardware, commit, push, Git-changing commands, or broad scan.
-Approval prompt: Reply `执行`, `开始检查`, `开始编辑`, `只读检查`, or `切换目标`.
+Execution boundary: <current authorized scope and persistent restrictions>
+Approval prompt: <only if a consequential decision or additional authorization is missing>
 ```
 
-For Xiao Q-facing Chinese output, use the same contract in readable Chinese and
-include the hard stop phrase: `我先停在这里，不会修改文件、不会运行构建、不会改固件；请明确确认后我再进入执行阶段。`
+For Chinese output, use readable Chinese labels. Explain a real stop in plain
+language; do not add a mandatory approval phrase to an already authorized task.
 
 The briefing should be compact but not cryptic. A user returning after hours or
 days should not need to open old chat to understand why the proposed next step
 is safe.
 
-Anti-pattern: treating `continue Xiao Q` as permission to silently inspect repos,
-edit code, build, flash, or run hardware after only a one-line pointer.
+Anti-patterns: resuming from an unvalidated pointer, ignoring a user restriction,
+or stopping authorized work solely to obtain a second approval after briefing.
 
 ## Checkpoint Pollution Ledger
 
@@ -301,14 +300,15 @@ Use two phases for `continue Xiao Q` / `继续小Q` recovery after a recorded po
    work, the previous-session pointer, and required handoff packet headers.
    Repair source/runtime active pointers when needed, then present the locked
    checkpoint, evidence consistency, next action, and protected boundaries.
-2. Phase B - execute project work. Inspect repositories, change files, build,
-   flash, run hardware, or start validation only after Xiao Q explicitly
-   authorizes execution or gives a concrete command beyond resume.
-For named artifact resumes such as user manuals, PPT/decks, reports, handoffs,
-or generated project artifacts, Phase A locks the named artifact branch and
-reports status only. Opening the artifact body for review, applying patches,
-running export/visual/build validation, or changing related project files belongs
-to Phase B and requires explicit post-briefing approval.
+2. Phase B - execute authorized project work. A request to continue an identified
+   unfinished task normally resumes its authorized scope after state validation.
+   Do not require approval again merely because a briefing was produced. A bare
+   wake word, status question, ambiguous target or explicitly paused boundary
+   stays in Phase A until intent is clear.
+For named artifacts, preserve the selected branch and latest user correction.
+Read the body and continue edits/validation when continuation is requested and
+the work is already authorized. Existing no-push, hardware, privacy or other
+scope limits persist; a summary of old permission is not renewed authorization.
 
 Validated hardware checkpoints add a stricter gate: default to preserving the
 last user-validated configuration. Changing a control mode, power-stage route,
@@ -483,7 +483,7 @@ When the user provides an existing project path or repo:
    - Video/audio/transcript intake -> `q-video-intake` or `q-audio-intake`.
 8. Load only task-relevant project files next. Prefer indexes, state files,
    reports, scripts, and recent diffs over broad file loading.
-9. After the fixed Resume Briefing and explicit post-briefing execution approval, continue the task, then update durable memory files and the personal work
+9. After validating the resume point and current scope authorization, continue the task, then update durable memory files and the personal work
    item if project direction, outputs, decisions, environment, or next steps
    changed.
 

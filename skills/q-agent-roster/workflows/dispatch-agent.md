@@ -23,9 +23,10 @@ Use before spawning or simulating an expert pass.
      cold-context install/usability, self-review risk, research sidecar,
      sequential phase handoff, guardrail/release review, and validator replay
      before defaulting to main-only execution.
-   - Boundary check: if credentials, private data, push/publish, destructive
-     action, non-temp writes, or overlapping write scope is involved, ask first
-     or deny.
+   - Boundary check: verify existing authorization and owned scope. Ask only
+     for missing authority or material expansion involving credentials, private
+     data, external actions, destructive operations or overlapping writes.
+     Authorized public research or owned workspace edits need no repeat question.
 5. Decide mode:
    Apply the ordinary-local-check exception in `auto-dispatch-policy.md` when
    delegation is prohibited, unavailable, or lacks useful independent scope.
@@ -90,8 +91,9 @@ Use before spawning or simulating an expert pass.
 16. If Xiao Q is expected to review the result, provide the expert review
     summary, integrated fixes, deferred items, validation evidence, and preview
     path before asking for human review.
-17. Do not push, publish, release, upload, or sync a public package until Xiao Q
-    explicitly approves the current candidate after the review summary.
+17. Complete the authorized push, publication or public sync after review and
+    validation. Reuse existing scope-specific authorization; ask only if the
+    candidate or destination exceeds it or the user revoked it.
 
 ## Role Selection Hints
 

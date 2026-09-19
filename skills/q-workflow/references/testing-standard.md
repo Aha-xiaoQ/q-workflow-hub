@@ -41,11 +41,12 @@ current release authority remains `release_readiness.py` plus the foundational
 suite, explicit endpoint evidence, expert review, signoff, and push/reclone
 proof.
 
-Every run must produce a score, Markdown report path, JSON/report evidence when
-requested, and a JSON endpoint-receipt template for Xiao Q's endpoint result. Endpoint
-feedback closes the loop: classify failures into expected behavior, observed
-behavior, owner skill, smallest patch, validation command, and whether the
-standard was too loose or too strict.
+Local checks need a concise result and evidence for the changed surface; a
+score or separate report is optional unless the selected runner requires it.
+Endpoint receipts and user feedback are required only for endpoint trials or
+promotion claims that depend on them. A runner's generated receipt template is
+not a request for user action during an ordinary smoke test. Classify actual
+failures by expected/observed behavior, owner, smallest patch and retest.
 
 
 ## Selection Rules
@@ -68,7 +69,10 @@ successful old result, a pending tool, or a review not yet returned cannot
 justify a completion claim. The optional `execution_policy.py` scenarios test
 these decision boundaries, not model intelligence or actual task completion.
 
-- Start at the tier matching the risk surface; do not run a higher tier for a
+- Select the tier by changed surface and intended claim. Risk determines depth
+  within that surface: even a high-risk application change does not need workflow
+  self-tests or bootstrap comparisons unless those surfaces are affected.
+- Start at the tier matching the changed surface; do not run a higher tier for a
   tiny task unless the user asks or the result will be published, pushed, or
   reused as a workflow rule.
 - Reassess the affected tier when a test finds remote freshness, source/runtime
