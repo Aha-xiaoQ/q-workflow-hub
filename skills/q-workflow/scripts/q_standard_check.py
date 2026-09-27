@@ -81,12 +81,12 @@ NEXT_OPTIONS_GUIDE_MARKERS = ("## Handoff Next Options", "**Recommended Next**",
 NEXT_OPTION_RE = re.compile(r"^\s*(?P<num>\d+)\.\s+(?P<body>\S.*)\s*$")
 FORMAT_GATE_DOC_TERMS = (
     "Format Defect Gate",
-    "text-format-hygiene",
-    "text_format_guard.py",
+    "owning source",
+    "existing work item",
     "encoding_guard.py",
     "q_standard_check.py",
     "git diff --check",
-    "regression-ledger.md",
+    "replayable check",
     "surfaces_checked",
     "skipped_surfaces",
 )
@@ -750,8 +750,8 @@ Adaptive details:
             add(findings, "fatal", "selftest-bad-en-language-surface", "self-test", "Chinese prose in English output was accepted.")
         good_format_replay = """defect_class: user-found output grammar regression
 fix: patched q_standard_check fixture and owner source
-evidence: q_standard_check.py --self-test; text_format_guard.py readback
-ledger: q-text-format-hygiene/references/regression-ledger.md#handoff-next-options-fixture-false-pass
+evidence: q_standard_check.py --self-test; Markdown readback
+ledger: existing work item, format regression example and expected output
 surfaces_checked: source/runtime/bootstrap
 skipped_surfaces: none
 """

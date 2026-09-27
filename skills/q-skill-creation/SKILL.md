@@ -1,6 +1,6 @@
 ---
 name: q-skill-creation
-description: Create, update, review, stabilize, release, or rename q-workflow-compatible skills with clear names, reliable requirements gathering, option-style decisions, lifecycle gates, compatibility notes, validation, and durable handoff notes. Use when the user wants to make a new skill, improve an existing skill, define skill standards, review a skill, prepare a stable colleague-facing release, rename unclear skills, or turn repeated work into a reusable skill.
+description: Create, update, audit, rename, or release q-workflow skills and their authoring standards. Use for explicit skill maintenance or turning a recurring workflow into a skill.
 metadata:
   short-description: Create and maintain q-workflow skills
 ---
@@ -56,6 +56,9 @@ An editorial patch does not activate every lifecycle or portfolio procedure.
   compatible licensing and attribution.
 - Validate the actual change before readiness claims. Do not promote to stable
   from metadata checks alone. Model names do not justify automatic rewrites.
+- For new or changed behavior, use the model-portable authoring checks in
+  `references/quality-bar.md`. Preserve explicit decisions and proven safeguards
+  for smaller models; concise wording must not depend on hidden reasoning.
 
 ## Deliver Only What Changed
 

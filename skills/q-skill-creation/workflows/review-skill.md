@@ -6,6 +6,11 @@ Use for a quality, reliability, lifecycle, or compliance review of a skill.
 
 - **Triggering:** frontmatter description is specific enough and not too broad.
 - **Structure:** `SKILL.md` is concise; workflows and references are discoverable.
+- **Authoring and regression:** for behavior/routing reviews, use
+  `references/quality-bar.md` Model-Portable Authoring. Check the actual selected
+  route, including references, templates and UI prompts, for contradictory old
+  rules. Preserve useful explicit steps for smaller models. Audit-only requests
+  produce findings and proposed changes; they do not authorize implementation.
 
 - **Portfolio audit:** for broad skill-system reviews, run
   `scripts/skill_portfolio_audit.py` when available before subjective edits.

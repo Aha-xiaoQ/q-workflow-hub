@@ -3,6 +3,14 @@
 Use this reference when editing shortcut behavior, help output, status/resume
 routing, checkpoint behavior, or push/publish ambiguity.
 
+Aliases select intent, not new authority. Managed recovery and task-start use
+`references/recovery-routing.md` and the matching task/event ID; retain a valid
+non-focus task instead of replacing global focus. Reuse current authorization
+for the same target and scope, ask only when it is missing/ambiguous or expanded,
+and stop revoked actions. Legacy table wording cannot require approval again.
+Formatting aliases route to the Format Defect Gate in
+`references/testing-standard.md`, not to a separately installed formatting skill.
+
 ## Command Alias Layer
 
 Treat common user shortcuts as intent aliases, not as shell commands. Support
@@ -24,10 +32,10 @@ that may need one short clarification when multiple intents match.
 | Workflow health check | `workflow-health`, `workflow-audit`, `audit workflow` | `体检`, `工作流体检`, `工作流健康检查`, `审查工作流` | `看看工作流重不重`, `顺便优化瘦身`, `完整扫描工作流`, `看看有没有冲突重复` |
 | Workflow hygiene | `workflow-hygiene`, `hygiene`, `cleanup workflow` | `清爽性`, `工作流清理`, `自动清理` | `工作流有点臃肿`, `保持小Q特色`, `不要做成整合包` |
 | Workflow identity | `workflow-identity`, `skill-fit`, `skill portfolio` | `小Q工作流特色`, `skill匹配`, `技能分层` | `skill如何和工作流匹配`, `工作流如何让skill更好用`, `不要只是整合skill` |
-| Text format hygiene | `text-format-hygiene`, `text-format-hygiene`, `format hygiene`, `markdown hygiene` | `文本格式`, `格式问题`, `代码插入格式`, `乱码整合` | `之前乱码和代码插入格式别分散记录`, `格式问题解决过不应复发` |
+| Text format hygiene | `text-format-hygiene`, `format hygiene`, `markdown hygiene` | `文本格式`, `格式问题`, `代码插入格式`, `乱码整合` | `之前乱码和代码插入格式别分散记录`, `格式问题解决过不应复发` |
 | Recorded point resume | `quick-resume-recorded-point-lock`, `continue Xiao Q recorded checkpoint` | `继续小Q`, `明天继续`, `记录点恢复` | show the locked checkpoint, previous progress, unvalidated boundary, known pollution, proposed first action, and Resume Briefing before execution; no project execution before authorization |
 | Resume briefing status first | `resume-briefing-status-first-fixed-template`, `where were we`, `named artifact resume status` | `继续前状态汇报`, `继续用户手册`, `继续PPT`, `刚才到哪了` | output `RESUME BRIEFING`; lock `已锁定分支`; name `用户手册 polish`, `PPT/deck`, and `目标文件`; report current status, relevant risks and next action; continue authorized unfinished work when requested, while a status-only question remains read-only |
-| Task-start pointer promotion | `task-start-pointer-promotion`, `new concrete manual task`, `new concrete PPT task` | `开始用户手册任务`, `开始PPT任务`, `新建长期任务` | promote durable manual/PPT/deck/artifact work at task start when it should become default resume; update RECOVERY_POINTER, Current Focus, RECOVERY_EVENTS.md, and runtime mirror; tiny side quests must do not promote default pointer |
+| Task-start pointer promotion | `task-start-pointer-promotion`, `new concrete manual task`, `new concrete PPT task` | `开始用户手册任务`, `开始PPT任务`, `新建长期任务` | validate/register the matching task; use manager plan/apply for task/event changes and an intentional focus switch; legacy RECOVERY_EVENTS.md is not v2 authority; non-focus work preserves the selected global focus |
 | Post-brief execution approval | `project execution after explicit approval` | `开始编辑`, `开始检查`, `执行你刚才建议的只读检查` | after state validation, continue the identified task under existing current authorization; ask only for ambiguity or scope expansion; preserve named scope and latest restrictions |
 | Update rules | `update-rules` | `更新规则` | `优化工作流`, `记住这次教训` |
 | Sync rules | `sync-rules` | `同步规则` | `看看有没有漏同步`, `通用skill有没有漏` |

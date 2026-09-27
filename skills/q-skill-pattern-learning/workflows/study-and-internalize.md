@@ -8,6 +8,9 @@ read `references/design-framework.md` before using this workflow.
 ## Steps
 
 1. Confirm the framework.
+   - Choose report-only study, authorized adaptation, or promotion evaluation
+     from the user's request. Report-only work ends with findings and proposed
+     validation; steps 6-7 do not authorize a patch or a model run by themselves.
    - Is this an exploratory research pass, a real learning round, or a
      stabilization pass?
    - If Xiao Q asks to "deep-study", "precision learn", or otherwise dig into a
@@ -41,10 +44,10 @@ read `references/design-framework.md` before using this workflow.
    - Script: deterministic repeated operation.
    - Project state: current project fact, artifact path, or one-time decision.
    - Evaluation scenario: regression case to prove the lesson later.
-6. Patch the smallest target.
+6. For authorized adaptation, patch the smallest target.
    - Prefer one router rule, one workflow reference, or one validation check.
    - Keep copied material out unless license and attribution are explicit.
-7. Validate with scenarios.
+7. Validate changed behavior or a requested promotion with scenarios.
    - Use at least one scenario different from the artifact that triggered the
      lesson.
    - Score with `references/learning-rubric.md`.
@@ -55,9 +58,10 @@ read `references/design-framework.md` before using this workflow.
    - Reject if the source is incompatible, too narrow, or not better than the
      existing workflow.
 
-If the user finds an obvious miss after a positive verdict, score the original
-round as unstable. Record the miss, the missed signal, the root cause, and the
-smallest reusable rule patch before rerunning the scenario.
+If the user finds an obvious miss after a positive verdict, correct the verdict
+and record the missed signal and root cause. Propose the smallest relevant fix;
+apply it and rerun affected scenarios only within the current authorization.
+An audit correction alone does not authorize a global rule change.
 
 ## Minimal Report
 

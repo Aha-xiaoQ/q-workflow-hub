@@ -1,6 +1,6 @@
 ---
 name: q-skill-pattern-learning
-description: Study external or internal skills, public agent workflows, prompt packs, or reusable automation examples to extract transferable patterns and validate whether they should enter q-workflow. Use when Xiao Q wants to compare skills, learn from another skill, extract reusable mechanisms, or internalize lessons without copying third-party material.
+description: Study or compare skills and agent workflows to extract reusable mechanisms. Use for skill-learning or adaptation requests; a study alone does not authorize changes.
 ---
 
 # Q Skill Pattern Learning
@@ -27,6 +27,10 @@ real work, and only then promote durable workflow changes.
 
 - Do not start by patching q-workflow. Start with the learning question,
   Xiao Q's theme, and the failure mode the learning system should reduce.
+- Select the requested outcome: report-only study, authorized adaptation, or
+  promotion evaluation. Complete a study with findings; patch only under the
+  adaptation scope. For authoring changes use q-skill-creation's quality bar,
+  including explicit branches and regression evidence for smaller models.
 - Distinguish source observation, adaptation, testing and stabilization in the
   evidence. A bounded study may complete them in one pass; generalized framework
   improvement needs transfer evidence across tasks.
@@ -78,8 +82,9 @@ caller; the caller owns the plan, expert review, and user approval.
 3. **Synthesize**: map findings to the user-requested target or report without
    copying third-party material. Change this learning framework only when that
    change is itself in scope.
-4. **Pilot**: for a bounded lesson, exercise one different realistic scenario.
-   Use multiple skill types only for generalized framework or stabilization claims.
+4. **Pilot**: for authorized adaptation, exercise one different realistic
+   scenario. A report-only study proposes that scenario without running a
+   modification. Use multiple skill types for generalized or stabilization claims.
 5. **Validate**: use `references/learning-rubric.md` for comparative or promotion
    claims; a bounded study needs concise behavioral evidence and known gaps.
 6. **Stabilize**: only promote rules that survive repeated real use; keep rare
@@ -113,6 +118,7 @@ Each learning pass should produce a compact record:
 Before closing a learning round:
 
 - update the relevant work item or project state with the learning output;
+- a report-only study closes with evidence and proposals, without skill edits;
 - validate any changed skill with `quick_validate.py`;
 - run at least one realistic usage scenario when the change affects behavior;
 - state what is stable for normal use and what still needs more evidence.

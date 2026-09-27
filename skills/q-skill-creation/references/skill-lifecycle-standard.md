@@ -190,9 +190,12 @@ Validation for this gate includes readback/diff check, metadata validation, sour
 - **Blocks:** a `ready`, `stable`, `migrated`, `installed`, or colleague-ready
   claim while the route, source/runtime classification, required review, or
   validation record is missing.
-- **Check:** replay one creation or migration scenario; run the portfolio and
-  source/runtime audits; verify an independent review log names accepted,
-  deferred, or rejected findings.
+- **Check:** select evidence for the actual change and claim. Audit-only work
+  checks findings and coverage without creating a skill. Creation, behavior
+  updates and migration exercise their affected routes and contrasting cases;
+  editorial work uses its targeted lane. Run portfolio checks for a portfolio
+  claim and mirror checks for affected surfaces. Preserve independent review
+  where the high-impact/domain/release contract requires it; record dispositions.
 - **Repair:** stop the closure claim, run the missing route/review, add the
   smallest durable record, then rerun the evidence checks.
 - **Waiver:** only the user may waive a non-safety local check; record the

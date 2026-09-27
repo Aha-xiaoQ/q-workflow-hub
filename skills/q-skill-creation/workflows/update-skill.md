@@ -38,8 +38,14 @@ For instructions, routing, default execution or validator behavior:
    triggered. Use one bounded reviewer per concern; keep required independence.
 4. Implement the smallest coherent change. Inspect affected rule owners,
    consumers, known mirrors and validators, not all adjacent skills.
+   Use `references/quality-bar.md` Model-Portable Authoring: record which
+   existing behaviors stay, change or retire in this work item's compact diff
+   note. Inspect routed references, templates and UI prompts that could restore
+   the old behavior; update affected callers or name the remaining conflict.
 5. Test the changed path and a contrasting scenario. For a removed or narrowed
    gate, demonstrate that its protected risk still takes the stronger route.
+   Reuse existing fixtures where they cover the intent. A metadata check or a
+   stronger-model walkthrough cannot establish smaller-model reliability.
    Preserve source/runtime hashes and applicable metadata/encoding/link checks.
 6. Integrate findings once; repeat only invalidated checks. Record compatibility,
    evidence and skipped surfaces in the existing checkpoint. Finish the scoped

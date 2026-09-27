@@ -81,7 +81,8 @@ and keep only the trigger and pointer in `SKILL.md`.
 
 ## Context Tiers
 
-- `Micro`: fixed commands or stable answers that should avoid tool reads.
+- `Micro`: stable answers use available context; exact commands still run their
+  documented authority/read gate. Avoid unrelated scans, not required reads.
 - `Quick`: routing state, one small state file, or one targeted status check.
 - `Project`: normal project or skill work with targeted state and source files.
 - `Deep`: dirty, stale, contradictory, public, credential, destructive, or
@@ -93,8 +94,12 @@ and keep only the trigger and pointer in `SKILL.md`.
 
 - `allow`: local, low-risk, recoverable reads or writes needed for the current
   task.
-- `ask`: pushes, publishing, public/GitHub sync, destructive cleanup,
-  credential handling, global configuration, or unclear blast-radius actions.
+- `ask`: a consequential decision or authority is missing, unclear or exceeded.
+  Pushes, publishing, destructive cleanup, credentials and global configuration
+  require scope-specific authority; an existing explicit authorization satisfies
+  that check. Do not ask again solely because the action is in this category.
+- Revoked authorization means stop that action. Do not ask to reinstate it;
+  reconsider only if a later user request changes the authorization.
 - `deny`: storing secrets, copying unclear-license material, moving private
   company data into public artifacts, or bypassing security controls.
 

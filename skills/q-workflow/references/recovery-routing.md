@@ -4,6 +4,42 @@ Use this reference for resume, interruption recovery, emergency save, and
 existing-project recovery details. `SKILL.md` keeps only the safe routing
 summary; this file carries the full procedure.
 
+## Managed Task Recovery
+
+For a v2 pointer or registered task, use this path before the legacy procedures
+below. They must not override a validated task/event binding or the latest user
+instruction.
+
+1. Inspect the managed focus, then validate the matching task ID and execution
+   epoch with the installed manager. Read its work item and referenced evidence.
+   A closed or unrelated focus must not redirect the current request; locate an
+   unknown matching task through the registry. Do not select another task's focus
+   just to continue non-focus work.
+2. Reconcile the latest direct user correction with current state. Existing
+   authorization remains valid within its scope; a revocation stops the affected
+   action. Ask only for a consequential missing decision or expanded authority.
+3. Use manager plan/apply for record/event transitions and deliberate focus
+   changes. Project notes and legacy RECOVERY_EVENTS are navigation, not a
+   substitute for the managed binding. Never hand-edit a v2 pointer or replay an
+   external action from a summary.
+4. Continue the identified authorized work using the smallest relevant checks.
+   At a meaningful handoff refresh the existing work item with intent, done and
+   pending work, paths, evidence, operation IDs, blockers and one next action.
+   Use the host's supported context handling; a compaction alone does not require
+   reading old transcripts, changing sessions or running a token-scan helper.
+5. Recovery alone does not authorize a skill change. End with the recovered work
+   and its evidence; modify a reusable rule only when a demonstrated defect and
+   current authorization warrant it. Keep local, running and published evidence
+   separate and retain the current Phase B visibility latch.
+
+The Managed Pointer Entity Gate below remains mandatory for managed tasks; its
+record/event failure conditions must not be bypassed. The Reusable Tool
+Continuity Gate also applies when a previously used tool is missing; use the
+matching work item rather than all active/paused work. Other later session and
+pointer procedures apply only to explicitly unmanaged legacy tasks. Managed
+tasks never append a legacy event or change global focus merely because a
+legacy section requests it.
+
 ## Activation
 
 | Trigger | Tier | Risk | Action |
@@ -96,11 +132,11 @@ Rules:
 6. For long, remote, model-heavy, or interruption-prone work, keep a rolling
    checkpoint in the work item after meaningful plan changes, user corrections,
    or completed substeps.
-7. After a real recovery round, run a short consolidation pass before closing:
-   identify one reusable failure mode, patch the smallest correct workflow or
-   reference layer, sync only the needed runtime mirrors, and record the
-   validation result. Avoid turning every recovery into broad multi-repository
-   cleanup.
+7. After a recovery round, record the result in the existing work item. If a
+   reusable defect was demonstrated and its repair is authorized, patch the
+   owning rule, validate the affected scenario and sync applicable files.
+   Otherwise finish with the recovery evidence or a recommendation; do not
+   start an automatic skill-update or cleanup cycle.
 8. If the source hub was updated during recovery, refresh only the affected
    runtime mirror files needed for future routing, such as `PAUSED_WORK.md` or
    the active work item. Do not bulk-copy the personal hub unless the user is
@@ -175,8 +211,12 @@ Apply this executable gate whenever `RECOVERY_POINTER` declares
 - `Blocks`: confident resume, `status: pass`, `record_state: confirmed`, and
   further Phase B execution when the record or event is missing, stale, or
   contradictory. Byte-identical `ACTIVE_WORK.md` mirrors cannot waive this.
-- `Check`: run `q_workflow_manager.py status`, `task validate --task-id <id>`,
-  and `q_base_command.py --audit`; all must expose the same binding result.
+- `Check`: validate the current task with `task validate --task-id <id>` and
+  its matching epoch/event. Use `q_workflow_manager.py status` for managed-focus
+  integrity and `q_base_command.py --audit` when the foundational command surface
+  is in scope. Compare binding results only for the same task identity: a valid
+  non-focus task need not match the selected global focus. Different IDs alone
+  must not trigger focus repair or waive either entity's validation failures.
 - `Repair`: reconstruct the candidate record from project authority plus the
   latest direct correction, then use manager `task plan` and `task apply --yes`
   so the task JSON, event, focus view, runtime mirror, and manifest switch as one

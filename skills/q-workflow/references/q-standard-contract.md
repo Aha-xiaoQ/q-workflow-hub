@@ -197,12 +197,12 @@ status: candidate
 level: MUST
 trigger: user-found or recurring format defect, output grammar change, Markdown/list/code-fence/JSON/YAML/UTF-8/line-ending issue, or workflow handoff format regression
 scope: durable text, skill rules, generated reports, user-visible handoff grammar, and source/runtime/bootstrap/standalone mirrors
-requirement: classify the defect, patch the smallest owner source or generator, run the applicable text/encoding/parser/q-standard checks, update the regression ledger for recurring or user-found issues, and account for every applicable surface before claiming fixed. Encoding-sensitive or Chinese fixture strings in scripts/tests should use ASCII-safe escaped literals or explicit UTF-8 readback fixtures so the test itself cannot be corrupted by terminal/codepage drift.
+requirement: follow the repair/review branches in references/testing-standard.md Format Defect Gate. Review-only work reports findings without modifying artifacts, rules or mirrors. Authorized repair patches the smallest owning source/generator, runs checks for the actual defect, retains recurring/user-found examples and replayable evidence in the existing work item or project validation record, and accounts for applicable surfaces before claiming fixed. Encoding-sensitive or Chinese fixture strings in scripts/tests should use ASCII-safe escaped literals or explicit UTF-8 readback fixtures so the test itself cannot be corrupted by terminal/codepage drift.
 blocks: claiming the format is fixed, protocol-complete, candidate-stable, or ready for push/reclone
 check: text/encoding guard when available, parser/self-test, q_standard_check.py, git diff --check, and source/runtime readback or skipped-surface reason
-repair: route to the owning format-hygiene path, fix the owner source/generator, add or update a replay case, sync mirrors, and rerun the smallest failing tier
+repair: under current repair authorization, use the owning artifact/generator, retain a replay case, sync affected mirrors and rerun the smallest failing tier; a review-only request ends with findings and recommendations
 waiver: Xiao Q only for user-visible format defects; recorded reason allowed only for skipped non-applicable surfaces
-owner: q-workflow and the relevant text-format hygiene skill when installed
+owner: q-workflow with the owning artifact/generator
 test: q_standard_check.py --self-test format-defect-gate replay plus line-ending/control/Markdown checks when available
 ```
 
@@ -250,7 +250,7 @@ trigger: updating a long-running or append-only work item, status report, or sta
 scope: personal-state work items, project state notes, and workflow stabilization reports
 requirement: use semantic headings for newly appended status sections; do not hand-maintain continuous numeric H2 headings such as `## 12.` unless the file owns a stable numbered procedure or generated table of contents; avoid empty heading gaps and read back the heading list after repair
 blocks: claiming the work item/status file is clean after a user-found numbering, blank-section, or heading ambiguity defect
-check: heading-list readback plus text_format_guard.py on the changed Markdown
+check: heading-list readback on the changed Markdown plus git diff --check; use an available syntax guard only for claims it actually checks
 repair: rename ad hoc numbered headings to semantic headings and remove excess blank lines
 waiver: recorded reason allowed only for stable numbered procedures
 owner: q-workflow
@@ -298,16 +298,23 @@ trigger: repeated format defect, source/runtime skill drift, bootstrap/install
   change, public/team release candidate, or a claim of full format coverage
 scope: q-workflow skill repos, workflow bootstrap, project-local skills,
   templates, generated install outputs, and installed runtime skills
-requirement: run the owning text hygiene guard on changed text plus
-  `format_surface_audit.py`; use key-surface mode for normal release/bootstrap
-  work and `--full --include-runtime-all` when claiming all-skill coverage
-blocks: marking the workflow/skill/update path stable, publishing, pushing a
-  release candidate, or telling Xiao Q the format problem is fully closed
-check: text_format_guard.py evidence, encoding_guard.py when Chinese or display
-  ambiguity exists, format_surface_audit.py report, and git diff --check for
-  each changed repo
-repair: patch the failing source of truth, refresh runtime/bootstrap mirrors,
-  add or update a regression-ledger entry, and rerun the smallest failed replay
+requirement: inventory the affected text surfaces supporting the claimed scope;
+  check their actual syntax and output contract using the owning parser/guard or
+  an equivalent documented readback. A review-only request reports findings
+  without patching or synchronization. Full/all-skill coverage needs an explicit
+  complete inventory; normal changes need only their affected surfaces. Explain
+  every not-applicable surface. Zero-file, partial, unavailable or uninspected
+  required coverage cannot support a full/stable/public validation claim.
+blocks: marking the workflow/skill/update path stable, publishing or pushing a
+  release candidate, or claiming full format closure without its scope evidence
+check: recorded selected/visited/missing/skipped files; JSON/YAML parser results
+  where applicable; Markdown fence/list/heading checks or equivalent readback;
+  scripts/encoding_guard.py for localized/display-risk text; git diff --check
+  for whitespace. Whitespace checks cannot substitute for syntax or fence tests.
+repair: for an authorized repair, patch the owning source, refresh affected
+  mirrors and retain the expected/observed example and replayable check in the
+  existing work item or project validation record; rerun only affected checks.
+  Missing required capabilities remain an explicit validation gap, not a pass.
 waiver: Xiao Q only for publication; recorded reason allowed for local draft work
 owner: q-workflow and Workflow Distiller
 test: template-surface-zero-file-pass, code-fence-pairing-false-positive, and

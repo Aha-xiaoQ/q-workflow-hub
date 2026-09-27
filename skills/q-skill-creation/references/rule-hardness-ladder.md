@@ -73,10 +73,14 @@ When user feedback exposes a failure:
 
 1. Name the failure mode.
 2. Decide whether it is one-off, project-local, personal, or reusable.
+   For audit-only or one-off findings, record the diagnosis/proposal at that
+   layer and stop. Continue to a skill patch only when adaptation is authorized
+   and evidence supports a reusable mechanism.
 3. Choose the ladder level.
 4. Add a positive action and an anti-pattern.
 5. Add a validation cue or regression scenario.
 6. Propagate to source/runtime/public/company surfaces when applicable.
 
-Absorption is incomplete if the lesson stays only in chat, a report, or a
-single generated artifact.
+If durable skill adaptation was authorized and a reusable mechanism accepted,
+the rule must be reachable through its owning skill and validated before calling
+it absorbed. A completed report-only study does not need to change a skill.

@@ -248,71 +248,28 @@ the relevant work item.
 
 ## Platform Session Failure Recovery
 
-If the agent platform repeatedly reports a remote compaction, summarization, or
-session-continuation failure, treat the current chat window as unreliable
-platform state instead of asking the user to keep retrying in that window.
+Use `references/recovery-routing.md` as the recovery owner. For a managed task,
+follow its Managed Task Recovery and Managed Pointer Entity Gate; validate the
+matching task/event before continuing authorized work. Later legacy resume or
+pointer examples in this guide are navigation only for managed tasks, never an
+alternative state-write authority or a reason to change another task's focus.
 
-Rules:
+At a meaningful handoff or before expected context loss, refresh the existing
+work item with current intent and authorization, completed/pending work, source
+paths, validation/activation evidence, pending operation IDs, blockers and one
+next action. Keep summaries bounded and use supported native context handling.
+Ordinary compaction does not require another session or a per-turn log.
 
-1. If the current session can still write files before switching away, update
-   the active work item with a short `Session Recovery Note`:
-   - the latest user-visible request;
-   - the latest completed step;
-   - the next intended action;
-   - relevant uncommitted, unpushed, or unvalidated state;
-   - the visible platform error text when useful.
-2. If the current session cannot write files, ask the user to open a new
-   session and paste a short recovery prompt plus any screenshot of the last
-   visible state.
-3. In the new session, recover from durable state first: assistant profile,
-   `ACTIVE_WORK.md`, the active work item, `PROJECT_REGISTRY.md`, and only then
-   recent Git status/logs or screenshots.
-4. Do not commit, push, run validation, or resume expensive commands until the
-   recovered durable state has been compared with the user's latest prompt or
-   screenshot.
-5. For long, remote, model-heavy, or interruption-prone work, keep a rolling
-   checkpoint in the work item after meaningful plan changes, user corrections,
-   or completed substeps. Interruption recovery should not depend on an
-   end-of-round summary.
-6. If the user says the old chat window keeps triggering the same failure,
-   continue in the new session from files and screenshots rather than trying to
-   rely on the broken window.
-7. After a real recovery round, run a short consolidation pass before closing:
-   identify one reusable failure mode, patch the smallest correct workflow or
-   reference layer, sync only the needed runtime mirrors, and record the
-   validation result. Avoid turning every recovery into broad multi-repository
-   cleanup.
-8. If the workflow hub was updated during recovery, refresh only the affected
-   runtime mirror files needed for future routing, such as `PAUSED_WORK.md` or
-   the active work item. Do not bulk-copy the workflow hub unless the user is
-   doing machine bootstrap or mirror repair.
+For an actual repeated platform failure, preserve a checkpoint while writing
+still works. If writing is unavailable, provide a concise handoff containing the
+last known intent, evidence paths, uncertain state and next verification; do not
+claim the checkpoint was saved. A replacement session must verify those facts
+and the latest user instruction before resuming a pending operation.
 
-Automatic detection is limited to visible signals. The agent usually cannot
-see an internal platform compaction failure before it happens, but it should
-treat these as checkpoint triggers when it can still act:
-
-- the user says the old window is stuck, repeating an error, or asks to test
-  recovery;
-- the conversation shows a platform/session/compact error;
-- the work is about to start a long, expensive, remote, or model-heavy step;
-- the task just finished a meaningful substep, accepted a user correction, or
-  changed direction;
-- the user says `checkpoint`, `emergency save`, `save state`, or `pause note`.
-
-Emergency save behavior:
-
-1. Stop nonessential work immediately.
-2. Update the active work item with `Session Recovery Note` or `Emergency
-   Checkpoint`.
-3. Record the latest user request, current plan status, files changed, commands
-   currently relevant, validation/sync gaps, and the next 1-3 actions.
-4. Do not commit or push unless the user explicitly asks, or unless the work
-   item says a local commit is the required recovery checkpoint.
-5. Reply with the new-session recovery prompt and the work item path.
-
-Useful new-session prompt:
-
-`Recover from a platform compact/session failure. Use q-assistant-profile and q-workflow. First read ACTIVE_WORK.md and the active work item. Do not commit, push, or run validation until you reconstruct the current state. Last visible request was: <paste last request>.`
+For an emergency save, stop nonessential work, refresh that same work item and
+report its path plus any incomplete save or test. Reuse an in-flight operation's
+ID when supported and inspect its outcome before retrying. Recovery itself does
+not authorize a commit, push, external-action replay or reusable rule change.
 
 ## Personal Cross-Project State
 
