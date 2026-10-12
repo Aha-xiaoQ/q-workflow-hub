@@ -1,5 +1,12 @@
 # Agent Orchestration Bus
 
+Current applicability: ordinary native delegation uses the compact contract in
+q-agent-roster's dispatch workflow. This document supplies optional architecture
+or explicit machine-consumer detail. Historical full-packet/card/identity-update
+examples do not add mandatory fields, separate turns or reports to that path.
+Preserve scope, real identity, acceptance, evidence and required independence.
+
+
 Use this reference when a task may benefit from sub-agents, independent
 reviewers, parallel validators, or a bounded improvement loop.
 

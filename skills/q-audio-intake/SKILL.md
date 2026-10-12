@@ -52,95 +52,17 @@ Route by user intent:
    Record every real benchmark sample durably: source id, title/topic, clip
    range, engine/model, output paths, score, conclusion, and gaps.
 
-## Commands
+## Run the selected path
 
-Replace `<skill-root>` with the absolute directory containing this SKILL.md.
-Examples illustrate provider syntax, not permission to send private audio to a
-new provider; use the configured, authorized path and suitable model.
-
-Prepare audio only:
+Resolve `<skill-root>` from this loaded skill. Use the configured, authorized
+provider; a syntax example does not authorize a new media recipient.
 
 ```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<audio-video-url-or-file>" `
-  --engine none
+python "<skill-root>\scripts\q_audio_intake.py" transcribe --input "<source>" --engine <selected-engine>
 ```
 
-Transcribe with OpenAI:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<audio-video-url-or-file>" `
-  --engine openai
-```
-
-Use exported cookies for platforms such as Bilibili:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<video-url>" `
-  --cookies-file "<path-to-cookies.txt>" `
-  --engine openai
-```
-
-Transcribe with Gemini:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<audio-video-url-or-file>" `
-  --engine gemini
-```
-
-Transcribe locally with faster-whisper:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<audio-video-url-or-file>" `
-  --engine faster-whisper `
-  --language zh `
-  --faster-whisper-model base `
-  --start 300 `
-  --duration 180
-```
-
-Transcribe locally with whisper.cpp:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" transcribe `
-  --input "<audio-video-url-or-file>" `
-  --engine whisper-cpp `
-  --language zh `
-  --whisper-cpp-cli "<path-to-whisper-cli.exe>" `
-  --whisper-cpp-model "<path-to-ggml-small.bin>" `
-  --start 300 `
-  --duration 180
-```
-
-Set `WHISPER_CPP_CLI` and `WHISPER_CPP_MODEL` to avoid passing those paths on
-every command. On Windows AMD GPUs, validated `whisper.cpp` Vulkan builds are a
-useful transcription path. Verify the actual transcript; benchmark against
-subtitles before claiming provider quality or promoting a new default.
-Use `workflows/install-whisper-cpp.md` to make this setup reproducible
-outside `%TEMP%`.
-
-Score against a reference transcript:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" score `
-  --reference "<official-subtitle-transcript.txt>" `
-  --candidate "<stt-transcript.txt>" `
-  --metric auto
-```
-
-Extract a timed subtitle segment for clip benchmarks:
-
-```powershell
-python "<skill-root>\scripts\q_audio_intake.py" subtitle-segment `
-  --subtitle "<subtitle-file.srt>" `
-  --start 300 `
-  --duration 180 `
-  --output "<gold-segment.txt>"
-```
+Read `references/commands.md` only for provider options, cookies, extraction-only
+or scoring syntax. The selected workflow includes its relevant working examples.
 
 ## Outputs
 

@@ -1,72 +1,38 @@
 # Update Skill
 
-Choose the lane by semantic effect before loading downstream standards.
-User authorization, host instructions and explicit domain gates always apply.
+Classify by semantic effect, not diff size. Preserve existing authorization and
+unrelated edits; a local update does not authorize publication.
 
-## Editorial Lane
+## Common path
 
-Use only when permissions, defaults, triggers, routing, gate applicability and
-required evidence are unchanged: typos, broken links, explanatory wording or
-deterministic metadata repair. Moving a rule is not editorial unless its
-activation and reachability demonstrably stay unchanged.
+1. Read the owning entry and affected rule/consumer. Compare touched files with
+   known source/runtime/bootstrap copies; choose the validated baseline before
+   writing. Load `../references/source-runtime-freshness.md` only for drift,
+   unclear ownership, a new surface or release risk.
+2. Choose the lane below. Briefly record what stays, changes or retires and why
+   in the existing work item/diff. Do not create another inventory for one file.
+3. Edit canonical source. Follow the changed route into consumers, templates and
+   UI prompts only where they could restore the old behavior.
+4. Validate the claim, propagate touched files, verify hashes, and record one
+   compact result. Reuse passed checks until inputs or a new concern invalidate
+   them. Stop after the authorized delivery.
 
-1. Read the owning entry and affected file. Reuse instructions already loaded.
-2. Compare touched files against known source/runtime/bootstrap mirrors and
-   inspect relevant dirty changes. Apply the same scoped source-authority and
-   no-overwrite rules as the freshness reference; load that reference if drift,
-   a new surface, sync ambiguity or release risk needs resolution.
-3. Make the correction; validate readback/diff, links/encoding/metadata as
-   affected; propagate to applicable mirrors and compare hashes.
-4. Record a compact result in the existing work item. No new expert, external
-   research, lifecycle survey, portfolio audit or full installation test solely
-   for this lane. Existing material task/event records still close correctly.
-5. If push was authorized, perform its reviewed-diff, public-safety and fetched
-   remote checks. A push does not automatically make this a stable release.
+| Lane | Applies to | Checks |
+|---|---|---|
+| Editorial / patch | Wording, links, metadata with unchanged behavior | Readback/diff, affected links, parsing/encoding |
+| Behavior / minor | New or adjusted compatible procedure/fallback | Above plus intended path and contrasting/failure case; affected scripts if any |
+| High-impact / major | Core routing/authority/output contract, hard gate, compatibility, lifecycle, retirement, broad propagation or release | Independent pre/post review and affected consumer checks; applicable lifecycle/domain/release contract |
 
-## Behavior Lane
+Moving text is behavioral when activation or required evidence changes. A simple
+behavior rule needs trigger, action, done/failure condition and scenario, not a
+large rule form. Load `../references/rule-quality.md` or
+`../references/rule-hardness-ladder.md` when designing a gate or resolving its
+strength. Load `../references/skill-lifecycle-standard.md` for lifecycle,
+compatibility or stable/team/portable claims. Research only unknown/current facts.
 
-For instructions, routing, default execution or validator behavior:
-
-1. Read `references/source-runtime-freshness.md`, choose the validated baseline
-   and preserve intentional variants/unrelated edits.
-2. Classify patch/minor/major using `references/skill-lifecycle-standard.md`.
-   For rule design load `references/rule-quality.md` and
-   `references/rule-hardness-ladder.md`; define failure, trigger, owner, strength,
-   action and scenario. Reuse relevant current evidence; research only unknown
-   or changeable facts.
-3. Apply high-impact pre/post expert review and lesson-absorption gates when
-   triggered. Use one bounded reviewer per concern; keep required independence.
-4. Implement the smallest coherent change. Inspect affected rule owners,
-   consumers, known mirrors and validators, not all adjacent skills.
-   Use `references/quality-bar.md` Model-Portable Authoring: record which
-   existing behaviors stay, change or retire in this work item's compact diff
-   note. Inspect routed references, templates and UI prompts that could restore
-   the old behavior; update affected callers or name the remaining conflict.
-5. Test the changed path and a contrasting scenario. For a removed or narrowed
-   gate, demonstrate that its protected risk still takes the stronger route.
-   Reuse existing fixtures where they cover the intent. A metadata check or a
-   stronger-model walkthrough cannot establish smaller-model reliability.
-   Preserve source/runtime hashes and applicable metadata/encoding/link checks.
-6. Integrate findings once; repeat only invalidated checks. Record compatibility,
-   evidence and skipped surfaces in the existing checkpoint. Finish the scoped
-   authorized delivery; do not recursively improve the workflow to close it.
-
-## Release, Migration Or Foundation Lane
-
-Before stable/team/portable claims, lifecycle changes, skill retirement,
-public/private boundary changes or foundation replacement, load the lifecycle
-standard and applicable release/migration/evolution contracts. Preserve required
-isolated validation, independent review, remote evidence and explicit authority.
-Do not substitute editorial checks for those claims. A source-only change does
-not prove installed behavior or a running service.
-
-## Measurements And Stop Rule
-
-For context-cost work compare entry size, selected references and tool-result
-volume. Use bounded existing logs, not a new always-on monitor. Separate cached
-input, uncached input, output and child overhead when data permits; mark missing
-fields and partial samples. Compare equivalent tasks before claiming savings.
-
-Stop when the requested change, applicable evidence and authorized delivery are
-complete. Preserve one recoverable checkpoint; do not create a new diary,
-broad audit or learning loop merely because the update finished.
+For a narrowed check, demonstrate that its protected risk still takes the
+stronger route. Byte/line reductions show loading size, not measured speed or
+model reliability. Do not claim smaller-model compatibility without actual
+target-model evidence. Full installation tests are for changed installation or
+rebuild claims; broad stability tests are for the applicable foundation/release
+contract, not every prose edit or Git push.

@@ -13,7 +13,7 @@ sufficient test tier without turning tiny tasks into release drills.
 |---|---|---|---|
 | T0 micro | exact TODO/status/help, direct command output, tiny wording answer | no broad scan; state any skipped validation only when useful | protocol-heavy completion |
 | T1 local change | one repo, scoped file/script/doc edit | targeted readback, parser/compile/checker when applicable, `git diff --check`, encoding guard for localized text | local handoff for the changed artifact |
-| T2 skill or workflow rule | reusable skill, output grammar, validator, source/runtime mirror, bootstrap copy | source/runtime/bootstrap or source/runtime/standalone checks, `q_standard_check.py --self-test`, task-specific script validation, hash/readback evidence | claiming mirrors are synced or rule is candidate |
+| T2 skill or workflow rule | reusable skill, output grammar, validator, source/runtime mirror, bootstrap copy | touched mirror hashes and changed/contrasting behavior; task-specific script checks; `q_standard_check.py --self-test` only when output grammar or its consumers change | claiming mirrors are synced or rule is candidate |
 | T3 rebuild and clone | remote rebuild claim, installation/bootstrap/resolver changes, new machine, no-personal-hub, resolver/path ambiguity | fresh clone or isolated temp install, remote/HEAD evidence, resolver identity check, dependency/toolchain check, public/private scan when applicable | saying the remote can rebuild current behavior |
 | T4 promotion or release | team/public/customer/promotion-ready, colleague handoff | release_readiness, stability suite, variant/public scan, expert review, explicit signoff, push/reclone evidence | team-ready/public-ready/stable-release labels |
 
@@ -25,11 +25,12 @@ tests. It is the standard path for `workflow-test`, `工作流测试`, `核心�
 `全量自测`, `个人端拉取后测试`, `GitHub个人端恢复测试`,
 `internal Git remote推广端装载测试`, and `推广端安装测试`.
 
-Level mapping:
+Level mapping when the user requests `workflow-test` or a broad runtime refresh:
 
 - `smoke`: T2 quick sanity for small workflow/skill changes.
-- `core`: T2/T3 default after personal pull, runtime refresh, or ordinary
-  workflow rule updates.
+- `core`: T2/T3 default for the requested full personal pull or broad runtime
+  refresh. Scoped rule edits and touched-file sync use the selected T2 checks
+  above; they do not automatically run this suite.
 - `full`: T3 before rebuild/reclone claims, remote rebuild verification, or Xiao Q
   endpoint testing.
 - `release`: T4 for colleague, promotion, public, or stable-release readiness.
@@ -85,8 +86,8 @@ these decision boundaries, not model intelligence or actual task completion.
   the target remote before saying GitHub or internal Git remote can reconstruct behavior.
 - If a command times out, leaves only `.git`, or depends on a missing package,
   record `partial` or `blocked`; do not report pass from adjacent checks.
-- For substantial final handoffs, use the `Recommended Next` block. T0 micro
-  answers stay natural and must not get a menu unless it actually helps.
+- End with results and relevant limits. Use `Recommended Next` only for an
+  actual unresolved choice or explicit menu request, not to prolong completed work.
 
 ## Format Defect Gate
 

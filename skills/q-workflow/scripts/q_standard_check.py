@@ -61,6 +61,8 @@ EXPERT_CARD_FIELDS = [
     "Permissions",
     "Boundaries",
 ]
+EXPERT_CARD_REQUIRED_FIELDS = [field for field in EXPERT_CARD_FIELDS
+                               if field not in {"English name", "Chinese name"}]
 REQUIRED_RULE_FIELDS = [
     "rule_id",
     "status",
@@ -250,21 +252,20 @@ def parse_card_fields(text: str) -> dict[str, str]:
 def validate_expert_card(text: str) -> list[str]:
     errors: list[str] = []
     fields = parse_card_fields(text)
-    for field in EXPERT_CARD_FIELDS:
+    for field in EXPERT_CARD_REQUIRED_FIELDS:
         if not fields.get(field):
             errors.append(f"missing {field}")
-    english = fields.get("English name", "")
-    chinese = fields.get("Chinese name", "")
     role = fields.get("Expert role", "")
+    english = next((alias for alias, name in STABLE_EXPERTS.items()
+                    if role == f"{alias} ({name})"), "")
     if english not in STABLE_EXPERTS:
-        errors.append("English name is not a stable expert alias")
+        errors.append("Expert role is not a stable bilingual expert label")
         return errors
     expected_chinese = STABLE_EXPERTS[english]
-    expected_role = f"{english} ({expected_chinese})"
-    if chinese != expected_chinese:
+    if "English name" in fields and fields["English name"] != english:
+        errors.append("English name conflicts with Expert role")
+    if "Chinese name" in fields and fields["Chinese name"] != expected_chinese:
         errors.append(f"Chinese name for {english} must be {expected_chinese}")
-    if role != expected_role:
-        errors.append(f"Expert role must be {expected_role}")
     run_instance = fields.get("Run instance", "")
     if run_instance == "local-pass" or run_instance.endswith("/pending"):
         # pending is acceptable only for a plan card. The text must say Subagent plan.
@@ -470,9 +471,11 @@ def check_contract(root: Path, findings: list[Finding]) -> None:
     missing_real_rules = sorted(required_real_rules - parsed_ids)
     if missing_real_rules:
         add(findings, "blocker", "missing-real-rule-block", contract, "Missing parsed real rule blocks: " + ", ".join(missing_real_rules))
+    # The contract owns applicability: next-step menus may be optional.
+    # Required concrete rules must declare a real level, not a template value.
     for _, block in blocks:
-        if block.get("rule_id") == "q-handoff-next-options" and block.get("level") != "MUST":
-            add(findings, "blocker", "next-options-not-must", contract, "q-handoff-next-options must be a MUST-level rule for substantial handoffs.")
+        if block.get("rule_id") in required_real_rules and block.get("level") not in VALID_RULE_LEVEL:
+            add(findings, "blocker", "nonconcrete-rule-level", contract, f"Rule {block.get('rule_id')} must declare a valid concrete level.")
     check_rule_blocks(contract, text, findings)
     scan_status_examples(contract, text, findings)
     check_handoff_next_options(root, findings)
@@ -572,18 +575,13 @@ def check_dispatch_policy(root: Path, findings: list[Finding]) -> None:
     text = read_utf8(policy, findings)
     if text is None:
         return
-    if "Always announce the dispatch card before spawning" not in text:
-        add(findings, "blocker", "dispatch-card-not-before", policy, "Dispatch policy must require card before real subagent spawn.")
-    if "Run instance" not in text or "Chinese name" not in text:
-        add(findings, "blocker", "dispatch-card-fields", policy, "Dispatch card must include Run instance and Chinese name.")
     required_dispatch_terms = {
-        "one dispatch card per real subagent",
-        "retry after a failed spawn",
-        "backfill the final mapping",
+        "before spawning", "Run instance", "Chinese", "scope/actions",
+        "acceptance/stop", "evidence", "read-only", "independent",
     }
     missing_terms = sorted(term for term in required_dispatch_terms if term not in text)
     if missing_terms:
-        add(findings, "blocker", "dispatch-card-per-subagent-missing", policy, "Dispatch policy missing multi-agent card hardening terms: " + ", ".join(missing_terms))
+        add(findings, "blocker", "dispatch-contract-missing", policy, "Dispatch policy missing scoped identity/evidence terms: " + ", ".join(missing_terms))
 
 
 def run_self_test(findings: list[Finding]) -> None:
@@ -651,6 +649,19 @@ Run instance: explorer/Peirce/019
         add(findings, "fatal", "selftest-bad-card", "self-test", "Invalid expert card was accepted.")
     if not validate_expert_card(incomplete_card):
         add(findings, "fatal", "selftest-incomplete-card", "self-test", "Incomplete expert card was accepted.")
+    compact_card = "\n".join(line for line in good_card.splitlines()
+                             if not line.startswith(("English name:", "Chinese name:")))
+    if validate_expert_card(compact_card):
+        add(findings, "fatal", "selftest-compact-card", "self-test", "Compact bilingual card was rejected.")
+    invalid_compact_cards = {
+        "missing-permissions": compact_card.replace("Permissions: read-only", ""),
+        "wrong-role": compact_card.replace(f"Workflow Distiller ({chinese})", "Workflow Distiller (wrong)"),
+        "conflicting-name": compact_card + "\nEnglish name: Code Auditor\n",
+        "pending-as-start": compact_card.replace("Subagent plan", "Subagent start"),
+    }
+    for label, sample in invalid_compact_cards.items():
+        if not validate_expert_card(sample):
+            add(findings, "fatal", f"selftest-compact-{label}", "self-test", "Invalid compact expert card was accepted.")
 
     with TemporaryDirectory() as tmp:
         fixture = Path(tmp) / "rule.md"
@@ -813,7 +824,7 @@ def main() -> int:
     parser.add_argument("--self-test", action="store_true", help="Run built-in regression fixtures.")
     parser.add_argument("--format-replay", default=None, help="Validate a format-defect replay handoff/report file.")
     parser.add_argument("--chat-output", default=None, help="Validate a user-visible workflow chat output file starts with the slash status line.")
-    parser.add_argument("--handoff-output", default=None, help="Validate a substantial handoff/final output: slash status line plus required Recommended Next block.")
+    parser.add_argument("--handoff-output", default=None, help="Validate a handoff/final output status line; add --require-next-options only to check the optional menu form.")
     parser.add_argument("--allow-lightweight", action="store_true", help="Allow natural-language tiny outputs for --chat-output only when no workflow markers appear.")
     parser.add_argument("--require-next-options", action="store_true", help="Require a valid Recommended Next block for substantial workflow handoff chat outputs.")
     parser.add_argument("--language-output", default=None, help="Validate a user-facing output file against --language.")
@@ -856,8 +867,9 @@ def main() -> int:
         if handoff_text is not None:
             for error in validate_chat_output(handoff_text, allow_lightweight=False):
                 add(findings, "blocker", "invalid-handoff-output-status-line", handoff_path, error)
-            for error in validate_recommended_next_block(handoff_text):
-                add(findings, "blocker", "invalid-handoff-output-next-options", handoff_path, error)
+            if args.require_next_options:
+                for error in validate_recommended_next_block(handoff_text):
+                    add(findings, "blocker", "invalid-handoff-output-next-options", handoff_path, error)
     if not args.root and not args.self_test and not args.format_replay and not args.language_output and not args.chat_output and not args.handoff_output:
         parser.error("provide --root, --self-test, --format-replay, --language-output, --chat-output, --handoff-output, or a combination")
 

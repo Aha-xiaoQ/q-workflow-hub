@@ -10,7 +10,7 @@ to commentary and final handoffs alike; a tool call, validation result, or
 subagent result does not waive it. Use
 `scripts/phase_b_output_preflight.py --self-test` to validate the grammar
 implementation and use its text-file mode for replay fixtures. This preflight
-does not replace the required next-options block for substantial handoffs.
+does not require a next-options menu when no meaningful choice remains.
 
 Visible workflow state has a continuity latch. Once an active material task
 enters Phase B, every later user-visible assistant message on that task must
@@ -24,10 +24,10 @@ The latch is executable state, not prose only. Managed pointers must expose
 `visibility_latch: phase-b-required` for `active`, `validating`, or `blocked`
 tasks and `visibility_latch: not-required` otherwise. Status, task listing, and
 base audit fail closed when the field is missing or contradicts `work_state`.
-Before a Phase B handoff, run `phase_b_output_preflight.py --text-file <reply>
---active-work <authoritative ACTIVE_WORK.md>` so the response and durable latch
-are checked together.
+For output-grammar repair or an explicit protocol-validation claim, run
+`phase_b_output_preflight.py --text-file <reply> --active-work <matching pointer>`.
+Do not use another task's global focus as this task's identity evidence.
 
 Check ordinary progress prefixes directly; do not launch a process for each
-message. Run the text-file validator at a substantial handoff or when repairing
-the output grammar. Required task-event transitions remain unchanged.
+message. Use the text-file validator when repairing or certifying
+the output grammar; normal handoffs need a direct prefix check. Required task-event transitions remain unchanged.

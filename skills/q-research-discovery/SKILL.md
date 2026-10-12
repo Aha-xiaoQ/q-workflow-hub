@@ -29,16 +29,15 @@ Route by intent:
 ## Operating Rules
 
 1. Define the research objective before searching.
-2. Pick source roles intentionally: stable source, boundary source, primary
-   documentation, public example, counterexample, or adjacent-domain source.
+2. Start with the strongest relevant primary source. Add source roles only
+   for unresolved, conflicting or consequential claims; counts are not quotas.
 3. Keep source use license-aware. Learn from ideas and patterns; do not copy
    code, prompts, schemas, text, or assets without explicit compatible license
    and attribution.
 4. Label warnings by severity: blocking, degraded, informational, or future
    risk. Do not treat a nonblocking warning as a failed validation.
-5. Prefer experiment loops for skill and workflow changes: choose a realistic
-   scenario, define observable success criteria, run it, score the evidence,
-   improve the artifact, and rerun the relevant checks.
+5. For an authorized change, test a realistic scenario and its relevant
+   contrast. Use numeric scoring only for an actual comparative evaluation.
 6. Record reusable source, query, and validation lessons in the user's durable
    state or the project handoff file.
 7. Use the recommended source library as a starting map, not a closed world.
@@ -54,8 +53,7 @@ Xiao Q explicitly asks for deep research.
 Compact mode output:
 
 - research objective and freshness need;
-- 2-4 source roles or concrete sources, prioritizing official docs and strong
-  public examples;
+- the sources needed to resolve the question, prioritizing official evidence;
 - key findings that affect the skill design;
 - warnings by severity;
 - what was intentionally not searched and why;
@@ -70,16 +68,9 @@ expansion.
 
 For small tasks, a concise answer with cited or named sources is enough.
 
-For project work, also write a short research log that captures:
-
-- objective;
-- source roles;
-- queries or discovery path;
-- findings;
-- warnings and severity;
-- validation score when the work tested a workflow or skill;
-- validation result;
-- next action.
+Persist a compact decision/source note only when needed for task recovery or
+reusable learning. Use the existing work item; project membership alone does
+not require a separate research log, score or source-registry update.
 
 ## References
 

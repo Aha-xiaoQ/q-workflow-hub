@@ -1,7 +1,20 @@
 ---
+
+
 name: q-workflow
 description: Reusable project workflow for Codex and other terminal-capable coding agents. Use when a user wants to create, clone, resume, organize, document, update, commit, push, migrate, or recover a project with durable memory files, project-local skills, environment setup notes, Git handoffs, and automatic use of relevant generic skills.
 ---
+
+## Current scope and precedence
+
+This is an on-demand legacy/reference guide. The entry's smallest-path router,
+`recovery-routing.md` managed-task section, `testing-standard.md` and current
+`q-standard-contract.md` govern when a procedure applies. For v2 tasks use the
+matching task/event and existing work item; later legacy scan, ACTIVE_WORK-write,
+score, source-sync and next-options examples are not extra mandatory stages.
+Run a section only for the named decision or requested claim. Preserve explicit
+domain/release checks and existing authorization. No per-turn recency scan,
+automatic global focus change, broad sync or compulsory handoff menu.
 
 # Q Workflow
 
@@ -572,12 +585,11 @@ Avoid repeating the same hint in every response. Keep hints brief and actionable
 
 ## Handoff Next Options
 
-For substantial final handoffs, `Recommended Next` is a hard gate from `q-standard-contract.md`; use a short `Recommended Next` block after the
-status summary and validation notes. This is required for major task nodes,
-workflow-rule changes, release/test loops, push/publish preparation, project
-migration, and multi-step requests with meaningful remaining choices. If Xiao Q
-explicitly points out a missing next-step block, repair the current reply and
-record the correction instead of treating it as optional polish.
+`Recommended Next` is optional under `q-standard-contract.md`. Use it for a
+meaningful unresolved choice or an explicit menu request. A completed task ends
+with its result and relevant evidence; its size or workflow stage does not
+require extra options or another confirmation. Honor a current user request for
+next steps without making that presentation a permanent gate for all replies.
 
 Use this shape:
 

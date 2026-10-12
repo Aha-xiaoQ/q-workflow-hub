@@ -62,8 +62,10 @@ Push requests are platform- and repo-scoped by the user's words.
   task push are pending notes by default. They are not added to the push scope
   unless Xiao Q separately asks for workflow sync, publication, or a release.
 
-Before any push command is run, show a target preview and wait for confirmation
-unless the same current instruction already approved that exact target:
+Before a push, prepare a concrete target preview. Ask only if authorization for
+that candidate and destination is missing, revoked or genuinely ambiguous;
+approval already given in this task remains valid across turns and stages.
+Use this preview when clarification is needed:
 
 ```text
 I understand this as <platform>-only.

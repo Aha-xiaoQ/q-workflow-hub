@@ -1,25 +1,13 @@
 # Quick Find
 
-Use when the task needs a focused fact, source, example, or validation target.
+1. Identify the question and needed freshness.
+2. Start with the best primary source. Add sources when a claim remains unclear,
+   conflicting or consequential; source counts and roles are not quotas.
+3. Read the relevant material, not just a search snippet. Verify current/niche
+   facts and separate observed facts from inference.
+4. Answer with a supporting citation and material uncertainty. Stop when the
+   evidence resolves the question.
 
-## Steps
-
-1. State the question in one sentence.
-2. Choose 2-3 source roles before searching:
-   - primary source for authority;
-   - stable source for predictable validation;
-   - boundary source for edge cases;
-   - recent source for current behavior.
-3. Search with atomic queries. Each query should test one source role or one
-   assumption.
-4. Read enough context to verify the claim, not just the search snippet.
-5. Report the answer with the source role and any confidence limits.
-6. If the source or query would be useful again, add it to a durable research
-   log using `references/search-log-template.md`.
-
-## Good Output
-
-- The answer or candidate source.
-- Why the source was selected.
-- What was verified.
-- Any warning, gap, or follow-up search.
+Persist only decision/recovery evidence or a reusable source lesson, in the
+existing work item when possible. A narrow answer needs no separate search log,
+score, source registry update or further research round.

@@ -1,4 +1,4 @@
 interface:
   display_name: "Q Skill Creation"
   short_description: "Create, review, and release q-workflow skills"
-  default_prompt: "Use $q-skill-creation for the requested skill creation or maintenance. Choose the applicable lane, preserve existing behavior unless a change is intended, and validate the affected route."
+  default_prompt: "Use $q-skill-creation to implement the requested skill change through the smallest applicable lane and validate its affected behavior."

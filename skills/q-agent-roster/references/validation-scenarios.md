@@ -69,8 +69,8 @@ Expected behavior:
 
 - Select Usability Validator (验用) before generic install work.
 - State whether this is local-pass or real subagent.
-- If real subagent, show dispatch card with Expert role, English name, Chinese name, Run instance, Mode, Mission, Permissions, and Boundaries.
-- Require AGENT-TASK v2 and AGENT-REPORT v1 or normalize and log packet defects.
+- If real subagent, announce stable bilingual role, mission and scope; preserve real Run instance once in evidence.
+- Accept compact scoped instructions and evidence-backed results; require a formal packet only for its explicit consumer.
 
 ## Scenario 8: Auto Dispatch Mode Choice
 
@@ -140,8 +140,8 @@ Prompt: `让验用子agent跑一个安装测试，并把报告留档。`
 Expected behavior:
 
 - Dispatch may start with `platform_agent=pending` only if nickname/id is unknown.
-- Immediately backfill exact platform type/nickname/id through IDENTITY-UPDATE.
-- AGENT-REPORT v1 must report the real platform handle.
+- Attach exact tool-returned platform identity in parent evidence; send an identity update only if a downstream consumer needs it.
+- Reports must be bound to the actual run; the parent may supply the tool-returned handle.
 
 ## Scenario 13: Human-In-Loop New User Pilot
 

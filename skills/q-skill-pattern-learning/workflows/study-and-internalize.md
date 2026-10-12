@@ -50,7 +50,8 @@ read `references/design-framework.md` before using this workflow.
 7. Validate changed behavior or a requested promotion with scenarios.
    - Use at least one scenario different from the artifact that triggered the
      lesson.
-   - Score with `references/learning-rubric.md`.
+   - Use `references/learning-rubric.md` only for comparative or promotion
+     claims. Ordinary adaptation records observed result and remaining gap.
 8. Record the decision.
    - Promote if the scenario passes and the behavior is reusable.
    - Keep experimental if the idea is promising but evidence is thin.
@@ -74,9 +75,8 @@ Mechanisms extracted:
 Local adaptation:
 Validation scenarios:
 Evidence:
-Score:
-Decision:
-Next patch:
+Decision and evidence limits:
+Next action (only if one remains):
 ```
 
 ## A/B Comparison Add-On

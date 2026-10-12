@@ -87,8 +87,8 @@ Reconcile the latest user correction before more artifact work.
 For `visibility_latch: phase-b-required`, every user-visible message begins
 `小Q工作流 / <registered q-skill-id> / <Chinese current action>`.
 The latch ends only on explicit close, pause, switch or return to Phase A.
-Read `references/phase-b-output.md` before first Phase B output; retain its
-handoff validator and required output contract.
+Read `references/phase-b-output.md` before first Phase B output; check ordinary
+prefixes directly and use its validator for replay/grammar repair.
 
 ## Execution And Checks
 

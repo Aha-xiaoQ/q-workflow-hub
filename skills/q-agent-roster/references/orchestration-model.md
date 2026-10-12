@@ -1,5 +1,12 @@
 # Orchestration Model
 
+Current applicability: ordinary native delegation uses the compact contract in
+q-agent-roster's dispatch workflow. This document supplies optional architecture
+or explicit machine-consumer detail. Historical full-packet/card/identity-update
+examples do not add mandatory fields, separate turns or reports to that path.
+Preserve scope, real identity, acceptance, evidence and required independence.
+
+
 Use this file when designing or revising the overall multi-agent workflow.
 
 ## MCU-Inspired Mapping

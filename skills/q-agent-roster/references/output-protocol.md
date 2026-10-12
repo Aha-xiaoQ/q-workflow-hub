@@ -1,114 +1,40 @@
-# Q Output Protocol
+# Q-OUTPUT
 
-Use this protocol to make Xiao Q workflow outputs recognizable, recoverable, and portable across agents without making ordinary conversation mechanical.
+Use natural concise prose. Include the outcome, useful artifact links, relevant
+verification and material gaps; add next steps only when something remains.
+Cards are optional readability aids, except exact machine-command output.
 
-## Principle
+## Required status identity
 
-Standardize state transitions, not every sentence. Use natural prose for simple answers, explanations, and brainstorming. Use fixed cards when the output must be resumed, audited, delegated, or acted on by another agent.
-
-## Layers
-
-| Layer | Trigger | Format strength | Goal |
-|---|---|---|---|
-| Natural | casual answer, explanation, brainstorm, tiny confirmation | preference | readable human collaboration |
-| Card | status, plan, done, blocked, next-step advice, resume, handoff | procedure | stable state and next action |
-| Packet | subagent task/report, release gate, cross-agent handoff | hard gate for release or delegation | portable machine-readable trace |
-
-## Slash Status Line Hard Gate
-
-For workflow progress, test-loop closure, workflow-rule repair, readiness checks, commit/push preparation, and final handoff, the first non-empty line MUST use exactly this grammar:
+While the managed Phase B latch applies, the first non-empty line is:
 
 ```text
 小Q工作流 / <skill-id> / <current-action>
 ```
 
-`skill-id` MUST be a registered skill id such as `q-workflow`, `q-agent-roster`, `q-code-lifecycle`, or `gmppt-study-workflow`. It MUST NOT be a temporary label such as `validation`, `source-runtime-audit`, `sync-check`, a script name, or a checker name. Put those words in `current-action` instead.
+Use the actual registered skill, not an expert, script, nickname or status.
+State belongs on the next line. The owning `q-workflow` Phase B contract governs
+the latch, including short answers. Raw internal agent packets retain their
+own headers; user-visible summaries keep the status prefix.
 
-`skill-id` MUST NOT be an expert role, platform nickname, project nickname, or free-form label.
+## Handoffs
 
-`current-action` MUST describe the action being performed. It MUST NOT be a state token such as `done`, `partial`, `blocked`, or `pending-approval`.
+- Completion: actual result, affected artifacts, checks and unresolved gap.
+- Blocker: evidence, affected action and the smallest missing input/action.
+- Recovery: task/authority, completed vs pending, protected scope and next action.
+- Publication: destination, current authorization, verified deployment/release
+  state and material risk. Reuse approval already given for that scope.
 
-Ask this before writing the line:
+Do not require English card labels, repeated names, formal status enums, a
+next-options menu or a confirmation line when ordinary prose is clear. Preserve
+exact `surface.chat_text` for the foundational micro commands.
 
-- Slot 2: which skill is responsible?
-- Slot 3: what action is being performed under that capability?
+`**Recommended Next**` is optional for a real unresolved choice or explicit menu
+request. `--handoff-output` checks the status line; adding
+`--require-next-options` tests the chosen menu form. Do not require that flag
+to force a menu into a completed task.
+Without a choice, end after the result. Distinguish an untested claim from a
+completed task for which no additional test was necessary.
 
-If the word is an audit, validation, smoke, runner, script, gate, release check,
-or temporary task label, it belongs in Slot 3, not Slot 2.
-
-State belongs on the next line:
-
-```text
-小Q工作流 / q-agent-roster / 专家调用协议修复
-状态：partial，正在验证专家卡闸门。
-```
-
-Invalid:
-
-```text
-小Q工作流 / Workflow Distiller (沉炼) / blocked-pending-approval
-```
-
-This is invalid because the second field is an expert role and the third field is a state.
-
-A tiny natural-language answer may skip this line only when it has no workflow action, no file or state change, no validation claim, no handoff, and no next-step menu. If `**Recommended Next**` appears, or the answer closes a test/repair/workflow loop, the slash status line is required. Substantial DONE/HANDOFF closures must also include a valid `**Recommended Next**` block before the answer is considered complete; adding it only after Xiao Q points out the omission is recorded as a format regression.
-
-## Required Cards
-
-Use the smallest applicable card. Do not stack cards unless the task crosses an approval, release, delegation, or handoff boundary.
-
-### STATE-UPDATE
-
-```text
-STATE-UPDATE
-state: <confirmed|partial|stale|conflict|blocked|pending-approval|done>
-current: <one concrete focus>
-completed: <1-3 concrete items or none>
-risk_or_gap: <none|1-3 concrete risks>
-next: <one recommended action>
-```
-
-### DONE
-
-```text
-DONE
-completed: <bounded task>
-artifacts: <paths/commits/reports/artifacts or none>
-validation: <passed checks|not run + reason>
-risk: <none|known residual risk>
-next: <one recommended action>
-```
-
-### BLOCKED
-
-```text
-BLOCKED
-blocker: <specific blocker>
-evidence: <file/command/source or unavailable>
-impact: <what cannot safely proceed>
-minimum_unblock: <one unblock action>
-waiting_on: <user|tool|network|repo|external system>
-```
-
-### HANDOFF
-
-```text
-HANDOFF
-goal: <what the next agent/session should continue>
-authority: <latest chat|state file|commit|report|artifact>
-current_state: <confirmed|partial|stale|conflict|blocked>
-completed: <1-5 concrete items>
-remaining_or_risk: <1-5 concrete items>
-next: <one action with target path/command if known>
-do_not_touch_without_approval: <explicit boundaries>
-```
-
-## Hard Gates
-
-- Subagent or expert delegation MUST use the dispatch card from `handoff-protocol.md` or `auto-dispatch-policy.md` before a real platform subagent is spawned.
-- Push, publish, release, migration, destructive cleanup, and public/team/customer handoff MUST name approval state and residual risk.
-- `done` MUST NOT be used when validation did not run; use `partial` and name the gap.
-
-## Small Task Adaptation
-
-For a tiny answer with no durable state, no file edit, no approval boundary, and no future handoff need, use natural prose. The workflow advantage is clarity, not ceremony.
+Before delegation, announce role and scope under `../workflows/dispatch-agent.md`.
+Formal machine packets use `handoff-protocol.md` only when a consumer needs them.

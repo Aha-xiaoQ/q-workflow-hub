@@ -1,107 +1,43 @@
 # Create Skill
 
-Use when creating a new skill from an idea, repeated task, project workflow, or external reference. Before creating a new top-level skill proactively, read `references/skill-creation-trigger.md` and confirm that updating an existing skill, reference, workflow, project memory, profile, script, report, or TODO is not the better durable layer.
+Create under the user's existing request; proposal-only work stops at a proposal.
+Prefer extending the owning skill or a smaller durable layer when it already
+covers the task. Use `../references/skill-creation-trigger.md` only when that
+ownership decision is unclear.
 
-## Discovery And Approval Gate
+## Default candidate path
 
-Before creating or scaffolding files for a new top-level skill, complete this gate unless an explicit waiver below applies.
+1. Identify concrete trigger, inputs, expected result, owner/source and one
+   adjacent request it must not capture. Infer routine reversible choices.
+2. Reuse a relevant local example when useful. Invoke q-skill-pattern-learning
+   only for requested comparative study or an unfamiliar mechanism; no mandatory
+   prior-art round or skip waiver. Research current/niche/uncertain facts when
+   they affect implementation. Read the license reference before copying external
+   text/code/assets; learning a mechanism is distinct from copying it.
+3. Sketch the smallest structure and validation in the existing work item.
+   A q-owned reusable name passes `scripts/skill_naming_audit.py --candidate-name
+   <name> --candidate-kind q-owned` before scaffolding; external/project-local
+   names use their real ownership class. Avoid duplicate active aliases.
+4. Write a concise entry: task/trigger, default action, inputs, success and
+   failure behavior. Add a workflow/reference only for genuinely conditional
+   detail. Add scripts only for a repeated deterministic operation. Record
+   source, expected mirrors and lifecycle as candidate or pilot.
+5. Keep `agents/openai.yaml` consistent with routing. Validate metadata,
+   referenced resources and affected encoding, then exercise the intended
+   invocation and adjacent negative case. Verify touched mirrors after install.
+6. Record outcome, compatibility and remaining limits once. A new candidate is
+   not stable merely because metadata passes.
 
-### Prompt Chain Budget
+## Escalation
 
-Choose the lightest lane before loading downstream skills or experts:
+Core routing/authority, new hard gates, lifecycle/compatibility changes, broad
+propagation and retirement require independent pre/post review. Use
+`../references/skill-lifecycle-standard.md` for those decisions or a
+stable/public/team/portable claim; keep actual domain and cold-start evidence.
+Code/validator changes need relevant tests and Code Auditor (码鉴) review.
 
-- `quick`: patch-level typo, link, deterministic metadata repair, or explicitly
-  local throwaway helper. Do targeted readback and validation; skip prior-art
-  learning, external research, and formal expert review unless the user asks or
-  risk appears.
-- `standard`: default for a new reusable candidate/pilot skill. Run compact
-  prior-art learning, targeted research only when the trigger requires current
-  or external evidence, and one bounded expert pre-review when routing or
-  lifecycle risks justify it. Proceed under existing creation authorization.
-- `release`: public/team/stable/high-risk skill work. Use fuller learning,
-  research, real expert/subagent review, compatibility checks, and release
-  readiness evidence.
-
-Chain stop rules:
-
-- A preflight call to `q-skill-pattern-learning` must return a compact
-  prior-art brief, not start its full learning program unless the lane is
-  `release` or the user explicitly asks for deep study.
-- A preflight call to `q-research-discovery` must return a compact research
-  brief, not start deep research or source-registry maintenance unless the lane
-  is `release` or the evidence gap requires it.
-- Downstream skills used during this gate must not call `q-skill-creation` to
-  create or update another skill in the same chain. Record a follow-up instead,
-  unless the user explicitly approves a new work item.
-- For a proposal-only request, stop after the plan and findings. For authorized
-  creation, build the reversible candidate after this compact preflight; do not
-  expand the research chain or wait for redundant approval.
-
-Apply the steps below according to the selected lane. Reuse already available
-examples and evidence; the numbered list does not reinstate checks the lane
-explicitly skips. A local instruction-only skill does not need external research
-or an independent review unless its behavior introduces a concrete risk.
-
-1. **Confirm creation trigger.** Use `references/skill-creation-trigger.md` to decide whether to create a new skill, update an existing skill, or use a smaller durable layer. Default to proposing/evaluating rather than silently creating unless the user already authorized skill creation or sedimentation. Record why a new top-level skill is justified.
-2. **Understand usage.** Use the supplied request as the first example and infer routine users, success criteria and scope. Add examples only when ambiguity or broader routing needs them; do not require an interview.
-3. **Learn from prior art.** Use `q-skill-pattern-learning` for internal/external skill and workflow pattern learning before designing the new skill. Extract mechanisms, rejected patterns, and license posture; do not copy third-party text, prompts, code, schemas, or assets without explicit compatibility and attribution.
-4. **Research source roles.** Use `q-research-discovery` / Source Scout when the skill touches official platform behavior, current or niche ecosystems, public examples, external tools, APIs, install paths, or uncertain best practices. Record source roles, key findings, and whether research was skipped because the user declined, networking was unavailable, or the task was explicitly offline.
-5. **Draft the plan.** Before file creation, write a compact plan covering goal, trigger, scope, candidate name, ownership class, structure, validation, source/runtime/bootstrap sync, public/company boundary if relevant, compatibility, and residual risks. A Xiao Q/q-workflow-owned reusable skill must use the `q-<domain>-<job>` family; external mirrors and project-local skills require an explicit ownership exception instead of silently dropping the prefix.
-6. **Run proportional pre-review.** When a high-impact lifecycle, routing, taxonomy, compatibility or durable-rule change requires independent review, use Workflow Distiller by default. Add Source Scout for research-heavy skills, Code Auditor for scripts or validation tools, and the relevant domain expert for PPT, HTML, diagram, hardware, PDF, audio/video, or other specialized skills.
-7. **Check scope authorization.** Reuse an explicit request to create the skill. Ask only if a missing decision materially changes the result, the proposed scope exceeds that request, or the user requested a proposal first. Present a concrete plan and findings before any necessary question.
-8. **Implement within authorization.** Build the smallest viable skill, validate, run post-review when high-impact, and record handoff evidence. Publication remains a separate action requiring its own scope-specific authorization.
-
-Waivers are narrow:
-
-- Patch-level typo, obvious link, or deterministic metadata repairs may skip this gate only when skill behavior and routing are unchanged.
-- Tiny local-only helpers may skip research only when no new reusable skill behavior is created; record scope and skip reason.
-- Existing creation authorization satisfies the permission check without a waiver. A new question is needed only for an unresolved consequential choice or expanded scope; safety, license and publication checks still apply.
-
-## Implementation Steps
-
-1. **Choose the shape and pass the name gate.** Decide the skill name, trigger description, workflows, references, scripts, assets, and whether the skill is q-owned, external, or project-local. Before scaffolding a q-owned skill, run `python scripts/skill_naming_audit.py --candidate-name <name> --candidate-kind q-owned`; a missing `q-` prefix blocks creation. External mirrors and project-local skills must use their matching candidate kind and record why the q-owned rule does not apply.
-2. **Choose initial lifecycle state.** Read `references/skill-lifecycle-standard.md` and record whether the skill starts as `candidate`, `pilot`, or `stable`. New skills default to `candidate` or `pilot`. Do not mark a new skill `stable` unless the full Stable Release Bar is satisfied with evidence, including source/runtime sync, compatibility notes, realistic scenarios, and required expert review.
-3. **Resolve material choices.** Offer options only when an unresolved tradeoff materially changes the result. Infer routine reversible structure from the request and existing conventions; do not ask questions discoverable from files.
-4. **Check third-party material.** If references are involved, use `references/license-check.md` before copying or adapting material. Prefer learning mechanisms over copying text, prompts, code, schemas, or assets.
-5. **Implement the skill structure.** Apply `references/quality-bar.md` Model-Portable Authoring to the new behavior. Put the main trigger first; give the default action, needed inputs, completion evidence and a relevant failure branch. Keep a simple skill self-contained; split mode-specific detail only when useful. Use `references/skill-taxonomy-schema.md` for portfolio metadata rather than adding unsupported frontmatter fields.
-6. **Add UI metadata.** Create `agents/openai.yaml` with display name, short description, and default prompt using the current interface metadata convention.
-7. **Define compatibility.** Record source of truth, runtime path, public/company counterpart if any, expected old aliases, and whether future renames need a migration note.
-8. **Validate.** Re-run the candidate-name gate and metadata validation. Check encoding, public/private boundaries and known mirrors where affected. Exercise a realistic intended invocation and an adjacent request that must not trigger; use the quality bar for additional risk-specific cases. Check the creation preflight itself only when its behavior changed. Audit a target published root for competing old/canonical folders when relevant. Colleague-facing stable bundles retain required Pre/Post Expert Review and Usability Validator evidence. Report static walkthroughs separately from actual model runs.
-9. **Record handoff.** Update changelog, work item, portfolio inventory or audit report with lifecycle state, decisions, validation, residual risks, and next actions.
-
-## Ready Checklist
-
-- Skill name is lowercase hyphen-case and under 64 characters.
-- A q-owned reusable skill passed the executable `q-` prefix gate; any external
-  or project-local exception records its ownership class and reason.
-- Published skill roots do not contain both `<name>` and `q-<name>` folders;
-  keep old phrases as canonical text aliases or migration notes instead.
-- Frontmatter has `name` and `description`.
-- Creation trigger is justified using `references/skill-creation-trigger.md`.
-- Prior-art learning was run with `q-skill-pattern-learning`, or an explicit waiver/skip reason is recorded.
-- Research was run with `q-research-discovery` / Source Scout when official docs, current facts, public examples, tools, APIs, install paths, or uncertain best practices are involved.
-- A proportional plan/pre-review and scope authorization check preceded scaffolding; existing user instructions count as authorization.
-- Description includes clear trigger language.
-- `SKILL.md` is concise and does not duplicate long reference content.
-- Lifecycle state and compatibility posture are recorded using `references/skill-lifecycle-standard.md`.
-- Taxonomy/category/status/risk/output metadata is recorded in an inventory, report, or supported metadata layer.
-- Third-party references and license posture are recorded.
-- Validation results are written to durable state.
-- The first stable release path satisfies the full Stable Release Bar, has pre-review/post-review evidence for high-impact decisions, includes at least one realistic scenario, and records rollback, deprecation, or compatibility notes when applicable.
-
-## Option Pattern
-
-Use this pattern when discussing skill direction with the user:
-
-```text
-Option A - <recommended direction>
-Best for: <primary user/task>
-Includes: <SKILL.md/workflows/references/scripts/assets>
-Tradeoff: <what it will not optimize for>
-Validation: <how we will know it works>
-
-Option B - <alternative>
-...
-```
-
-Prefer options that change real behavior, not cosmetic naming choices.
+No external research, expert ceremony or second approval is required solely
+because a simple authorized instruction-only candidate is being created.
+Missing consequential choices/authority still need clarification. Publication
+requires its own scope-specific authority; a completed local skill is not that
+authority. Do not let preflight spawn another skill-creation loop.

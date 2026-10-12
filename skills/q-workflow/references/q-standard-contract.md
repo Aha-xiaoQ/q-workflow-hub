@@ -145,31 +145,32 @@ test: q-standard-check --self-test route-category fixtures and q_standard_check.
 rule_id: expert-dispatch-card-before-spawn
 status: candidate
 level: MUST
-trigger: before any real platform subagent is spawned
-scope: q-agent-roster real subagent calls
-requirement: show one Subagent plan/start card per real platform subagent with stable Expert role, English name, Chinese name, Run instance pending or actual, Mode, Mission, Permissions, and Boundaries before each tool call. A batch sentence covering multiple experts is not enough. If spawn fails or is retried with different parameters, show a fresh card for the actual retry. After spawn succeeds, backfill the final mapping with the real platform nickname/id before relying on that expert result.
-blocks: spawning a real platform subagent as protocol-compliant work when any individual expert lacks its own card, a failed-spawn retry reuses a stale card, or the actual platform instance is not backfilled
-check: q-standard-check expert-card fixture, dispatch-policy hardening terms, or transcript review
-repair: immediately correct the mapping, show the missing per-agent card/update, and record protocol_findings
-waiver: none when the subagent is user-visible or review-class
+trigger: before real platform delegation
+scope: q-agent-roster native-agent dispatch
+requirement: announce the stable English/Chinese role, bounded mission and permissions before work; multiple roles may share a concise update with clear individual scopes. Preserve actual returned run identity once in evidence. Ordinary prompts/results use compact semantics; duplicate name fields, per-call cards and identity-only turns are optional. Formal consumer schemas remain required when selected.
+blocks: unscoped delegation, untraceable independent evidence, or falsely labeling a local check independent
+check: inspect scope/actions, acceptance, actual run identity and evidence; q-standard-check expert-card fixtures validate an optional structured form
+repair: obtain missing scope/evidence or normalize cosmetic fields in the parent; do not replay work merely to restyle it
+waiver: no waiver for missing authority or required independent evidence
 owner: q-agent-roster
-test: q-standard-check --self-test
+test: q-standard-check --self-test compact/legacy positive and missing-scope/wrong-identity negative cases
 ```
+
 ### Handoff Next Options
 
 ```text
 rule_id: q-handoff-next-options
 status: candidate
-level: MUST
-trigger: final handoff, completed major work node, workflow-rule change, release/test loop, push/publish preparation, or multi-step request with meaningful remaining choices
-scope: user-visible final answers and durable handoff summaries
-requirement: include a concise `**Recommended Next**` block with 2-4 numbered options; option 1 is the recommended default and must contain `(Recommended)`; include a combined option when doing multiple pending checks in order is the likely best path. For substantial handoff, workflow repair, test-loop closure, rule/skill update, release/readiness, commit/push preparation, or any answer after Xiao Q corrected a missing next-step block, omission is a blocker, not a style warning. Lightweight/no-choice omission is allowed only when there is no workflow action, no durable state change, no validation claim, no handoff, and no meaningful choice.
-blocks: claiming a substantial handoff is protocol-complete when the required next-options block is absent, malformed, or added only after the user catches the omission
-check: q-standard-check contract scan, `q_standard_check.py --handoff-output <file>` or `q_standard_check.py --chat-output <file> --require-next-options`, transcript tail review, or reviewer inspection
-repair: add the next-options block before handoff; if truly lightweight/no-choice, state the skip reason only when Xiao Q explicitly asked for next-step options
-waiver: recorded reason allowed for lightweight answers, direct-answer-only prompts, or when the user already gave the next command
-owner: q-workflow
-test: q-standard-check --self-test plus a substantial-handoff fixture
+level: MAY
+trigger: an explicit options request or meaningful unresolved choice at handoff
+scope: optional user-facing next-step menus
+requirement: use concise choices only when a user decision is useful. The legacy Recommended Next form has 2-4 options and a recommended first choice; ordinary prose is valid otherwise. Completed work needs no menu, invented follow-up or confirmation line.
+blocks: no ordinary completion; an explicit menu-format claim fails if malformed
+check: q-standard-check --require-next-options only for that chosen form; otherwise inspect result/evidence/gaps
+repair: fix a requested menu or omit it when no useful choice remains
+waiver: optional form; exact machine-command output stays unchanged
+owner: q-agent-roster and q-workflow
+test: q-standard-check optional menu positive and lightweight no-menu cases
 ```
 
 ### User Language Surface
